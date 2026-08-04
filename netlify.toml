@@ -3,11 +3,20 @@
 [build]
   publish = "."
   functions = "netlify/functions"
+  # Explicit so the @netlify/blobs dependency is guaranteed to be installed
+  # before the functions are bundled, rather than relying on detection.
+  command = "npm install --no-audit --no-fund"
 
 # The intranet reads submissions back through this.
 [[redirects]]
   from = "/api/responses"
   to = "/.netlify/functions/responses"
+  status = 200
+
+# The form records itself here the moment it is sent.
+[[redirects]]
+  from = "/api/submit"
+  to = "/.netlify/functions/mf-submit"
   status = 200
 
 # Keep the whole site out of search indexes and out of frames.

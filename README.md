@@ -1,17 +1,18 @@
 # Aspirean Intranet
 
-Static site plus one serverless function. No build step, no dependencies beyond
-Google Fonts. Push to the repo and Netlify redeploys.
+Static pages plus three serverless functions. One npm dependency, installed by
+Netlify on deploy. Push to the repo and Netlify redeploys.
 
 ```
 index.html                     Home, Moving Future, Responses, Archive, Resources
 moving-future-intake.html      the reflection form, posts to Netlify Forms
 __forms.html                   field blueprint so Netlify detects the form at deploy
 netlify/functions/
-  submission-created.mjs       runs itself on every submission, mirrors it into Blobs
+  mf-submit.mjs                the form posts here on send, records it at once
+  submission-created.mjs       backstop, runs itself on every verified submission
   responses.mjs                serves the tracker and the reading room
 package.json                   one dependency, @netlify/blobs
-netlify.toml                   publish root, function dir, /api route, security headers
+netlify.toml                   publish root, functions dir, install command, /api routes, headers
 records/                       cycle records (January 2026 synthesis is in place)
 robots.txt                     disallow all
 ```
@@ -19,32 +20,34 @@ robots.txt                     disallow all
 ## How the pieces fit
 
 Someone fills in `moving-future-intake.html` and presses Finish and send. The page
-posts to Netlify Forms as the form named **moving-future**, with the full response
-carried two ways: `readable` holds the markdown a human wants to read, and
-`payload` holds base64-encoded JSON, including the questions it was answering, so
-the reading room never goes stale when the instrument changes.
+posts twice. First to Netlify Forms as the form named **moving-future**, which stays
+the system of record and drives the notification email and the CSV export. Then to
+`/api/submit`, which writes the same response into a Netlify Blobs store straight
+away, so the tracker and the reading room are correct the moment it is sent.
 
-Netlify then runs `submission-created.mjs` by itself, purely because of the file
-name, and it copies the submission into Netlify Blobs. Blobs is zero-configuration
-storage: no provisioning, no token, no setting to switch on. That copy is what the
-reading room reads, which is why the whole thing needs no credentials to keep
-working.
+`submission-created.mjs` is a backstop for the same store. Netlify fires it when it
+verifies any submission, so anything that reaches Netlify Forms by some other route
+still gets recorded. Both write the same key, `cycle-id/email`, so whichever runs
+last simply rewrites the same record.
 
-`responses.mjs` serves two views. `view=status` says who has submitted, which
-drives the tracker on the Moving Future tab. `view=full` returns everyone's
-answers, and refuses unless the person asking has a submission of their own for
-the same cycle.
+The response is carried two ways in both paths: `readable` holds the markdown a
+human wants to read, and `payload` holds base64-encoded JSON including the
+questions it was answering, so the reading room never goes stale when the
+instrument changes.
 
-It will read from the Netlify API as well, but only if `NETLIFY_API_TOKEN` happens
-to be set, and it merges the two sources with the newest submission per person
-winning. That is worth doing once if you want the responses that predate the
-mirror, and worth nothing afterwards. A token expires, and every Netlify token is
-invalidated if you ever reset your password, so anything that depends on one will
-eventually break quietly. The mirror does not.
+`responses.mjs` reads the store back. `view=status` says who has submitted, which
+drives the tracker. `view=full` returns everyone's answers and refuses unless the
+person asking has a submission of their own for the same cycle. If
+`NETLIFY_API_TOKEN` happens to be set it also reads the Forms API and merges,
+newest per person winning, which is how responses predating all of this get picked
+up.
 
 ## Setup, in order
 
-**1. Deploy.** New site from the repo. No build command. Publish directory `.`
+**1. Deploy.** New site from the repo. Publish directory `.` The build command in
+`netlify.toml` is just `npm install`, which is what pulls in `@netlify/blobs` for the
+functions. Deploy by pushing to Git rather than dragging files in, since a manual
+drop skips the install step and the functions then fail on a missing module.
 
 **2. Turn on form detection.** Netlify UI, **Forms**, then **Enable form
 detection**. This is off by default on new sites and it is the single most common
@@ -116,8 +119,14 @@ email, since that arrives before the function ever sees it.
 ## Editing
 
 Display content comes from the `DATA` block at the top of the script in
-`index.html`. The roster exists in two places that must match: `DATA.team` there,
-and `ROSTER` in `responses.mjs`. Email is the key everything joins on.
+`index.html`. The roster exists in three places that must match, and email is the
+key everything joins on:
+
+- `DATA.team` in `index.html`, for display
+- `ROSTER` in `netlify/functions/responses.mjs`, which gates reading
+- `ALLOWED` in `netlify/functions/mf-submit.mjs`, which gates writing
+
+The last two are server-side on purpose. Change all three together.
 
 - **Current cycle** — the first object in `DATA.cycles` with `status: "open"`.
   Dates are `YYYY-MM-DD`. The countdown reads from `due`.
@@ -129,17 +138,20 @@ and `ROSTER` in `responses.mjs`. Email is the key everything joins on.
 - **Records** — drop synthesis PDFs into `records/` and point a cycle's `docs`
   entry at the file.
 
-## What the numbers mean
+## What the tracker counts
 
-The form reports two things, because they answer different questions. **Answered**
-counts questions engaged with at all, out of 23: seventeen bullet questions, the
-three-horizon question, keep/start/stop, and the four standing scores. **Depth** is
-how close the answers sit to the length each question suggests, so a question
-asking for five points and given one reads as answered but thin. The carry-forward
-table and the final open question are optional and count toward neither.
+A question is complete when it has a substantive answer. That is the whole rule.
+Length is the form's business to encourage in its prompts and not the tracker's
+business to score.
 
-The tracker and the reading room show the answered figure. **What's left** in the
-status bar lists exactly what is missing and what is thinner than suggested, so
+There are 23 units: seventeen bullet questions, the three-horizon question,
+keep/start/stop, and the four standing scores counted separately. The carry-forward
+table and the final open question are optional and count toward neither the total
+nor the shortfall. Each question card shows a tick once it has something in it, and
+the bullet questions also show how many points they hold, as information rather
+than a target.
+
+**What's left** in the status bar lists exactly which questions are still empty, so
 the number never has to be guessed at.
 
 The four score sliders sit at the midpoint until dragged and read **not set** until

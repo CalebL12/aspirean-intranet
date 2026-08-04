@@ -380,6 +380,7 @@ const KEY = "aspirean_moving_future_v2";
 const IDENTITY_KEY = "aspirean_mf_identity";
 const FORM_NAME = "moving-future";
 const FORM_ACTION = "/__forms.html";
+const SUBMIT_ACTION = "/api/submit";
 
 /* Keep this list in step with ROSTER in netlify/functions/responses.mjs */
 const ROSTER = [
@@ -627,10 +628,9 @@ function buildScores(it){
 /* ============================================================
    PROGRESS
    ============================================================ */
-/* Two different questions, deliberately kept apart:
-     answered — has this question been engaged with at all
-     depth    — how close each answer sits to the length the form suggests
-   Reporting only the second is what made a finished form read as 16%. */
+/* Completion is binary, per question. A question is complete when it has a
+   substantive answer; how long that answer is, is the form's business to
+   encourage and not the tracker's business to score. */
 const OPTIONAL_IDS = ["carry","q19"];
 const substantive = v => typeof v==='string' && v.trim().length>2;
 const escHtml = v => String(v==null?'':v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
@@ -643,25 +643,21 @@ function filled(id){
   return 0;
 }
 
-/* One entry per unit of the headline count. Optional questions are left out
-   entirely rather than counted and forgiven. */
+/* One entry per question, plus one per standing score. Optional questions are
+   left out rather than counted and forgiven. */
 function questionUnits(){
   const units=[];
   SCHEMA.forEach(sec=>sec.items.forEach(it=>{
     if(OPTIONAL_IDS.indexOf(it.id)!==-1) return;
     const section=deHtml(sec.title);
     const label=deHtml(it.text||KIND_LABEL[it.kind]||it.id);
-    if(it.kind==='bullets'){
-      const n=filled(it.id), want=it.min||1;
-      units.push({label,section,answered:n>0,got:Math.min(n,want),want,note:`${n} of ${want}`});
-    } else if(it.kind==='horizon'||it.kind==='kss'){
-      const n=Math.min(filled(it.id),3);
-      units.push({label,section,answered:n>0,got:n,want:3,note:`${n} of 3`});
+    if(it.kind==='bullets'||it.kind==='horizon'||it.kind==='kss'){
+      units.push({label,section,complete:filled(it.id)>0});
     } else if(it.kind==='scores'){
       const st=S.answers[it.id]||{};
       SCORES.forEach(sc=>{
-        const set=!!(st[sc.id]&&st[sc.id].v!==null);
-        units.push({label:sc.label+' score',section,answered:set,got:set?1:0,want:1,note:set?'set':'not set'});
+        units.push({label:sc.label+' score',section,
+                    complete:!!(st[sc.id]&&st[sc.id].v!==null)});
       });
     }
   }));
@@ -670,60 +666,54 @@ function questionUnits(){
 
 function updateProgress(){
   SCHEMA.forEach(sec=>sec.items.forEach(it=>{
-    if(it.kind!=='bullets') return;
-    const want=it.min||1, raw=filled(it.id);
-    const cap=document.querySelector(`.counter[data-for="${it.id}"]`);
+    const raw=filled(it.id);
+    /* Every card that can hold an answer shows the same tick on the same rule. */
     const card=document.querySelector(`.q[data-qid="${it.id}"]`);
+    if(card) card.classList.toggle('met', raw>0);
+    if(it.kind!=='bullets') return;
+    const cap=document.querySelector(`.counter[data-for="${it.id}"]`);
     if(cap){
-      cap.textContent=`${raw} of ${want}${it.max?' required':' min'}`;
-      cap.classList.toggle('met',raw>=want);
+      cap.textContent = raw===0 ? 'nothing yet' : `${raw} point${raw===1?'':'s'}`;
+      cap.classList.toggle('met', raw>0);
     }
-    if(card) card.classList.toggle('met',raw>=want);
   }));
 
   const units=questionUnits();
   const total=units.length;
-  const answered=units.filter(u=>u.answered).length;
-  const pct=total?Math.round(answered/total*100):0;
-  const want=units.reduce((a,u)=>a+u.want,0);
-  const got=units.reduce((a,u)=>a+u.got,0);
-  const depth=want?Math.round(got/want*100):0;
+  const done=units.filter(u=>u.complete).length;
+  const pct=total?Math.round(done/total*100):0;
 
   document.getElementById('railFill').style.width=pct+'%';
   const el=document.getElementById('status');
-  el.dataset.pct=pct; el.dataset.depth=depth;
-  el.dataset.answered=answered; el.dataset.total=total;
+  el.dataset.pct=pct; el.dataset.done=done; el.dataset.total=total;
   updateStatus();
 }
 
 function openWhatsLeft(){
   const units=questionUnits();
-  const missing=units.filter(u=>!u.answered);
-  const thin=units.filter(u=>u.answered && u.got<u.want);
+  const missing=units.filter(u=>!u.complete);
   const group=list=>{
     const g={}, order=[];
     list.forEach(u=>{ if(!g[u.section]){g[u.section]=[];order.push(u.section);} g[u.section].push(u); });
     return order.map(sec=>`<p class="sec-h">${escHtml(sec)}</p><ul>`
-      + g[sec].map(u=>`<li>${escHtml(u.label)} <i>(${escHtml(u.note)})</i></li>`).join('')
+      + g[sec].map(u=>`<li>${escHtml(u.label)}</li>`).join('')
       + `</ul>`).join('');
   };
   const html=`<div class="note-body">`
     + (missing.length
-        ? `<p><b>${missing.length} of ${units.length} still unanswered.</b></p>${group(missing)}`
-        : `<p><b>Every question has an answer.</b></p>`)
-    + (thin.length
-        ? `<p><b>Answered, but shorter than the form suggests.</b> This is the depth figure, and it is guidance rather than a requirement.</p>${group(thin)}`
-        : ``)
-    + `<p><i>The carry-forward table and the last open question are optional, so neither counts toward either number.</i></p>`
+        ? `<p><b>${missing.length} of ${units.length} still to answer.</b></p>${group(missing)}`
+        : `<p><b>All ${units.length} questions are complete.</b></p>`)
+    + `<p><i>The carry-forward table and the last open question are optional, so neither counts toward the total.</i></p>`
     + `</div>`;
-  noteModal("What's left", `${missing.length} unanswered of ${units.length}`, html,
-    [{label:'Back to the form',primary:true,fn:closeModal}]);
+  noteModal("What's left",
+    missing.length ? `${missing.length} of ${units.length} still to answer` : 'Nothing outstanding',
+    html, [{label:'Back to the form',primary:true,fn:closeModal}]);
 }
 function updateStatus(){
   const el=document.getElementById('status');
-  const answered=el.dataset.answered||0, total=el.dataset.total||0, depth=el.dataset.depth||0;
+  const done=el.dataset.done||0, total=el.dataset.total||0;
   const left=`<button type="button" class="whatsleft" onclick="openWhatsLeft()">What's left</button>`;
-  const count=`<b>${answered} of ${total} answered</b>`;
+  const count=`<b>${done} of ${total} questions complete</b>`;
   if(!CAN_SAVE){
     el.innerHTML=`${count} &nbsp;·&nbsp; <span style="color:#A85A4C">This browser won't let the page autosave. Use Chrome or Edge, or finish in one sitting and download a copy before closing.</span> &nbsp;·&nbsp; ${left}`;
     return;
@@ -733,7 +723,7 @@ function updateStatus(){
   const sent=S.sent
     ? ` &nbsp;·&nbsp; <span class="sentline">sent ${new Date(S.sent).toLocaleDateString([],{month:'short',day:'numeric'})} at ${new Date(S.sent).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}</span>`
     : '';
-  el.innerHTML=`${count} &nbsp;·&nbsp; ${depth}% of suggested depth &nbsp;·&nbsp; saved ${stamp}${sent} &nbsp;·&nbsp; ${left}`;
+  el.innerHTML=`${count} &nbsp;·&nbsp; saved ${stamp}${sent} &nbsp;·&nbsp; ${left}`;
 }
 
 /* ============================================================
@@ -816,8 +806,8 @@ function payload(){
     schema:schemaMap(),
     progress:(function(){
       const el=document.getElementById('status');
-      return { answered:+(el.dataset.answered||0), total:+(el.dataset.total||0),
-               percent:+(el.dataset.pct||0), depth:+(el.dataset.depth||0) };
+      return { complete:+(el.dataset.done||0), total:+(el.dataset.total||0),
+               percent:+(el.dataset.pct||0) };
     })(),
     scoreMeta:SCORES.map(x=>({id:x.id,label:x.label,sub:x.sub})),
     horizonMeta:HORIZONS
@@ -934,14 +924,30 @@ async function doSubmit(){
     });
     if(!res.ok) throw new Error('Netlify answered '+res.status);
 
+    /* Netlify Forms now has it. Record it for the reading room too, so the
+       tracker is correct immediately instead of waiting on the platform event. */
+    let recorded=false, recordNote='';
+    try{
+      const rec=await fetch(SUBMIT_ACTION,{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+        body:body.toString()
+      });
+      const out=await rec.json().catch(()=>null);
+      recorded = rec.ok && !!(out && out.ok);
+      if(!recorded) recordNote = (out && out.message) ? out.message : ('the recorder answered '+rec.status);
+    }catch(e){ recordNote = String(e.message||e); }
+
     S.sent=new Date().toISOString();
     try{ localStorage.setItem(IDENTITY_KEY, JSON.stringify({email:S.meta.email,person:S.meta.person,cycleId:S.meta.cycleId,at:S.sent})); }catch(e){}
     save(); updateStatus();
 
     noteModal('Sent','Your response is in.',
       `<div class="note-body">
-        <p>Filed under <b>${S.meta.email}</b> for <b>${S.meta.cycle}</b> at ${pct}% complete.</p>
-        <p>Everyone else's responses for this cycle are open to you now. Send again any time before the discussion and the newer version replaces this one.</p>
+        <p>Filed under <b>${S.meta.email}</b> for <b>${S.meta.cycle}</b>, ${pct}% of questions complete.</p>
+        ${recorded
+          ? `<p>Everyone else's responses for this cycle are open to you now. Send again any time before the discussion and the newer version replaces this one.</p>`
+          : `<p>It is saved in Netlify Forms, but the reading room copy did not write, so the tracker may not show you yet: ${escHtml(recordNote)}</p>`}
       </div>`,
       [{label:'Download a copy',fn:doDownload},
        {label:'Read everyone else',primary:true,fn:()=>{ location.href='index.html#/responses'; }}]);
