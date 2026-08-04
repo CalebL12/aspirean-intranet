@@ -1,0 +1,9 @@
+{
+  "name": "aspirean-intranet",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Internal intranet for Aspirean Wealth. No build step; the one dependency is used by the serverless functions.",
+  "dependencies": {
+    "@netlify/blobs": "^10.7.12"
+  }
+}

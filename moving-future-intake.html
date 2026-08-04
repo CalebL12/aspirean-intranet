@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moving Future — Reflection & Intentions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --navy:#14243B; --navy-deep:#0C1727; --navy-soft:#2A3F5C;
+  --bronze:#A8874F; --bronze-light:#C4A876; --bronze-ink:#8A6C36;
+  --cream:#FBF9F5; --paper:#FFFFFF; --line:#E2DDD3;
+  --ink:#1C1C1A; --ink-soft:#5A5A55; --ink-faint:#6E6E66;
+  --good:#4C6B52; --warn:#A8874F;
+  --serif:'Cormorant Garamond',Cormorant,Garamond,Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased}
+
+/* ---------- Progress rail ---------- */
+#rail{position:fixed;top:0;left:0;right:0;height:3px;background:var(--line);z-index:100}
+#railFill{height:100%;width:0%;background:linear-gradient(90deg,var(--navy),var(--bronze));transition:width .4s ease}
+
+/* ---------- Header ---------- */
+header{background:var(--navy);color:#fff;padding:56px 40px 44px}
+.hwrap{max-width:860px;margin:0 auto}
+.eyebrow{font-family:var(--sans);font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--bronze-light);margin:0 0 18px}
+header h1{font-family:var(--serif);font-weight:300;font-size:52px;line-height:1.05;margin:0 0 16px;letter-spacing:-.01em}
+header h1 em{font-style:italic;color:var(--bronze-light)}
+header p{max-width:600px;margin:0;color:#C9D2DE;font-size:15px;font-weight:300}
+
+/* ---------- Meta bar ---------- */
+.metabar{background:var(--navy-deep);padding:20px 40px;border-bottom:1px solid rgba(255,255,255,.08)}
+.metagrid{max-width:860px;margin:0 auto;display:grid;grid-template-columns:1.4fr 1fr 1.2fr;gap:18px}
+.metagrid label{display:block;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--bronze-light);margin-bottom:6px}
+.metagrid input,.metagrid select{width:100%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);color:#fff;padding:9px 11px;border-radius:3px;font-family:var(--sans);font-size:14px}
+.metagrid input:focus,.metagrid select:focus{outline:none;border-color:var(--bronze);background:rgba(255,255,255,.11)}
+.metagrid select option{background:var(--navy-deep);color:#fff}
+
+/* ---------- Layout ---------- */
+main{max-width:860px;margin:0 auto;padding:44px 40px 120px}
+
+.section{margin-bottom:56px}
+.section-head{display:flex;align-items:baseline;gap:14px;padding-bottom:12px;border-bottom:1px solid var(--navy);margin-bottom:8px}
+.section-num{font-family:var(--serif);font-size:15px;color:var(--bronze);font-weight:500;letter-spacing:.08em}
+.section-head h2{font-family:var(--serif);font-weight:400;font-size:29px;margin:0;letter-spacing:-.01em;color:var(--navy)}
+.section-note{font-size:13px;color:var(--ink-faint);margin:0 0 26px;font-style:italic;font-family:var(--serif);font-size:15px}
+
+/* ---------- Question card ---------- */
+.q{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:24px 26px;margin-bottom:16px;transition:border-color .2s, box-shadow .2s}
+.q:focus-within{border-color:var(--navy-soft);box-shadow:0 2px 14px rgba(20,36,59,.07)}
+.q.met{border-left:3px solid var(--good)}
+.qtop{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:4px}
+.qtext{font-family:var(--serif);font-size:20px;line-height:1.35;color:var(--navy);margin:0;font-weight:500}
+.qtext .qn{color:var(--bronze);font-size:14px;margin-right:8px;vertical-align:2px}
+.qhint{font-size:12.5px;color:var(--ink-faint);margin:6px 0 16px;line-height:1.5}
+.counter{flex-shrink:0;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap;padding-top:6px}
+.counter.met{color:var(--good)}
+.counter.met::before{content:"\2713  ";font-size:12px}
+
+/* ---------- Bullets ---------- */
+.bullets{display:flex;flex-direction:column;gap:8px}
+.brow{display:flex;align-items:flex-start;gap:10px}
+.bdot{flex-shrink:0;width:5px;height:5px;border-radius:50%;background:var(--bronze);margin-top:16px}
+.brow textarea{flex:1;border:none;border-bottom:1px solid var(--line);background:transparent;padding:6px 2px;font-family:var(--sans);font-size:14.5px;line-height:1.55;color:var(--ink);resize:none;overflow:hidden;min-height:32px}
+.brow textarea:focus{outline:none;border-bottom-color:var(--bronze)}
+.brow textarea::placeholder{color:#C3C3BC}
+.bkill{flex-shrink:0;border:none;background:transparent;color:#CFCFC7;cursor:pointer;font-size:17px;line-height:1;padding:8px 4px;margin-top:4px}
+.bkill:hover{color:#B4544C}
+.badd{align-self:flex-start;margin-top:12px;border:1px dashed var(--line);background:transparent;color:var(--navy-soft);font-family:var(--sans);font-size:12px;letter-spacing:.06em;padding:7px 14px;border-radius:3px;cursor:pointer;text-transform:uppercase}
+.badd:hover{border-color:var(--bronze);color:var(--bronze);border-style:solid}
+
+/* ---------- Long-form ---------- */
+.longform textarea{width:100%;border:1px solid var(--line);border-radius:3px;background:#FDFCFA;padding:12px 14px;font-family:var(--sans);font-size:14.5px;line-height:1.6;color:var(--ink);resize:vertical;min-height:96px}
+.longform textarea:focus{outline:none;border-color:var(--bronze);background:#fff}
+
+/* ---------- Horizon triple ---------- */
+.horizon{display:flex;flex-direction:column;gap:14px}
+.hz{border-left:2px solid var(--line);padding-left:14px}
+.hz-lab{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze);margin-bottom:6px}
+.hz textarea{width:100%;border:none;border-bottom:1px solid var(--line);background:transparent;padding:5px 2px;font-family:var(--sans);font-size:14.5px;line-height:1.55;resize:none;overflow:hidden;min-height:30px}
+.hz textarea:focus{outline:none;border-bottom-color:var(--bronze)}
+
+/* ---------- Keep/Start/Stop ---------- */
+.kss{display:flex;flex-direction:column;gap:16px}
+.kss-item{display:grid;grid-template-columns:88px 1fr;gap:14px;align-items:start}
+.kss-tag{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;padding:6px 0;font-weight:600}
+.kss-tag.keep{color:var(--good)}
+.kss-tag.start{color:var(--navy-soft)}
+.kss-tag.stop{color:#A85A4C}
+.kss-item textarea{border:none;border-bottom:1px solid var(--line);background:transparent;padding:5px 2px;font-family:var(--sans);font-size:14.5px;line-height:1.55;resize:none;overflow:hidden;min-height:30px}
+.kss-item textarea:focus{outline:none;border-bottom-color:var(--bronze)}
+
+/* ---------- Scores ---------- */
+.scorecard{background:var(--navy);color:#fff;border-radius:4px;padding:32px 30px;margin-bottom:16px}
+.scorecard .sc-intro{font-family:var(--serif);font-size:19px;font-weight:400;color:#fff;margin:0 0 6px}
+.scorecard .sc-sub{font-size:13px;color:#A9B6C6;margin:0 0 30px;max-width:520px}
+.sblock{border-top:1px solid rgba(255,255,255,.14);padding:24px 0 4px}
+.sblock:first-of-type{border-top:none;padding-top:0}
+.sb-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.sb-name{font-family:var(--serif);font-size:23px;font-weight:500;color:#fff}
+.sb-name span{display:block;font-family:var(--sans);font-size:11.5px;color:#94A3B5;font-weight:300;letter-spacing:.02em;margin-top:2px}
+.sb-val{font-family:var(--serif);font-size:40px;font-weight:300;color:var(--bronze-light);line-height:1;min-width:70px;text-align:right}
+.sb-val small{font-size:16px;color:#5E7189}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;background:transparent;margin:14px 0 6px;height:22px;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:2px;background:rgba(255,255,255,.22)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--bronze-light);margin-top:-7px;border:2px solid var(--navy)}
+input[type=range]::-moz-range-track{height:2px;background:rgba(255,255,255,.22)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--bronze-light);border:2px solid var(--navy)}
+.ticks{display:flex;justify-content:space-between;font-size:9.5px;color:#5E7189;letter-spacing:.06em;margin-bottom:14px}
+.plusone label{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze-light);margin-bottom:7px}
+.plusone textarea{width:100%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:3px;color:#fff;padding:10px 12px;font-family:var(--sans);font-size:14px;line-height:1.55;resize:vertical;min-height:56px}
+.plusone textarea:focus{outline:none;border-color:var(--bronze);background:rgba(255,255,255,.1)}
+.plusone textarea::placeholder{color:#6B7C90}
+
+/* ---------- Carry-forward ---------- */
+.carry{background:#F4F1EA;border:1px solid var(--line);border-radius:4px;padding:22px 24px;margin-bottom:16px}
+.carry-h{font-family:var(--serif);font-size:19px;color:var(--navy);margin:0 0 4px}
+.carry-s{font-size:12.5px;color:var(--ink-faint);margin:0 0 18px}
+.crow{display:grid;grid-template-columns:1fr 320px;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid #E7E2D8}
+.crow:last-child{border-bottom:none}
+.crow textarea{border:none;border-bottom:1px solid transparent;background:transparent;font-family:var(--sans);font-size:14px;resize:none;overflow:hidden;min-height:28px;padding:4px 2px;line-height:1.5}
+.crow textarea:focus{outline:none;border-bottom-color:var(--bronze)}
+.pills{display:flex;gap:5px}
+.pill{flex:1;text-align:center;font-size:10px;letter-spacing:.06em;text-transform:uppercase;padding:6px 4px;border:1px solid var(--line);border-radius:2px;background:#fff;color:var(--ink-faint);cursor:pointer;user-select:none}
+.pill.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.pill.on[data-v="Dropped"]{background:#8E8E86;border-color:#8E8E86}
+.pill.on[data-v="Done"]{background:var(--good);border-color:var(--good)}
+
+/* ---------- Action bar ---------- */
+#bar{position:fixed;bottom:0;left:0;right:0;background:rgba(251,249,245,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);padding:13px 40px;z-index:90}
+.barwrap{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.status{flex:1;font-size:12px;color:var(--ink-faint)}
+.status b{color:var(--navy);font-weight:600}
+.btn{border:1px solid var(--navy);background:transparent;color:var(--navy);font-family:var(--sans);font-size:12.5px;letter-spacing:.05em;padding:10px 18px;border-radius:3px;cursor:pointer;white-space:nowrap}
+.btn:hover{background:rgba(20,36,59,.06)}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-deep)}
+.btn.ghost{border-color:var(--line);color:var(--ink-soft)}
+.btn.ghost:hover{border-color:var(--ink-faint)}
+.btn:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.visnote{max-width:600px;margin:16px 0 0!important;padding-left:14px;border-left:2px solid var(--bronze);font-size:13.5px!important;color:#C9D2DE}
+.meta-hint{font-size:11px;color:#94A3B5;margin:7px 0 0;line-height:1.5}
+.meta-hint b{color:var(--bronze-light);font-weight:500}
+.sentline{color:var(--good);font-weight:600}
+.whatsleft{background:none;border:none;padding:0;font:inherit;color:var(--bronze-ink);cursor:pointer;
+  text-decoration:underline;text-underline-offset:3px}
+.whatsleft:hover{color:var(--navy)}
+.whatsleft:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+.sb-val em{font-style:normal;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bronze-light)}
+input[type=range].untouched{opacity:.5}
+.note-body ul{margin:0 0 12px;padding-left:18px}
+.note-body li{margin-bottom:5px}
+.note-body i{color:var(--ink-faint);font-style:normal;font-size:12.5px}
+.note-body .sec-h{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin:14px 0 5px}
+.mbody .note-body{font-size:14.5px;line-height:1.65;color:var(--ink)}
+.mbody .note-body p{margin:0 0 12px}
+.mbody .note-body b{color:var(--navy)}
+
+/* ---------- Toast ---------- */
+#toast{position:fixed;bottom:78px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--navy);color:#fff;padding:11px 22px;border-radius:3px;font-size:13px;opacity:0;pointer-events:none;transition:all .3s;z-index:120;box-shadow:0 6px 24px rgba(0,0,0,.2)}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- Modal ---------- */
+#modal{position:fixed;inset:0;background:rgba(12,23,39,.6);display:none;align-items:center;justify-content:center;z-index:200;padding:24px}
+#modal.show{display:flex}
+.mbox{background:#fff;border-radius:5px;max-width:660px;width:100%;max-height:82vh;display:flex;flex-direction:column;overflow:hidden}
+.mhead{padding:22px 26px 16px;border-bottom:1px solid var(--line)}
+.mhead h3{font-family:var(--serif);font-size:24px;margin:0 0 4px;color:var(--navy);font-weight:500}
+.mhead p{margin:0;font-size:13px;color:var(--ink-faint)}
+.mbody{padding:20px 26px;overflow:auto;flex:1}
+.mbody textarea{width:100%;height:300px;font-family:ui-monospace,'SF Mono',Menlo,Consolas,monospace;font-size:11.5px;line-height:1.5;border:1px solid var(--line);border-radius:3px;padding:12px;resize:vertical;background:#FBFAF8}
+.mfoot{padding:16px 26px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;background:#FBFAF8}
+
+@media(max-width:760px){
+  header{padding:40px 22px 32px} header h1{font-size:36px}
+  .metabar{padding:18px 22px} .metagrid{grid-template-columns:1fr}
+  main{padding:32px 22px 130px} #bar{padding:11px 18px}
+  .barwrap{flex-wrap:wrap} .status{flex-basis:100%;margin-bottom:6px}
+  .crow{grid-template-columns:1fr} .kss-item{grid-template-columns:1fr;gap:4px}
+  .btn{flex:1;text-align:center}
+}
+@media print{
+  #bar,#rail,.badd,.bkill,#toast{display:none!important}
+  body{background:#fff} header{background:#fff;color:#000;border-bottom:2px solid #000}
+  header h1,header h1 em{color:#000} .eyebrow{color:#666}
+  .metabar{background:#fff;border-bottom:1px solid #ccc}
+  .metagrid label{color:#666} .metagrid input,.metagrid select{color:#000;background:#fff;border-color:#ccc}
+  .scorecard{background:#fff;color:#000;border:1px solid #000}
+  .sc-intro,.sb-name,.sb-val{color:#000} .plusone textarea{color:#000;background:#fff;border-color:#ccc}
+  .q{break-inside:avoid;page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<div id="rail"><div id="railFill"></div></div>
+
+<header>
+  <div class="hwrap">
+    <p class="eyebrow">Aspirean Wealth &nbsp;·&nbsp; Moving Future</p>
+    <h1>Reflection &amp;<br><em>Intentions</em></h1>
+    <p>Twenty minutes of honest thinking is worth more than an hour of polished writing. Answer in fragments. Aim for five points where you can &mdash; the fifth is usually the one worth discussing. Your work saves automatically as you type.</p>
+    <p class="visnote">When you send this, your answers become readable by everyone else on the roster for this cycle, and theirs become readable by you. Write it as something you would say in the room.</p>
+  </div>
+</header>
+
+<div class="metabar">
+  <div class="metagrid">
+    <div>
+      <label for="m_person">Who is filling this in</label>
+      <select id="m_person"><option value="">Choose your name</option></select>
+      <p class="meta-hint" id="m_email">Your response is filed under your Aspirean address.</p>
+    </div>
+    <div>
+      <label for="m_cycle">Cycle</label>
+      <select id="m_cycle">
+        <option value="2026-07">July 2026 — Traction</option>
+        <option value="2026-01">January 2026 — Vision</option>
+        <option value="2027-01">January 2027 — Vision</option>
+        <option value="2027-07">July 2027 — Traction</option>
+      </select>
+    </div>
+    <div>
+      <label for="m_role">Your role, in your words</label>
+      <input id="m_role" type="text" placeholder="e.g. Advisor / Operations">
+    </div>
+  </div>
+</div>
+
+<main id="form"></main>
+
+<div id="bar">
+  <div class="barwrap">
+    <div class="status" id="status">Loading&hellip;</div>
+    <button class="btn ghost" onclick="doPrint()">Print / PDF</button>
+    <button class="btn ghost" onclick="doDownload()">Download a copy</button>
+    <button class="btn" onclick="openReview()">Review</button>
+    <button class="btn primary" id="sendBtn" onclick="doSubmit()">Finish &amp; send</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<div id="modal">
+  <div class="mbox">
+    <div class="mhead"><h3 id="mTitle"></h3><p id="mSub"></p></div>
+    <div class="mbody"><textarea id="mText" spellcheck="false"></textarea><div id="mHtml" style="display:none"></div></div>
+    <div class="mfoot" id="mFoot"></div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   MOVING FUTURE — QUESTION SCHEMA
+   Edit here to change the instrument. Everything else adapts.
+   cycles: "both" | "vision" (January only) | "traction" (July only)
+   ============================================================ */
+const SCHEMA = [
+  { id:"s0", title:"Carry-Forward", numeral:"O", cycles:"both",
+    note:"Optional, and the fastest section to complete. Start by closing the loop on what you named last time.",
+    items:[ {kind:"carry", id:"carry"} ] },
+
+  { id:"s1", title:"The Look Back", numeral:"I", cycles:"both",
+    note:"Evidence first. What actually happened, not what you meant to do.",
+    items:[
+      {kind:"bullets", id:"q1", n:1, min:5, cycles:"both",
+        text:"What have been your — and our team's — biggest winning achievements you're most proud of this cycle?",
+        hint:"Name the specific thing, not the category. “Kevin led the Marin re-paper” beats “good operational progress.” Yours and the team's both count."},
+      {kind:"bullets", id:"q2", n:2, min:5, cycles:"both",
+        text:"Where do you have the highest confidence right now? What's going well?",
+        hint:"Confidence is a leading indicator. Where it's high, we should press harder."},
+      {kind:"bullets", id:"q3", n:5, min:5, cycles:"both",
+        text:"What energized you most this cycle — projects, interactions, moments of pride, moments that shaped you?",
+        hint:"Energy is data. It tells us where your best work is likely to come from next."}
+    ]},
+
+  { id:"s2", title:"Where You Stand", numeral:"II", cycles:"both",
+    note:"How you actually see your seat today — not the job description.",
+    items:[
+      {kind:"bullets", id:"q4", n:4, min:3, cycles:"both",
+        text:"How would you define your key responsibilities today?",
+        hint:"Write what you truly own — including anything you've absorbed that nobody formally handed you."},
+      {kind:"bullets", id:"q5", n:5, min:3, cycles:"both",
+        text:"Which aspects of your role create the greatest joy or meaning?"},
+      {kind:"bullets", id:"q6", n:6, min:2, cycles:"both",
+        text:"Where does your role create friction or misalignment?",
+        hint:"Be concrete rather than diplomatic. If one thing costs you the most time and returns the least value, lead with it. This question is the most useful one in the document when answered honestly."},
+      {kind:"bullets", id:"q7", n:7, min:3, cycles:"both",
+        text:"Where have you grown the most this cycle?",
+        hint:"Lookback only — forward growth has its own question later. A good test: name something you can do now that you couldn't twelve months ago."}
+    ]},
+
+  { id:"s3", title:"Looking Forward", numeral:"III", cycles:"both",
+    note:"Ambition, then the hard edit down to what matters.",
+    items:[
+      {kind:"bullets", id:"q8", n:8, min:5, cycles:"both",
+        text:"What are you excited about — things unfinished, or that you want to push forward?",
+        hint:"Unfinished is fine. Momentum matters more than completion here."},
+      {kind:"bullets", id:"q9", n:9, min:5, max:5, cycles:"both",
+        text:"If you could only accomplish five things this year, which would create the greatest impact — for you, for the team, and for our clients?",
+        hint:"Exactly five, in priority order. Then mark one with a ★ — the one that, if you did only it, would make the other four easier. That mark is what we'll build your quarter around."},
+      {kind:"horizon", id:"q10", n:10, cycles:"both",
+        text:"If we were meeting again, what must have happened for you to feel proud and energized about your progress?",
+        hint:"One line per horizon is enough. The ten-year answer is allowed to be unreasonable."}
+    ]},
+
+  { id:"s4", title:"Role Evolution", numeral:"IV", cycles:"both",
+    note:"What you want to become, and what it will take to get there.",
+    items:[
+      {kind:"bullets", id:"q11", n:11, min:3, cycles:"both",
+        text:"How would you like your role itself to evolve or expand?",
+        hint:"Scope, authority, and who you serve — not skills. What should be on your plate a year from now that isn't today, and what should be off it?"},
+      {kind:"bullets", id:"q12", n:12, min:3, cycles:"both",
+        text:"What specific skills or capabilities do you want to sharpen?",
+        hint:"Capability, not scope. Where's the gap between how you operate today and how you'd need to operate in the role you just described?"},
+      {kind:"bullets", id:"q13", n:13, min:2, cycles:"both",
+        text:"Which professional and personal development programs or events do you want to pursue — and why?",
+        hint:"Include the why. It's how we decide what to fund."},
+      {kind:"bullets", id:"q14", n:14, min:3, cycles:"both",
+        text:"Outside of firm objectives, what are your biggest personal priorities for the year?",
+        hint:"Health, family, finances, craft, something you've been putting off. The firm plan should not quietly compete with your life plan."},
+      {kind:"bullets", id:"q15", n:15, min:1, cycles:"both",
+        text:"What project or initiative do you want to lead or champion — and why you?",
+        hint:"Lead means you own the outcome and the calendar, not just the contribution."}
+    ]},
+
+  { id:"s5", title:"Standing", numeral:"V", cycles:"both",
+    note:"Four numbers we'll track every cycle. Rate where you honestly are, not where you'd like to be seen.",
+    items:[ {kind:"scores", id:"scores"} ] },
+
+  { id:"s6", title:"Culture &amp; Candor", numeral:"VI", cycles:"both",
+    note:"The section where directness is worth more than tact.",
+    items:[
+      {kind:"bullets", id:"q16", n:16, min:2, cycles:"both",
+        text:"What do you need from me — as a leader, not a manager — to become the version of yourself you're aiming at?",
+        hint:"Manager fixes process. Leader shapes trajectory. Ask for the second thing."},
+      {kind:"bullets", id:"q17", n:17, min:2, cycles:"both",
+        text:"Where can we improve our communication rhythm or collaboration — individually and as a team?"},
+      {kind:"bullets", id:"q17b", n:"17b", min:1, cycles:"both",
+        text:"Name one teammate and one specific thing you need from them this cycle.",
+        hint:"Not a complaint — a request. Format: “From Kevin: earlier hand-off on review prep so I can build the agenda Thursday, not Monday.” This is the question that surfaces what nobody says out loud."},
+      {kind:"kss", id:"q18", n:18, cycles:"both",
+        text:"One thing we should keep doing, one we should start, one we should stop.",
+        hint:"The stop is the important one. Something has to come off the list for anything new to fit."}
+    ]},
+
+  { id:"s7", title:"Anything Else", numeral:"VII", cycles:"both",
+    note:"",
+    items:[
+      {kind:"longform", id:"q19", cycles:"both",
+        text:"What haven't I asked that I should have?",
+        hint:"Optional. Everyone on the roster reads this one, so use it for the thing you want said plainly rather than the thing you want said privately."}
+    ]}
+];
+
+const SCORES = [
+  {id:"work",   label:"Work",      sub:"Craft, contribution, momentum, and whether the work still feels like yours."},
+  {id:"health", label:"Health",    sub:"Physical and mental. Sleep, movement, capacity, resilience."},
+  {id:"life",   label:"Life",      sub:"Relationships, presence, margin, the parts that don't show up on a calendar."},
+  {id:"align",  label:"Alignment", sub:"How closely the way you spend your week matches what you say matters most."}
+];
+
+const HORIZONS = [
+  {id:"y1",  label:"One year from today"},
+  {id:"y3",  label:"Three years"},
+  {id:"y10", label:"Ten years"}
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+const KEY = "aspirean_moving_future_v2";
+const IDENTITY_KEY = "aspirean_mf_identity";
+const FORM_NAME = "moving-future";
+const FORM_ACTION = "/__forms.html";
+
+/* Keep this list in step with ROSTER in netlify/functions/responses.mjs */
+const ROSTER = [
+  {name:"Chris Winkler",    email:"chris@aspirean.com"},
+  {name:"Brad Alvarez",     email:"brad@aspirean.com"},
+  {name:"Kevin Ostafinski", email:"kevin@aspirean.com"},
+  {name:"Caleb",            email:"caleb@aspirean.com"}
+];
+
+let S = {
+  meta:{person:"",email:"",cycle:"July 2026 — Traction",cycleId:"2026-07",role:""},
+  answers:{}, saved:null, sent:null
+};
+
+/* Safari blocks storage for files opened from disk. Detect it rather than fail quietly. */
+const CAN_SAVE = (function(){
+  try{ localStorage.setItem('__probe__','1'); localStorage.removeItem('__probe__'); return true; }
+  catch(e){ return false; }
+})();
+
+function load(){
+  if(!CAN_SAVE) return;
+  try{ const raw=localStorage.getItem(KEY); if(raw){ const p=JSON.parse(raw); S=Object.assign(S,p); } }catch(e){}
+}
+let saveTimer=null;
+function save(){
+  clearTimeout(saveTimer);
+  saveTimer=setTimeout(()=>{
+    S.saved=new Date().toISOString();
+    if(CAN_SAVE){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+    updateStatus();
+  },320);
+}
+
+function A(id){ if(!S.answers[id]) S.answers[id]=null; return S.answers[id]; }
+function setA(id,v){ S.answers[id]=v; save(); }
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+const form=document.getElementById('form');
+
+function autosize(t){ t.style.height='auto'; t.style.height=(t.scrollHeight)+'px'; }
+
+function render(){
+  form.innerHTML='';
+  SCHEMA.forEach(sec=>{
+    const el=document.createElement('section');
+    el.className='section';
+    el.innerHTML=`<div class="section-head"><span class="section-num">${sec.numeral}</span><h2>${sec.title}</h2></div>`
+      + (sec.note?`<p class="section-note">${sec.note}</p>`:'<div style="height:18px"></div>');
+    sec.items.forEach(it=>el.appendChild(build(it)));
+    form.appendChild(el);
+  });
+  document.querySelectorAll('textarea').forEach(autosize);
+  updateProgress();
+}
+
+function build(it){
+  if(it.kind==='carry')    return buildCarry(it);
+  if(it.kind==='scores')   return buildScores(it);
+  if(it.kind==='bullets')  return buildBullets(it);
+  if(it.kind==='horizon')  return buildHorizon(it);
+  if(it.kind==='kss')      return buildKSS(it);
+  if(it.kind==='longform') return buildLong(it);
+  return document.createElement('div');
+}
+
+function shell(it,inner){
+  const d=document.createElement('div');
+  d.className='q'; d.dataset.qid=it.id;
+  const cap = it.min ? `<div class="counter" data-for="${it.id}"></div>` : '';
+  d.innerHTML=`<div class="qtop"><p class="qtext">${it.n?`<span class="qn">${it.n}.</span>`:''}${it.text}</p>${cap}</div>`
+    + (it.hint?`<p class="qhint">${it.hint}</p>`:'<div style="height:12px"></div>')
+    + inner;
+  return d;
+}
+
+/* ---- bullets ---- */
+function buildBullets(it){
+  const d=shell(it,`<div class="bullets" id="b_${it.id}"></div>`
+    + (it.max?'':`<button class="badd" data-add="${it.id}">+ Add point</button>`));
+  const wrap=d.querySelector(`#b_${it.id}`);
+  let vals=S.answers[it.id];
+  if(!Array.isArray(vals)||!vals.length){
+    const start = it.max || Math.max(it.min||3,3);
+    vals=Array(start).fill(''); S.answers[it.id]=vals;
+  }
+  vals.forEach((v,i)=>wrap.appendChild(bulletRow(it,i)));
+  const add=d.querySelector('[data-add]');
+  if(add) add.onclick=()=>{
+    S.answers[it.id].push('');
+    wrap.appendChild(bulletRow(it,S.answers[it.id].length-1));
+    const last=wrap.lastChild.querySelector('textarea'); last.focus();
+    save(); updateProgress();
+  };
+  return d;
+}
+function bulletRow(it,idx){
+  const r=document.createElement('div'); r.className='brow';
+  const ph = it.max ? `Priority ${idx+1}${idx===0?'  —  add ★ to mark the keystone':''}` : (idx===0?'…':'');
+  r.innerHTML=`<div class="bdot"></div><textarea rows="1" placeholder="${ph}"></textarea>`
+    + (it.max?'':`<button class="bkill" title="Remove">&times;</button>`);
+  const t=r.querySelector('textarea');
+  t.value=S.answers[it.id][idx]||'';
+  t.oninput=()=>{ autosize(t); S.answers[it.id][idx]=t.value; save(); updateProgress(); };
+  t.onkeydown=(e)=>{
+    if(e.key==='Enter'&&!e.shiftKey&&!it.max){
+      e.preventDefault();
+      const wrap=r.parentElement;
+      S.answers[it.id].splice(idx+1,0,'');
+      rebuildBullets(it,wrap);
+      const rows=wrap.querySelectorAll('textarea');
+      if(rows[idx+1]) rows[idx+1].focus();
+      save(); updateProgress();
+    }
+  };
+  const k=r.querySelector('.bkill');
+  if(k) k.onclick=()=>{
+    const wrap=r.parentElement;
+    if(S.answers[it.id].length<=1){ S.answers[it.id][0]=''; } else { S.answers[it.id].splice(idx,1); }
+    rebuildBullets(it,wrap); save(); updateProgress();
+  };
+  setTimeout(()=>autosize(t),0);
+  return r;
+}
+function rebuildBullets(it,wrap){
+  wrap.innerHTML='';
+  S.answers[it.id].forEach((v,i)=>wrap.appendChild(bulletRow(it,i)));
+}
+
+/* ---- horizon ---- */
+function buildHorizon(it){
+  const d=shell(it,`<div class="horizon">`+HORIZONS.map(h=>
+    `<div class="hz"><div class="hz-lab">${h.label}</div><textarea rows="1" data-h="${h.id}" placeholder="…"></textarea></div>`
+  ).join('')+`</div>`);
+  if(!S.answers[it.id]||typeof S.answers[it.id]!=='object') S.answers[it.id]={};
+  d.querySelectorAll('[data-h]').forEach(t=>{
+    const h=t.dataset.h;
+    t.value=S.answers[it.id][h]||'';
+    t.oninput=()=>{ autosize(t); S.answers[it.id][h]=t.value; save(); updateProgress(); };
+    setTimeout(()=>autosize(t),0);
+  });
+  return d;
+}
+
+/* ---- keep / start / stop ---- */
+function buildKSS(it){
+  const rows=[['keep','Keep'],['start','Start'],['stop','Stop']];
+  const d=shell(it,`<div class="kss">`+rows.map(([k,l])=>
+    `<div class="kss-item"><div class="kss-tag ${k}">${l}</div><textarea rows="1" data-k="${k}" placeholder="…"></textarea></div>`
+  ).join('')+`</div>`);
+  if(!S.answers[it.id]||typeof S.answers[it.id]!=='object') S.answers[it.id]={};
+  d.querySelectorAll('[data-k]').forEach(t=>{
+    const k=t.dataset.k;
+    t.value=S.answers[it.id][k]||'';
+    t.oninput=()=>{ autosize(t); S.answers[it.id][k]=t.value; save(); updateProgress(); };
+    setTimeout(()=>autosize(t),0);
+  });
+  return d;
+}
+
+/* ---- long form ---- */
+function buildLong(it){
+  const d=shell(it,`<div class="longform"><textarea placeholder="…"></textarea></div>`);
+  const t=d.querySelector('textarea');
+  t.value=S.answers[it.id]||'';
+  t.oninput=()=>{ S.answers[it.id]=t.value; save(); };
+  return d;
+}
+
+/* ---- carry forward ---- */
+function buildCarry(it){
+  const d=document.createElement('div'); d.className='carry';
+  d.innerHTML=`<p class="carry-h">What did you commit to last cycle?</p>
+    <p class="carry-s">List the five things you named last time and mark each honestly. Advanced means real progress without a finish line. Nothing here is held against anyone — a pattern of “not started” usually means we planned badly, not that you failed.</p>
+    <div id="carryRows"></div>`;
+  if(!Array.isArray(S.answers[it.id])||!S.answers[it.id].length){
+    S.answers[it.id]=Array(5).fill(null).map(()=>({t:'',s:''}));
+  }
+  const box=d.querySelector('#carryRows');
+  S.answers[it.id].forEach((row,i)=>{
+    const r=document.createElement('div'); r.className='crow';
+    r.innerHTML=`<textarea rows="1" placeholder="Commitment ${i+1}"></textarea>
+      <div class="pills">`+['Done','Advanced','Not started','Dropped'].map(v=>
+        `<div class="pill" data-v="${v}">${v}</div>`).join('')+`</div>`;
+    const t=r.querySelector('textarea');
+    t.value=row.t||'';
+    t.oninput=()=>{ autosize(t); row.t=t.value; save(); };
+    r.querySelectorAll('.pill').forEach(p=>{
+      if(row.s===p.dataset.v) p.classList.add('on');
+      p.onclick=()=>{
+        r.querySelectorAll('.pill').forEach(x=>x.classList.remove('on'));
+        if(row.s===p.dataset.v){ row.s=''; } else { row.s=p.dataset.v; p.classList.add('on'); }
+        save();
+      };
+    });
+    setTimeout(()=>autosize(t),0);
+    box.appendChild(r);
+  });
+  return d;
+}
+
+/* ---- scores ---- */
+function buildScores(it){
+  const d=document.createElement('div'); d.className='scorecard';
+  d.innerHTML=`<p class="sc-intro">Where are you, 0 to 10?</p>
+    <p class="sc-sub">Then the more useful half: describe what one point higher would actually look like. Not the perfect ten — just the next point. Small and specific beats aspirational.</p>`
+    + SCORES.map(s=>`
+      <div class="sblock">
+        <div class="sb-head">
+          <div class="sb-name">${s.label}<span>${s.sub}</span></div>
+          <div class="sb-val" id="v_${s.id}"><em>not set</em></div>
+        </div>
+        <input type="range" min="0" max="10" step="1" data-s="${s.id}">
+        <div class="ticks"><span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span></div>
+        <div class="plusone">
+          <label>What would ${s.label.toLowerCase()} at one point higher look like?</label>
+          <textarea data-sp="${s.id}" placeholder="Concrete and small. “Two evenings a week with the laptop closed by 6” beats “better balance.”"></textarea>
+        </div>
+      </div>`).join('');
+  if(!S.answers[it.id]||typeof S.answers[it.id]!=='object') S.answers[it.id]={};
+  const st=S.answers[it.id];
+  d.querySelectorAll('[data-s]').forEach(r=>{
+    const k=r.dataset.s;
+    if(!st[k]) st[k]={v:null,plus:''};
+    const out=d.querySelector('#v_'+k);
+    const paint=()=>{
+      const unset = st[k].v===null;
+      out.innerHTML = unset ? '<em>not set</em>' : `${st[k].v}<small>/10</small>`;
+      r.classList.toggle('untouched', unset);
+    };
+    r.value = st[k].v===null?5:st[k].v;
+    paint();
+    r.oninput=()=>{ st[k].v=parseInt(r.value,10); paint(); save(); updateProgress(); };
+  });
+  d.querySelectorAll('[data-sp]').forEach(t=>{
+    const k=t.dataset.sp;
+    t.value=st[k].plus||'';
+    t.oninput=()=>{ st[k].plus=t.value; save(); };
+  });
+  return d;
+}
+
+/* ============================================================
+   PROGRESS
+   ============================================================ */
+/* Two different questions, deliberately kept apart:
+     answered — has this question been engaged with at all
+     depth    — how close each answer sits to the length the form suggests
+   Reporting only the second is what made a finished form read as 16%. */
+const OPTIONAL_IDS = ["carry","q19"];
+const substantive = v => typeof v==='string' && v.trim().length>2;
+const escHtml = v => String(v==null?'':v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+
+function filled(id){
+  const v=S.answers[id];
+  if(Array.isArray(v)) return v.filter(substantive).length;
+  if(v&&typeof v==='object') return Object.values(v).filter(substantive).length;
+  if(typeof v==='string') return substantive(v)?1:0;
+  return 0;
+}
+
+/* One entry per unit of the headline count. Optional questions are left out
+   entirely rather than counted and forgiven. */
+function questionUnits(){
+  const units=[];
+  SCHEMA.forEach(sec=>sec.items.forEach(it=>{
+    if(OPTIONAL_IDS.indexOf(it.id)!==-1) return;
+    const section=deHtml(sec.title);
+    const label=deHtml(it.text||KIND_LABEL[it.kind]||it.id);
+    if(it.kind==='bullets'){
+      const n=filled(it.id), want=it.min||1;
+      units.push({label,section,answered:n>0,got:Math.min(n,want),want,note:`${n} of ${want}`});
+    } else if(it.kind==='horizon'||it.kind==='kss'){
+      const n=Math.min(filled(it.id),3);
+      units.push({label,section,answered:n>0,got:n,want:3,note:`${n} of 3`});
+    } else if(it.kind==='scores'){
+      const st=S.answers[it.id]||{};
+      SCORES.forEach(sc=>{
+        const set=!!(st[sc.id]&&st[sc.id].v!==null);
+        units.push({label:sc.label+' score',section,answered:set,got:set?1:0,want:1,note:set?'set':'not set'});
+      });
+    }
+  }));
+  return units;
+}
+
+function updateProgress(){
+  SCHEMA.forEach(sec=>sec.items.forEach(it=>{
+    if(it.kind!=='bullets') return;
+    const want=it.min||1, raw=filled(it.id);
+    const cap=document.querySelector(`.counter[data-for="${it.id}"]`);
+    const card=document.querySelector(`.q[data-qid="${it.id}"]`);
+    if(cap){
+      cap.textContent=`${raw} of ${want}${it.max?' required':' min'}`;
+      cap.classList.toggle('met',raw>=want);
+    }
+    if(card) card.classList.toggle('met',raw>=want);
+  }));
+
+  const units=questionUnits();
+  const total=units.length;
+  const answered=units.filter(u=>u.answered).length;
+  const pct=total?Math.round(answered/total*100):0;
+  const want=units.reduce((a,u)=>a+u.want,0);
+  const got=units.reduce((a,u)=>a+u.got,0);
+  const depth=want?Math.round(got/want*100):0;
+
+  document.getElementById('railFill').style.width=pct+'%';
+  const el=document.getElementById('status');
+  el.dataset.pct=pct; el.dataset.depth=depth;
+  el.dataset.answered=answered; el.dataset.total=total;
+  updateStatus();
+}
+
+function openWhatsLeft(){
+  const units=questionUnits();
+  const missing=units.filter(u=>!u.answered);
+  const thin=units.filter(u=>u.answered && u.got<u.want);
+  const group=list=>{
+    const g={}, order=[];
+    list.forEach(u=>{ if(!g[u.section]){g[u.section]=[];order.push(u.section);} g[u.section].push(u); });
+    return order.map(sec=>`<p class="sec-h">${escHtml(sec)}</p><ul>`
+      + g[sec].map(u=>`<li>${escHtml(u.label)} <i>(${escHtml(u.note)})</i></li>`).join('')
+      + `</ul>`).join('');
+  };
+  const html=`<div class="note-body">`
+    + (missing.length
+        ? `<p><b>${missing.length} of ${units.length} still unanswered.</b></p>${group(missing)}`
+        : `<p><b>Every question has an answer.</b></p>`)
+    + (thin.length
+        ? `<p><b>Answered, but shorter than the form suggests.</b> This is the depth figure, and it is guidance rather than a requirement.</p>${group(thin)}`
+        : ``)
+    + `<p><i>The carry-forward table and the last open question are optional, so neither counts toward either number.</i></p>`
+    + `</div>`;
+  noteModal("What's left", `${missing.length} unanswered of ${units.length}`, html,
+    [{label:'Back to the form',primary:true,fn:closeModal}]);
+}
+function updateStatus(){
+  const el=document.getElementById('status');
+  const answered=el.dataset.answered||0, total=el.dataset.total||0, depth=el.dataset.depth||0;
+  const left=`<button type="button" class="whatsleft" onclick="openWhatsLeft()">What's left</button>`;
+  const count=`<b>${answered} of ${total} answered</b>`;
+  if(!CAN_SAVE){
+    el.innerHTML=`${count} &nbsp;·&nbsp; <span style="color:#A85A4C">This browser won't let the page autosave. Use Chrome or Edge, or finish in one sitting and download a copy before closing.</span> &nbsp;·&nbsp; ${left}`;
+    return;
+  }
+  const t=S.saved?new Date(S.saved):null;
+  const stamp=t?t.toLocaleTimeString([],{hour:'numeric',minute:'2-digit'}):'not yet';
+  const sent=S.sent
+    ? ` &nbsp;·&nbsp; <span class="sentline">sent ${new Date(S.sent).toLocaleDateString([],{month:'short',day:'numeric'})} at ${new Date(S.sent).toLocaleTimeString([],{hour:'numeric',minute:'2-digit'})}</span>`
+    : '';
+  el.innerHTML=`${count} &nbsp;·&nbsp; ${depth}% of suggested depth &nbsp;·&nbsp; saved ${stamp}${sent} &nbsp;·&nbsp; ${left}`;
+}
+
+/* ============================================================
+   META BINDING
+   ============================================================ */
+function bindMeta(){
+const personSel=document.getElementById('m_person');
+const cycleSel=document.getElementById('m_cycle');
+const roleInput=document.getElementById('m_role');
+
+ROSTER.forEach(p=>{
+  const o=document.createElement('option');
+  o.value=p.email; o.textContent=p.name;
+  personSel.appendChild(o);
+});
+
+function paintEmail(){
+  const el=document.getElementById('m_email');
+  el.innerHTML = S.meta.email
+    ? `Filed under <b>${S.meta.email}</b>`
+    : 'Your response is filed under your Aspirean address.';
+}
+
+/* If this browser already sent a response, remember who it was. */
+try{
+  const id=JSON.parse(localStorage.getItem(IDENTITY_KEY)||'null');
+  if(id && id.email && !S.meta.email){ S.meta.email=id.email; S.meta.person=id.person||''; }
+}catch(e){}
+
+personSel.value=S.meta.email||'';
+cycleSel.value=S.meta.cycleId||'2026-07';
+roleInput.value=S.meta.role||'';
+S.meta.cycle=cycleSel.options[cycleSel.selectedIndex].textContent;
+paintEmail();
+
+personSel.onchange=()=>{
+  const hit=ROSTER.find(p=>p.email===personSel.value);
+  S.meta.email=hit?hit.email:'';
+  S.meta.person=hit?hit.name:'';
+  paintEmail(); save();
+};
+cycleSel.onchange=()=>{
+  S.meta.cycleId=cycleSel.value;
+  S.meta.cycle=cycleSel.options[cycleSel.selectedIndex].textContent;
+  save();
+};
+roleInput.oninput=()=>{ S.meta.role=roleInput.value; save(); };
+}
+
+/* ============================================================
+   EXPORT
+   ============================================================ */
+function deHtml(str){
+  const d=document.createElement('div'); d.innerHTML=String(str==null?'':str);
+  return d.textContent;
+}
+/* Every submission carries the questions it was answering, so the reading room
+   never has to guess and never goes stale when the instrument changes. */
+const KIND_LABEL = {
+  carry:  "What did you commit to last cycle?",
+  scores: "Standing"
+};
+function schemaMap(){
+  const out=[];
+  SCHEMA.forEach(sec=>sec.items.forEach(it=>{
+    out.push({
+      id:it.id, kind:it.kind, n:it.n||null,
+      text:deHtml(it.text||KIND_LABEL[it.kind]||''), hint:deHtml(it.hint||''),
+      section:deHtml(sec.title), numeral:sec.numeral
+    });
+  }));
+  return out;
+}
+function payload(){
+  return {
+    _format:"aspirean.movingfuture.v2",
+    meta:S.meta,
+    exported:new Date().toISOString(),
+    answers:S.answers,
+    schema:schemaMap(),
+    progress:(function(){
+      const el=document.getElementById('status');
+      return { answered:+(el.dataset.answered||0), total:+(el.dataset.total||0),
+               percent:+(el.dataset.pct||0), depth:+(el.dataset.depth||0) };
+    })(),
+    scoreMeta:SCORES.map(x=>({id:x.id,label:x.label,sub:x.sub})),
+    horizonMeta:HORIZONS
+  };
+}
+function toMarkdown(){
+  const m=S.meta; const L=[];
+  L.push(`# Moving Future — ${m.cycle||'Cycle'}`);
+  L.push(`**${m.person||'—'}**${m.email?` · ${m.email}`:''}${m.role?` · ${m.role}`:''}`);
+  L.push('');
+  SCHEMA.forEach(sec=>{
+    L.push(`## ${sec.title}`); L.push('');
+    sec.items.forEach(it=>{
+      if(it.kind==='carry'){
+        const rows=(S.answers[it.id]||[]).filter(r=>r.t&&r.t.trim());
+        if(!rows.length) return;
+        L.push(`**Last cycle's commitments**`); L.push('');
+        rows.forEach(r=>L.push(`- [${r.s||'—'}] ${r.t.trim()}`));
+        L.push(''); return;
+      }
+      if(it.kind==='scores'){
+        const st=S.answers[it.id]||{};
+        L.push(`| Area | Score | What +1 looks like |`);
+        L.push(`|---|---|---|`);
+        SCORES.forEach(s=>{
+          const d=st[s.id]||{};
+          L.push(`| ${s.label} | ${d.v===null||d.v===undefined?'—':d.v+'/10'} | ${(d.plus||'—').replace(/\n/g,' ')} |`);
+        });
+        L.push(''); return;
+      }
+      L.push(`**${it.n?it.n+'. ':''}${it.text.replace(/&\w+;/g,'')}**`); L.push('');
+      const v=S.answers[it.id];
+      if(Array.isArray(v)){
+        const f=v.filter(x=>x&&x.trim());
+        if(f.length) f.forEach(x=>L.push(`- ${x.trim()}`)); else L.push(`_(no response)_`);
+      } else if(it.kind==='horizon'){
+        HORIZONS.forEach(h=>{ if(v&&v[h.id]&&v[h.id].trim()) L.push(`- **${h.label}:** ${v[h.id].trim()}`); });
+      } else if(it.kind==='kss'){
+        [['keep','Keep'],['start','Start'],['stop','Stop']].forEach(([k,l])=>{
+          if(v&&v[k]&&v[k].trim()) L.push(`- **${l}:** ${v[k].trim()}`);
+        });
+      } else if(typeof v==='string'&&v.trim()){ L.push(v.trim()); }
+      else { L.push(`_(no response)_`); }
+      L.push('');
+    });
+  });
+  return L.join('\n');
+}
+function slug(){
+  const n=(S.meta.person||'response').trim().replace(/[^\w]+/g,'-');
+  const c=(S.meta.cycle||'').replace(/[^\w]+/g,'-');
+  return `MovingFuture-${n}-${c}`.replace(/-+/g,'-').replace(/-$/,'');
+}
+function download(text,name,type){
+  const b=new Blob([text],{type:type});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(b); a.download=name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+}
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+function b64(str){
+  const bytes=new TextEncoder().encode(str);
+  let bin=''; const step=0x8000;
+  for(let i=0;i<bytes.length;i+=step) bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+step));
+  return btoa(bin);
+}
+
+function doDownload(){
+  download(JSON.stringify(payload(),null,2), slug()+'.json','application/json');
+  setTimeout(()=>download(toMarkdown(), slug()+'.md','text/markdown'),450);
+  toast('Downloaded. The .md is the readable copy.');
+}
+
+function setBusy(on){
+  const b=document.getElementById('sendBtn');
+  b.disabled=!!on;
+  b.textContent = on ? 'Sending…' : (S.sent ? 'Send an update' : 'Finish & send');
+}
+
+async function doSubmit(){
+  if(!S.meta.email){
+    document.getElementById('m_person').focus();
+    toast('Choose your name at the top first.'); return;
+  }
+  const pct=parseInt(document.getElementById('status').dataset.pct||0,10);
+  if(pct<55 && !confirm(`You're at ${pct}% complete. Send it anyway?`)) return;
+
+  const st=S.answers.scores||{};
+  const body=new URLSearchParams();
+  body.set('form-name',FORM_NAME);
+  body.set('person',S.meta.person||'');
+  body.set('email',S.meta.email||'');
+  body.set('cycle',S.meta.cycle||'');
+  body.set('cycle_id',S.meta.cycleId||'');
+  body.set('role',S.meta.role||'');
+  body.set('percent',String(pct));
+  [['work','score_work'],['health','score_health'],['life','score_life'],['align','score_align']]
+    .forEach(([k,field])=>body.set(field, st[k]&&st[k].v!=null?String(st[k].v):''));
+  body.set('readable',toMarkdown());
+  body.set('payload',b64(JSON.stringify(payload())));
+  body.set('bot-field','');
+
+  setBusy(true);
+  try{
+    const res=await fetch(FORM_ACTION,{
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+      body:body.toString()
+    });
+    if(!res.ok) throw new Error('Netlify answered '+res.status);
+
+    S.sent=new Date().toISOString();
+    try{ localStorage.setItem(IDENTITY_KEY, JSON.stringify({email:S.meta.email,person:S.meta.person,cycleId:S.meta.cycleId,at:S.sent})); }catch(e){}
+    save(); updateStatus();
+
+    noteModal('Sent','Your response is in.',
+      `<div class="note-body">
+        <p>Filed under <b>${S.meta.email}</b> for <b>${S.meta.cycle}</b> at ${pct}% complete.</p>
+        <p>Everyone else's responses for this cycle are open to you now. Send again any time before the discussion and the newer version replaces this one.</p>
+      </div>`,
+      [{label:'Download a copy',fn:doDownload},
+       {label:'Read everyone else',primary:true,fn:()=>{ location.href='index.html#/responses'; }}]);
+  }catch(err){
+    noteModal('That did not send','The response is still saved in this browser, so nothing is lost.',
+      `<div class="note-body">
+        <p>${String(err.message||err)}</p>
+        <p>A 404 here almost always means form detection is off in Netlify, or the site has not been redeployed since <b>__forms.html</b> was added. Opening this page from a local file rather than the live site will do it too.</p>
+        <p>Download a copy and send it to Chris if you would rather not wait.</p>
+      </div>`,
+      [{label:'Close',fn:closeModal},{label:'Download a copy',primary:true,fn:doDownload}]);
+  }finally{
+    setBusy(false);
+  }
+}
+function doPrint(){ window.print(); }
+
+/* ---- review modal ---- */
+function modal(title,sub,text,buttons,readonly){
+  document.getElementById('mTitle').innerHTML=title;
+  document.getElementById('mSub').textContent=sub;
+  document.getElementById('mHtml').style.display='none';
+  const ta=document.getElementById('mText');
+  ta.style.display='';
+  ta.value=text; ta.readOnly=!!readonly;
+  const f=document.getElementById('mFoot'); f.innerHTML='';
+  buttons.forEach(b=>{
+    const el=document.createElement('button');
+    el.className='btn '+(b.primary?'primary':'ghost');
+    el.textContent=b.label; el.onclick=b.fn;
+    f.appendChild(el);
+  });
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal(){ document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').onclick=(e)=>{ if(e.target.id==='modal') closeModal(); };
+
+function openReview(){
+  modal('Your responses','Read it back before you send. Gaps are easier to spot here.',toMarkdown(),[
+    {label:'Copy to clipboard',fn:()=>{
+      navigator.clipboard.writeText(toMarkdown()).then(()=>toast('Copied.'),()=>toast('Select the text and copy manually.'));
+    }},
+    {label:'Close',primary:true,fn:closeModal}
+  ],true);
+}
+function noteModal(title,sub,html,buttons){
+  document.getElementById('mTitle').innerHTML=title;
+  document.getElementById('mSub').textContent=sub;
+  const ta=document.getElementById('mText'); ta.style.display='none';
+  const pane=document.getElementById('mHtml');
+  pane.style.display='block'; pane.innerHTML=html;
+  const f=document.getElementById('mFoot'); f.innerHTML='';
+  buttons.forEach(b=>{
+    const el=document.createElement('button');
+    el.className='btn '+(b.primary?'primary':'ghost');
+    el.textContent=b.label; el.onclick=b.fn;
+    f.appendChild(el);
+  });
+  document.getElementById('modal').classList.add('show');
+}
+
+/* ---- boot ---- */
+load(); bindMeta(); render(); updateProgress(); setBusy(false);
+window.addEventListener('beforeunload',()=>{ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){} });
+</script>
+</body>
+</html>

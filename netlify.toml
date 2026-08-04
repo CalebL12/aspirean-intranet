@@ -1,0 +1,27 @@
+# Aspirean Intranet — static site plus one function. No build step.
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# The intranet reads submissions back through this.
+[[redirects]]
+  from = "/api/responses"
+  to = "/.netlify/functions/responses"
+  status = 200
+
+# Keep the whole site out of search indexes and out of frames.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow, noarchive, nosnippet"
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "no-referrer"
+    Permissions-Policy = "geolocation=(), camera=(), microphone=()"
+
+# Cycle records should not be cached stale.
+[[headers]]
+  for = "/records/*"
+  [headers.values]
+    Cache-Control = "no-cache"

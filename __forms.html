@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Form blueprint</title>
+<style>
+  body{font-family:system-ui,sans-serif;max-width:52ch;margin:12vh auto;padding:0 24px;color:#1C1C1A;background:#FBF9F5;line-height:1.6}
+  h1{font-size:20px;margin:0 0 12px}
+  p{font-size:14px;color:#5A5A55}
+  code{background:#F0EDE5;padding:1px 5px;border-radius:2px;font-size:13px}
+</style>
+</head>
+<body>
+
+<h1>Form blueprint</h1>
+<p>
+  Netlify detects forms by reading static HTML at deploy time, so the fields for
+  the Moving Future form are declared here. The form people actually fill in is
+  <code>moving-future-intake.html</code>, which posts to this page over fetch.
+  Nothing on this page needs to be visited or edited unless the field list
+  changes.
+</p>
+<p>
+  Field order matters: <code>person</code> is the first text input, so it becomes
+  the submission title in the Netlify UI, and <code>readable</code> is the first
+  textarea, so it becomes the body.
+</p>
+
+<form name="moving-future" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="person">
+  <input type="email" name="email">
+  <input type="text" name="cycle">
+  <input type="text" name="cycle_id">
+  <input type="text" name="role">
+  <input type="text" name="percent">
+  <input type="text" name="score_work">
+  <input type="text" name="score_health">
+  <input type="text" name="score_life">
+  <input type="text" name="score_align">
+  <textarea name="readable"></textarea>
+  <textarea name="payload"></textarea>
+  <input type="text" name="bot-field">
+</form>
+
+</body>
+</html>
