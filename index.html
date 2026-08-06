@@ -1223,11 +1223,9 @@ function renderResources() {
   const items = emp.items.filter(it => hit(it.t, it.d, it.tags, "employee resources"));
   let employeeHTML = "";
   if (tiles.length || items.length) {
-    const n = tiles.length + items.length;
-    shown += n;
+    shown += tiles.length + items.length;
     employeeHTML = `<div class="resgroup">
-      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Employee resources</h3>
-      <span class="aside">${n} ${n === 1 ? "item" : "items"}</span></div>
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Employee resources</h3></div>
       ${tiles.length ? `<div class="launch" style="margin-bottom:${items.length ? "var(--s4)" : "0"}">${tiles.map(t => boxHTML(Object.assign({}, t, { blurb: t.d }))).join("")}</div>` : ""}
       ${items.length ? `<div class="ledger" style="margin-top:var(--s5)">${items.map(rowHTML).join("")}</div>` : ""}
     </div>`;
