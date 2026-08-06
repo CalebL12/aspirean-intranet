@@ -10,6 +10,9 @@ time-off.html                  time off request, calendar range picker
 expenses.html                  expense claim, multiple lines per submission
 new-hire.html                  onboarding guide, structure only so far
 advs.html                      Form ADV shelf and filing calendar
+partners.html                  Dimensional and Focus Partners, contacts each
+policies.html                  index of people and compliance policies
+softwares.html                 every system, its owner, and its sign-in
 assets/page.css                shared chrome for the four pages above
 assets/page.js                 shared roster, submission, modal and toast
 assets/logos/                  sign-in tile logos
@@ -193,6 +196,21 @@ a single selected day can be marked as a half day.
 at the top of the page, and the form points at them rather than carrying them. That
 link is a personal OneDrive share; moving it to a shared library at some point would
 survive an account change.
+
+## The shelf pages
+
+`partners.html`, `policies.html`, `softwares.html` and `advs.html` are shelves: they
+point at documents and systems rather than restating them. Each has one array at the
+top of its script that holds everything the page shows, so adding a policy, a system,
+or a partner contact is a single line rather than a markup edit.
+
+A `url` of `null` renders as **not set**, which is deliberate. An empty row is a
+visible reminder that a document does not exist yet or nobody knows where it is;
+a row quietly missing tells you nothing.
+
+Most sign-in URLs on `softwares.html` are unset because several are tenant specific
+and a wrong login link is a phishing lesson waiting to happen. Paste each one from
+your own browser.
 
 ## The blob store
 

@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Internal policies — Aspirean Intranet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/page.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="mast-wrap">
+    <a class="wordmark" href="index.html">Aspirean <em>Intranet</em></a>
+    <a class="crumb" href="index.html#/resources">&larr; Resources</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="page-head">
+    <p class="eyebrow">Internal policies</p>
+    <h1>How we <em>do things</em></h1>
+    <p class="prose">An index, not the policies themselves. Each row points at the document that
+      governs it. Where something also lives in the compliance manual, the manual is the
+      authority and this page is only the shortcut to it.</p>
+  </div>
+
+  <div id="groups"></div>
+
+  <div class="block">
+    <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h2>Two things worth saying plainly</h2></div>
+    <div class="ledger">
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">A link is not a policy</span>
+        <span class="ldesc">Rows marked <b>not set</b> mean the document does not exist yet, or nobody knows where it is. Both are worth knowing before somebody needs it.</span></span>
+        <span class="tag">Read this</span></div>
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Ask rather than infer</span>
+        <span class="ldesc">A one-line description here is a label, not guidance. If the answer matters, read the document or ask whoever owns it.</span></span>
+        <span class="tag">Read this</span></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div><b>Internal use only.</b> An index of policies, not a statement of them.</div>
+    <div>Mill Valley, CA &nbsp;·&nbsp; Chesterton, IN &nbsp;·&nbsp; St. Joseph, MI</div>
+  </div>
+</footer>
+
+<script src="assets/page.js"></script>
+<script>
+/* ============================================================
+   POLICIES — the only block to edit.
+   Set url to make a row live. owner is who to ask.
+   ============================================================ */
+const GROUPS = [
+  {
+    id: "people", numeral: "I", title: "People",
+    note: "Employment terms and the things you need in an ordinary week.",
+    items: [
+      { t: "Time off", d: "How much, how far ahead, what carries over, and how it is approved.",
+        owner: "Firm", url: null, also: { label: "Request form", url: "time-off.html" } },
+      { t: "Expense reimbursement", d: "What the firm covers, what it does not, and the documentation each claim needs.",
+        owner: "Firm", url: null, also: { label: "Claim form", url: "expenses.html" } },
+      { t: "Health care and benefits", d: "Plans, cost sharing, enrolment windows, and who to call about a claim.",
+        owner: "Firm", url: null },
+      { t: "Payroll", d: "Pay dates, how to change withholding or bank details, and where the pay stubs live.",
+        owner: "Firm", url: null, also: { label: "Pay-Net", url: "https://www.pay-netonline.com/PayNet/Login/Login.aspx" } },
+      { t: "Retirement plan", d: "The firm 401(k): eligibility, match, vesting, and how to change a contribution rate.",
+        owner: "Firm", url: null, also: { label: "JULY", url: "https://401k.julyservices.com" } },
+      { t: "Parental and family leave", d: "Length, pay, notice, and how coverage is arranged.",
+        owner: "Firm", url: null },
+      { t: "Where and when we work", d: "Office expectations across three locations, core hours, and travel.",
+        owner: "Firm", url: null },
+      { t: "Professional development", d: "What the firm pays for: designations, continuing education, conferences.",
+        owner: "Firm", url: null },
+      { t: "Conduct and anti-harassment", d: "Expected conduct, and how to raise something without going through the person it concerns.",
+        owner: "Firm", url: null }
+    ]
+  },
+  {
+    id: "compliance", numeral: "II", title: "Conduct and compliance",
+    note: "These sit in the compliance manual. Brad owns every one of them, and the manual governs where this page and the manual disagree.",
+    items: [
+      { t: "Code of ethics", d: "The standard everything else here hangs off, plus the annual attestation.",
+        owner: "Brad", url: null },
+      { t: "Personal trading", d: "Pre-clearance, reportable accounts, and the quarterly and annual holdings reports.",
+        owner: "Brad", url: null },
+      { t: "Gifts and entertainment", d: "Limits, and the log that is kept separately from expense claims.",
+        owner: "Brad", url: null },
+      { t: "Outside business activities", d: "What has to be disclosed before you take it on, including board seats.",
+        owner: "Brad", url: null },
+      { t: "Political contributions", d: "Pre-clearance for contributions, because of the pay-to-play restrictions on advisers.",
+        owner: "Brad", url: null },
+      { t: "Advertising and marketing review", d: "What counts as an advertisement, and the review that happens before anything goes out.",
+        owner: "Brad", url: null },
+      { t: "Insider trading and material non-public information", d: "What to do the moment you think you have some.",
+        owner: "Brad", url: null },
+      { t: "Client confidentiality and privacy", d: "Handling client information, and the annual privacy notice.",
+        owner: "Brad", url: null },
+      { t: "Electronic communications", d: "Which channels are approved, and why text messages about client business are a records problem.",
+        owner: "Brad", url: null },
+      { t: "Books and records", d: "What has to be kept, for how long, and where it is kept.",
+        owner: "Brad", url: null },
+      { t: "Technology and acceptable use", d: "Devices, passwords, what may be installed, and what happens when something is lost.",
+        owner: "Brad", url: null },
+      { t: "Artificial intelligence", d: "Which tools are approved, what may never be pasted into one, and how output is reviewed before it reaches a client.",
+        owner: "Brad", url: null },
+      { t: "Cybersecurity and incident response", d: "Training, phishing, and who gets called first when something goes wrong.",
+        owner: "Brad", url: null },
+      { t: "Business continuity", d: "What happens if an office, a system, or a person is unavailable.",
+        owner: "Brad", url: null }
+    ]
+  }
+];
+
+const total = GROUPS.reduce((a, g) => a + g.items.length, 0);
+const live = GROUPS.reduce((a, g) => a + g.items.filter(i => i.url).length, 0);
+
+function row(it) {
+  const right = it.url
+    ? `<span class="tag set">Open</span>`
+    : `<span class="tag">Not set</span>`;
+  const extra = it.also
+    ? ` <a href="${esc(it.also.url)}" style="color:var(--bronze-ink);text-decoration:underline;text-underline-offset:3px">${esc(it.also.label)}</a>`
+    : "";
+  const inner = `<span class="mark" aria-hidden="true">&middot;</span>
+    <span><span class="lname">${esc(it.t)}</span>
+      <span class="ldesc">${esc(it.d)} <span style="color:var(--ink-faint)">Ask ${esc(it.owner)}.</span>${extra}</span></span>
+    ${right}`;
+  return it.url
+    ? `<a class="lrow" href="${esc(it.url)}">${inner}</a>`
+    : `<div class="lrow">${inner}</div>`;
+}
+
+$("#groups").innerHTML = GROUPS.map(g => `
+  <div class="block" id="${esc(g.id)}">
+    <div class="block-head">
+      <span class="mark" aria-hidden="true">${g.numeral}</span>
+      <h2>${esc(g.title)}</h2>
+      <span class="aside">${g.items.filter(i => i.url).length} of ${g.items.length} linked</span>
+    </div>
+    <p class="prose" style="margin-bottom:var(--s5)">${esc(g.note)}</p>
+    <div class="ledger">${g.items.map(row).join("")}</div>
+  </div>`).join("");
+
+if (live < total) {
+  $("#groups").insertAdjacentHTML("afterbegin",
+    `<div class="empty block"><h3>${total - live} of ${total} still need a document</h3>
+      <p>Every row below names something a small registered firm is expected to have a position on.
+      Where one does not exist yet, the row is the reminder. Set the <b>url</b> in the GROUPS array
+      in <b>policies.html</b> to make a row live.</p></div>`);
+}
+</script>
+</body>
+</html>

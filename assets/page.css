@@ -184,6 +184,44 @@ a.lrow:focus-visible{outline:2px solid var(--bronze);outline-offset:-2px}
 .slot h3{font-size:14.5px;color:var(--navy);font-weight:500}
 .slot p{font-size:13px;color:var(--ink-faint);margin-top:4px;font-style:italic;font-family:var(--serif);font-size:16px}
 
+/* ---------- anchor index ---------- */
+.jump{display:flex;flex-wrap:wrap;gap:var(--s2);margin-bottom:var(--s6)}
+.jump a{border:1px solid var(--line);background:var(--paper);border-radius:3px;padding:9px 13px;
+  font-size:12.5px;color:var(--ink-soft);text-decoration:none;
+  transition:border-color .15s ease,color .15s ease}
+.jump a:hover{border-color:var(--bronze);color:var(--bronze-ink)}
+.jump a:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+
+/* ---------- label and value pairs ---------- */
+dl.meta{margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));
+  gap:var(--s4) var(--s5)}
+dl.meta > div{min-width:0}
+dl.meta dt{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px}
+dl.meta dd{margin:0;font-size:14px;color:var(--ink);word-break:break-word;line-height:1.5}
+dl.meta dd a{color:var(--navy);text-decoration:underline;text-decoration-color:var(--bronze);
+  text-underline-offset:3px}
+dl.meta dd a:hover{color:var(--bronze-ink)}
+dl.meta dd a:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+dl.meta dd.unset{color:var(--ink-faint);font-family:var(--serif);font-size:16px;font-style:italic}
+
+/* ---------- tool and partner cards ---------- */
+.tool{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:var(--s5);
+  margin-bottom:var(--s3);scroll-margin-top:var(--s5)}
+.tool-head{display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap;
+  border-bottom:1px solid var(--line-soft);padding-bottom:var(--s3);margin-bottom:var(--s4)}
+.tool-head h3{font-family:var(--serif);font-size:22px;color:var(--navy);font-weight:500}
+.tool-what{font-size:13px;color:var(--ink-soft)}
+.tool-head .tag{margin-left:auto}
+
+/* ---------- contact slots ---------- */
+.contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(224px,1fr));gap:var(--s4)}
+.contact{border:1px dashed var(--line);border-radius:4px;padding:var(--s5);background:var(--paper-2)}
+.contact.filled{border-style:solid;background:var(--paper)}
+.contact h4{font-family:var(--serif);font-size:19px;color:var(--navy);font-weight:500}
+.contact h4.empty-name{color:var(--ink-faint);font-style:italic}
+.contact .role{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--bronze-ink);margin-top:4px}
+.contact dl.meta{grid-template-columns:1fr;gap:var(--s3);margin-top:var(--s4)}
+
 /* ---------- modal + toast ---------- */
 .scrim{position:fixed;inset:0;background:rgba(12,23,39,.55);display:none;
   align-items:center;justify-content:center;padding:var(--s5);z-index:100}

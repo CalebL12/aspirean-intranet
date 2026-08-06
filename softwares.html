@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Software — Aspirean Intranet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/page.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="mast-wrap">
+    <a class="wordmark" href="index.html">Aspirean <em>Intranet</em></a>
+    <a class="crumb" href="index.html#/resources">&larr; Resources</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="page-head">
+    <p class="eyebrow">Software</p>
+    <h1>Systems and <em>sign-ins</em></h1>
+    <p class="prose">Every system the firm runs on, what it is for, and who administers it.
+      The account owner field is the one that matters: it is the difference between a problem
+      and a problem nobody can solve.</p>
+  </div>
+
+  <nav class="jump" id="jump" aria-label="Jump to a system"></nav>
+
+  <div class="callout">
+    <h3>Passwords are not here</h3>
+    <p>This page holds links and owners. Credentials live in the password manager, which is the
+      only place they should ever live. If a system below has a shared login rather than
+      individual accounts, that is worth fixing before it becomes an offboarding problem.</p>
+  </div>
+
+  <div id="groups"></div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div><b>Internal use only.</b> Links and owners, never credentials.</div>
+    <div>Mill Valley, CA &nbsp;·&nbsp; Chesterton, IN &nbsp;·&nbsp; St. Joseph, MI</div>
+  </div>
+</footer>
+
+<script src="assets/page.js"></script>
+<script>
+/* ============================================================
+   SOFTWARE — the only block to edit.
+   Sign-in URLs are mostly unset on purpose: several are tenant
+   specific, and a wrong login link is worse than an absent one.
+   Paste yours from the browser and the row goes live.
+   ============================================================ */
+const GROUPS = [
+  {
+    id: "planning", numeral: "I", title: "Planning and advice",
+    tools: [
+      { id: "emoney", name: "eMoney", what: "Financial planning and the client portal.",
+        url: null, owner: null, support: null, notes: null },
+      { id: "holistiplan", name: "Holistiplan", what: "Tax return reading and planning scenarios.",
+        url: null, owner: null, support: null, notes: null },
+      { id: "encore", name: "Encore Estate", what: "Estate planning documents and design.",
+        url: null, owner: null, support: null, notes: null }
+    ]
+  },
+  {
+    id: "clients", numeral: "II", title: "Clients and communication",
+    tools: [
+      { id: "wealthbox", name: "Wealthbox", what: "The CRM. Households, activity, tasks, and the record of what was said.",
+        url: null, owner: null, support: null, notes: null },
+      { id: "jump", name: "Jump", what: "Meeting notes and follow-ups.",
+        url: null, owner: null, support: null,
+        notes: "Anything that records a client meeting is a records question. Confirm the retention setup with Brad." },
+      { id: "oncehub", name: "OnceHub", what: "Scheduling links and booking pages.",
+        url: null, owner: null, support: null, notes: null },
+      { id: "constantcontact", name: "Constant Contact", what: "The newsletter and client email campaigns.",
+        url: null, owner: null, support: null,
+        notes: "Everything sent from here is an advertisement under the marketing rule. Review before send, archive after." }
+    ]
+  },
+  {
+    id: "platforms", numeral: "III", title: "Custody and platforms",
+    tools: [
+      { id: "schwab", name: "Schwab Advisor Center", what: "Custody. Accounts, trading, transfers, service requests.",
+        url: null, owner: null, support: null,
+        notes: "Not the same login as your personal Schwab account, which is under Employee resources." },
+      { id: "focusportal", name: "Focus Partners adviser portal", what: "Partner firm platform.",
+        url: null, owner: null, support: null, notes: null },
+      { id: "flourishadv", name: "Flourish Cash adviser portal", what: "Cash management for client households.",
+        url: null, owner: null, support: null,
+        notes: "The adviser side. Your own Flourish account is under Employee resources." }
+    ]
+  },
+  {
+    id: "ai", numeral: "IV", title: "Artificial intelligence",
+    tools: [
+      { id: "ai", name: "AI", what: "Approved assistants, and what may and may not be put into one.",
+        url: null, owner: null, support: null,
+        notes: "Name the specific tools the firm has approved here. Client identifying information does not go into a general assistant. The policy row is on the policies page." }
+    ]
+  },
+  {
+    id: "engineering", numeral: "V", title: "Website and deployment",
+    tools: [
+      { id: "github", name: "GitHub", what: "Source for the public site and this intranet.",
+        url: "https://github.com/CalebL12/aspirean-intranet", owner: "Caleb", support: null,
+        notes: "Uploads go through the web interface rather than the command line." },
+      { id: "netlify", name: "Netlify", what: "Hosting, forms, and functions for both sites.",
+        url: "https://app.netlify.com", owner: "Caleb", support: null,
+        notes: "Form submissions, deploy logs, and environment variables all live here." }
+    ]
+  }
+];
+
+const all = GROUPS.flatMap(g => g.tools);
+
+$("#jump").innerHTML = all.map(t => `<a href="#${esc(t.id)}">${esc(t.name)}</a>`).join("");
+
+const cell = (label, v, href) => `<div><dt>${label}</dt>${
+  v ? `<dd>${href ? `<a href="${esc(href)}${esc(v)}">${esc(v)}</a>` : esc(v)}</dd>`
+    : `<dd class="unset">Not set</dd>`}</div>`;
+
+function toolHTML(t) {
+  return `<section class="tool" id="${esc(t.id)}">
+    <div class="tool-head">
+      <h3>${esc(t.name)}</h3>
+      <span class="tool-what">${esc(t.what)}</span>
+      ${t.url ? `<span class="tag set">Live</span>` : `<span class="tag">Link not set</span>`}
+    </div>
+    <dl class="meta">
+      <div><dt>Sign in</dt>${t.url
+        ? `<dd><a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">Open &nearr;</a></dd>`
+        : `<dd class="unset">Not set</dd>`}</div>
+      ${cell("Account owner", t.owner)}
+      ${cell("Support", t.support)}
+      ${cell("Notes", t.notes)}
+    </dl>
+  </section>`;
+}
+
+$("#groups").innerHTML = GROUPS.map(g => `
+  <div class="block" id="${esc(g.id)}">
+    <div class="block-head">
+      <span class="mark" aria-hidden="true">${g.numeral}</span>
+      <h2>${esc(g.title)}</h2>
+      <span class="aside">${g.tools.length} ${g.tools.length === 1 ? "system" : "systems"}</span>
+    </div>
+    ${g.tools.map(toolHTML).join("")}
+  </div>`).join("");
+
+const set = all.filter(t => t.url).length;
+$("#jump").insertAdjacentHTML("afterend",
+  `<p class="hint" style="margin:-16px 0 32px">${set} of ${all.length} sign-in links set.
+   The rest are blank because guessing a login URL is how people end up on a phishing page.</p>`);
+</script>
+</body>
+</html>

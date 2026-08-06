@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Strategic partners — Aspirean Intranet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/page.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="mast-wrap">
+    <a class="wordmark" href="index.html">Aspirean <em>Intranet</em></a>
+    <a class="crumb" href="index.html#/resources">&larr; Resources</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="page-head">
+    <p class="eyebrow">Relationships</p>
+    <h1>Strategic <em>partners</em></h1>
+    <p class="prose">Who we work with, and the specific person to call rather than a general
+      support line. A relationship that only one of us knows how to reach is a relationship the
+      firm does not really have.</p>
+  </div>
+
+  <div id="partners"></div>
+
+  <div class="block">
+    <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h2>Keeping this current</h2></div>
+    <div class="ledger">
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Named people, not inboxes</span>
+        <span class="ldesc">A support address belongs in the notes. The point of this page is the person who picks up.</span></span>
+        <span class="tag">Rule</span></div>
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Coverage changes often</span>
+        <span class="ldesc">Relationship managers rotate. Check this page after any partner reorganisation rather than finding out mid-issue.</span></span>
+        <span class="tag">Habit</span></div>
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Editing</span>
+        <span class="ldesc">The PARTNERS array at the top of the script in partners.html. Three contact slots each; add more by adding to the array.</span></span>
+        <span class="tag">How</span></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div><b>Internal use only.</b> Nothing on this page is client-facing.</div>
+    <div>Mill Valley, CA &nbsp;·&nbsp; Chesterton, IN &nbsp;·&nbsp; St. Joseph, MI</div>
+  </div>
+</footer>
+
+<script src="assets/page.js"></script>
+<script>
+/* ============================================================
+   PARTNERS — the only block to edit.
+   A null value renders as an empty slot rather than a blank line.
+   ============================================================ */
+const PARTNERS = [
+  {
+    id: "dimensional",
+    name: "Dimensional Fund Advisors",
+    what: "Fund manager. Approved-adviser access to the Dimensional funds we use.",
+    links: [
+      { label: "Adviser portal", url: null },
+      { label: "Fund documents and prospectuses", url: null },
+      { label: "Research and practice management library", url: null }
+    ],
+    contacts: [
+      { name: null, role: "Regional director", email: null, phone: null, notes: null },
+      { name: null, role: "Service and operations", email: null, phone: null, notes: null },
+      { name: null, role: "Investment specialist", email: null, phone: null, notes: null }
+    ],
+    notes: "What we go to them for, and what we handle ourselves. Not written yet."
+  },
+  {
+    id: "focus",
+    name: "Focus Partners",
+    what: "Partner firm. Set out here what the relationship actually covers.",
+    links: [
+      { label: "Adviser portal", url: null },
+      { label: "Service agreement", url: null },
+      { label: "Escalation path", url: null }
+    ],
+    contacts: [
+      { name: null, role: "Relationship lead", email: null, phone: null, notes: null },
+      { name: null, role: "Operations contact", email: null, phone: null, notes: null },
+      { name: null, role: "Escalation", email: null, phone: null, notes: null }
+    ],
+    notes: "What the relationship covers, and who decides when to use it. Not written yet."
+  }
+];
+
+/* ---------- render ---------- */
+const val = (v, href) => v
+  ? `<dd>${href ? `<a href="${esc(href)}${esc(v)}">${esc(v)}</a>` : esc(v)}</dd>`
+  : `<dd class="unset">Not set</dd>`;
+
+function contactHTML(c, i) {
+  const filled = !!c.name;
+  return `<div class="contact${filled ? " filled" : ""}">
+    <h4${filled ? "" : ' class="empty-name"'}>${esc(c.name || "Contact " + (i + 1))}</h4>
+    <p class="role">${esc(c.role || "Role not set")}</p>
+    <dl class="meta">
+      <div><dt>Email</dt>${val(c.email, "mailto:")}</div>
+      <div><dt>Phone</dt>${val(c.phone, "tel:")}</div>
+      <div><dt>Notes</dt>${val(c.notes)}</div>
+    </dl>
+  </div>`;
+}
+
+function linkRow(l) {
+  return l.url
+    ? `<a class="lrow" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">
+         <span class="mark" aria-hidden="true">&middot;</span>
+         <span><span class="lname">${esc(l.label)}</span></span>
+         <span class="tag set">Open &nearr;</span></a>`
+    : `<div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+         <span><span class="lname">${esc(l.label)}</span></span>
+         <span class="tag">Link not set</span></div>`;
+}
+
+$("#partners").innerHTML = PARTNERS.map((p, n) => `
+  <div class="block" id="${esc(p.id)}">
+    <div class="block-head">
+      <span class="mark" aria-hidden="true">${["I","II","III","IV","V"][n] || "&middot;"}</span>
+      <h2>${esc(p.name)}</h2>
+      <span class="aside">${p.contacts.filter(c => c.name).length} of ${p.contacts.length} contacts set</span>
+    </div>
+    <p class="prose" style="margin-bottom:var(--s5)">${esc(p.what)}</p>
+
+    <p class="lbl">Our contacts there</p>
+    <div class="contacts">${p.contacts.map(contactHTML).join("")}</div>
+
+    <p class="lbl" style="margin-top:var(--s6)">Links</p>
+    <div class="ledger">${p.links.map(linkRow).join("")}</div>
+
+    <p class="hint" style="margin-top:var(--s4);max-width:70ch">${esc(p.notes)}</p>
+  </div>`).join("");
+</script>
+</body>
+</html>
