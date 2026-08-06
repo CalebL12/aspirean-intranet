@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Podcasts &amp; Media Resources — Aspirean Intranet</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/page.css">
+<style>
+.pods{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--s4)}
+.pod{position:relative;display:grid;grid-template-columns:140px 1fr;background:var(--paper);
+  border:1px solid var(--line);border-radius:4px;overflow:hidden;
+  transition:border-color .18s ease,box-shadow .18s ease}
+.pod:hover,.pod:focus-within{border-color:var(--bronze);box-shadow:0 6px 22px rgba(20,36,59,.08)}
+.pod-art{width:140px;height:140px;display:block;object-fit:cover;background:var(--paper-2)}
+.pod-body{padding:var(--s4) var(--s4) var(--s3);display:flex;flex-direction:column;min-width:0}
+.pod-body h3{font-family:var(--serif);font-weight:500;font-size:19px;color:var(--navy);line-height:1.2}
+.pod-body p{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-top:6px}
+.pod-links{display:flex;gap:var(--s2);margin-top:auto;padding-top:var(--s3);
+  opacity:0;transform:translateY(4px);pointer-events:none;
+  transition:opacity .18s ease,transform .18s ease}
+.pod:hover .pod-links,.pod:focus-within .pod-links{opacity:1;transform:none;pointer-events:auto}
+@media (hover:none){.pod-links{opacity:1;transform:none;pointer-events:auto}}
+.pod-links a{font-size:10px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;
+  color:var(--bronze-ink);border:1px solid var(--line);border-radius:3px;padding:7px 10px;
+  transition:border-color .15s ease,background .15s ease,color .15s ease}
+.pod-links a:hover{background:var(--navy);border-color:var(--navy);color:#fff}
+.pod-links a:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+@media (max-width:480px){
+  .pod{grid-template-columns:104px 1fr}
+  .pod-art{width:104px;height:104px}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="mast-wrap">
+    <a class="wordmark" href="index.html">Aspirean <em>Intranet</em></a>
+    <a class="crumb" href="index.html#/resources">&larr; Resources</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="page-head">
+    <p class="eyebrow">Learning</p>
+    <h1>Podcasts &amp; <em>media resources</em></h1>
+    <p class="prose">What we listen to and read to stay sharp. Hover over a show for where to
+      listen. None of this is client-facing, and none of it is investment advice; it is how the
+      team keeps up.</p>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><span class="mark" aria-hidden="true">I</span><h2>Podcasts</h2>
+      <span class="aside" id="podCount"></span></div>
+    <div class="pods" id="pods"></div>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><span class="mark" aria-hidden="true">II</span><h2>Reading and community</h2></div>
+    <div class="ledger" id="mediaRows"></div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div><b>Internal use only.</b> Third-party content; views belong to their hosts, not the firm.</div>
+    <div>Mill Valley, CA &nbsp;·&nbsp; Chesterton, IN &nbsp;·&nbsp; St. Joseph, MI</div>
+  </div>
+</footer>
+
+<script src="assets/page.js"></script>
+<script>
+/* ============================================================
+   The only blocks to edit. yt links marked search are YouTube
+   search results, used where a canonical channel URL was not
+   verifiable; swap in the exact channel when known.
+   ============================================================ */
+const PODCASTS = [
+  { name: "All-In",
+    art: "assets/media/all-in.webp",
+    d: "Chamath, Calacanis, Sacks and Friedberg on markets, tech and policy. Long-form and opinionated; useful for knowing what clients heard this week.",
+    spotify: "https://open.spotify.com/show/2IqXAVFR4e0Bmyjsdc8QzF",
+    apple: "https://podcasts.apple.com/us/podcast/all-in-with-chamath-jason-sacks-friedberg/id1502871393",
+    yt: "https://www.youtube.com/@allin" },
+  { name: "Kitces & Carl",
+    art: "assets/media/kitces-carl.webp",
+    d: "Michael Kitces and Carl Richards on the craft of advice: client communication, practice management, and the honest tensions of running a firm.",
+    spotify: "https://open.spotify.com/show/4fJ2Et7TLy7nBNLOdw3su9",
+    apple: "https://podcasts.apple.com/us/podcast/kitces-and-carl-real-talk-for-real-financial-advisors/id1469293841",
+    yt: "https://www.youtube.com/playlist?list=PLY1HRsxpmdgpDR1pAKCHfaX06-7VbiJbX" },
+  { name: "Financial Advisor Success",
+    art: "assets/media/fa-success.webp",
+    d: "Kitces' long-form interviews on how advisory firms actually work behind the scenes. Ninety minutes deep, with at least one instantly usable idea.",
+    spotify: "https://open.spotify.com/show/4b4hrf8zXniv0A9jb9Nr5a",
+    apple: "https://podcasts.apple.com/us/podcast/financial-advisor-success/id1190341231",
+    yt: "https://www.youtube.com/results?search_query=financial+advisor+success+podcast+kitces", ytSearch: true },
+  { name: "ACTEC Trust and Estate Talk",
+    art: "assets/media/actec.webp",
+    d: "Peer-elected trust and estate lawyers on planning technique, tax developments, and fiduciary practice. Weekly, short, and dense.",
+    spotify: "https://open.spotify.com/show/4xvndaKUOFbvCaQNFyOhee",
+    apple: "https://podcasts.apple.com/us/podcast/actec-trust-estate-talk/id1349897247",
+    yt: "https://www.youtube.com/results?search_query=ACTEC+trust+and+estate+talk", ytSearch: true },
+  { name: "The Compound & Friends",
+    art: "assets/media/compound.webp",
+    d: "Josh Brown, Michael Batnick and a rotation of guests on markets and investing. Fast, twice a week, and close to how clients hear the news.",
+    spotify: "https://open.spotify.com/show/5VKsKPZUtwVylxslLie36k",
+    apple: "https://podcasts.apple.com/us/podcast/the-compound-and-friends/id1456467014",
+    yt: "https://www.youtube.com/@TheCompoundNews" },
+  { name: "The Blueprint",
+    art: "assets/media/blueprint.webp",
+    d: "FPA NexGen's podcast for new advisors: career journeys, credentials, and the early years of the profession, told by people living them.",
+    spotify: "https://open.spotify.com/show/2aDv0m8Ggzj1B3RWiEkv7k",
+    apple: "https://podcasts.apple.com/us/podcast/the-blueprint-an-fpa-nexgen-podcast/id1761855054",
+    yt: "https://www.youtube.com/results?search_query=the+blueprint+fpa+nexgen+podcast", ytSearch: true },
+  { name: "The Informed Investor",
+    art: "assets/media/informed-investor.webp",
+    d: "Dimensional breaks down the financial headlines to separate the news from the noise. Client-friendly, and aligned with how we invest.",
+    spotify: "https://open.spotify.com/show/0LDupSPmlZUqoeC5wCUdio",
+    apple: "https://podcasts.apple.com/us/podcast/the-informed-investor/id1840981777",
+    yt: "https://www.youtube.com/results?search_query=dimensional+the+informed+investor+podcast", ytSearch: true },
+  { name: "BIF Bites",
+    art: "assets/media/bif-bites.webp",
+    d: "The Boston Institute of Finance crew on CFP exam topics and planning fundamentals. Short reinforcement episodes, useful well past the exam.",
+    spotify: "https://open.spotify.com/show/1wr0UDIYU91rPOnbfi8Az7",
+    apple: "https://podcasts.apple.com/us/podcast/bif-bites/id1473829558",
+    yt: "https://www.youtube.com/results?search_query=BIF+bites+podcast", ytSearch: true }
+];
+
+const MEDIA = [
+  { name: "Admired Leadership Field Notes", mono: "AL",
+    d: "One short note on leadership behavior every day. Two minutes, and consistently worth them.",
+    url: "https://admiredleadership.com" },
+  { name: "Kitces.com", mono: "KC",
+    d: "Nerd's Eye View. The deepest practitioner library in financial planning, plus the weekend reading list.",
+    url: "https://www.kitces.com" },
+  { name: "FA Mag", mono: "FA",
+    d: "Financial Advisor magazine. Industry news, practice management, and who is moving where.",
+    url: "https://www.fa-mag.com" },
+  { name: "FPA NexGen", mono: "FP",
+    d: "The FPA's community for planners early in their careers. Study groups, mentoring, and The Blueprint above.",
+    url: "https://www.financialplanningassociation.org" }
+];
+
+/* ---------- render ---------- */
+$("#podCount").textContent = PODCASTS.length + " shows";
+
+$("#pods").innerHTML = PODCASTS.map(p => `
+  <article class="pod">
+    <img class="pod-art" src="${esc(p.art)}" alt="${esc(p.name)} cover art" loading="lazy">
+    <div class="pod-body">
+      <h3>${esc(p.name)}</h3>
+      <p>${esc(p.d)}</p>
+      <div class="pod-links" aria-label="Where to listen to ${esc(p.name)}">
+        <a href="${esc(p.spotify)}" target="_blank" rel="noopener noreferrer">Spotify</a>
+        <a href="${esc(p.apple)}" target="_blank" rel="noopener noreferrer">Apple</a>
+        <a href="${esc(p.yt)}" target="_blank" rel="noopener noreferrer">YouTube</a>
+      </div>
+    </div>
+  </article>`).join("");
+
+$("#mediaRows").innerHTML = MEDIA.map(m => `
+  <a class="lrow" href="${esc(m.url)}" target="_blank" rel="noopener noreferrer">
+    <span class="tile-mono" style="height:34px;min-width:34px">${esc(m.mono)}</span>
+    <span><span class="lname">${esc(m.name)}</span>
+      <span class="ldesc">${esc(m.d)}</span></span>
+    <span class="tag set">Open &nearr;</span>
+  </a>`).join("");
+</script>
+</body>
+</html>
