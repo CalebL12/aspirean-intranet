@@ -275,47 +275,32 @@ main{max-width:var(--wrap);margin:0 auto;padding:var(--s7) var(--pad) var(--s9)}
 .empty p{font-size:13.5px;color:var(--ink-soft);margin-top:var(--s2);max-width:62ch;line-height:1.65}
 .axis{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:var(--s5);padding-top:var(--s2);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
 
-/* ---------- sign-in launcher ---------- */
-.launch{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:var(--s3)}
-.launch a,.launch .off{display:flex;flex-direction:column;align-items:flex-start;
+/* ---------- resource cards ---------- */
+/* One card everywhere: a 72px logo slot beside the name, blurb below,
+   action line pinned to the bottom. The slot is fixed so every icon is
+   as large as the grid allows while all of them read the same size. */
+.launch{display:grid;grid-template-columns:repeat(auto-fill,minmax(236px,1fr));gap:var(--s3)}
+.launch a,.launch .off{display:flex;flex-direction:column;align-items:stretch;
   background:var(--paper);border:1px solid var(--line);border-radius:6px;
-  padding:var(--s5) var(--s5) var(--s4);min-height:196px;text-decoration:none}
+  padding:var(--s5);min-height:172px;text-decoration:none}
 .launch a{transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
 .launch a:hover{border-color:var(--bronze);transform:translateY(-2px);
   box-shadow:0 8px 24px rgba(20,36,59,.08)}
 .launch a:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
 .launch a:active{transform:none}
 .launch .off{background:var(--paper-2);border-style:dashed}
-.launch .lg{height:64px;display:flex;align-items:center;margin-bottom:var(--s4)}
-.launch .lg img{max-height:64px;max-width:150px;width:auto;object-fit:contain;display:block}
-.launch .lg .tile-mono{height:64px;min-width:64px;font-size:22px}
-.launch h4{font-size:15px;color:var(--navy);font-weight:700;letter-spacing:-.005em;line-height:1.3}
-.launch .blurb{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-top:5px}
+.launch .head{display:flex;align-items:center;gap:var(--s4);margin-bottom:var(--s4)}
+.launch .lg{width:72px;height:72px;flex:0 0 72px;display:flex;align-items:center;justify-content:center}
+.launch .lg img{max-width:72px;max-height:72px;width:auto;height:auto;object-fit:contain;display:block}
+.launch .lg .tile-mono{height:72px;min-width:72px;font-size:24px}
+.launch h4{font-size:17px;color:var(--navy);font-weight:700;letter-spacing:-.008em;line-height:1.25;min-width:0}
+.launch .blurb{font-size:12.5px;color:var(--ink-soft);line-height:1.55}
 .launch .go{margin-top:auto;padding-top:var(--s4);font-size:9.5px;letter-spacing:.15em;
   text-transform:uppercase;color:var(--ink-faint);transition:color .15s ease}
 .launch a:hover .go{color:var(--bronze-ink)}
-
-/* ---------- sign-in tiles ---------- */
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:var(--s4)}
-.tile{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);
-  border-radius:4px;padding:var(--s5);text-decoration:none;
-  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
-a.tile:hover{border-color:var(--bronze);transform:translateY(-2px);box-shadow:0 6px 22px rgba(20,36,59,.07)}
-a.tile:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
-a.tile:active{transform:none}
-.tile.off{background:var(--paper-2)}
-.tile-mark{display:flex;align-items:center;height:40px;margin-bottom:var(--s4)}
-/* Height is set per logo so a square mark and a long wordmark read with the
-   same visual weight. Files are exported at twice their display height. */
-.tile-mark img{max-width:100%;width:auto;object-fit:contain;object-position:left center;display:block}
 .tile-mono{display:inline-flex;align-items:center;justify-content:center;height:34px;min-width:34px;
   padding:0 11px;border:1px solid var(--line);border-radius:3px;background:var(--paper-2);
   font-family:var(--serif);font-size:16px;letter-spacing:.08em;color:var(--bronze-ink)}
-.tile h4{font-size:14.5px;color:var(--navy);font-weight:500}
-.tile p{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.5}
-.tile .out{margin-top:auto;padding-top:var(--s4);font-size:9.5px;letter-spacing:.16em;
-  text-transform:uppercase;color:var(--ink-faint)}
-a.tile:hover .out{color:var(--bronze-ink)}
 
 /* ---------- resources ---------- */
 .resgroup{margin-bottom:var(--s7)}
@@ -823,7 +808,7 @@ const DATA = {
       { name: "1Password", mono: "PW", logo: "assets/logos/passwords.webp", h: 30,
         d: "The firm vault. Every other credential belongs here, not in this list.",
         url: "https://my.1password.com" },
-      { name: "Vanguard CE", mono: "VG", logo: null, h: 30, tags: "ce education credits designations learning vanguard",
+      { name: "Vanguard CE", mono: "VG", logo: "assets/logos/vanguard.webp", h: 30, tags: "ce education credits designations learning vanguard",
         d: "Continuing education credits on Vanguard's advisor site.",
         url: "https://advisors.vanguard.com" }
     ],
@@ -1206,29 +1191,16 @@ function markHTML(logo, mono, imgStyle) {
     : monoSpan(false);
 }
 
-function tileHTML(t) {
-  const inner = `<span class="tile-mark">
-      ${markHTML(t.logo, t.mono, `height:${Number(t.h) || 34}px`)}
-    </span>
-    <h4>${esc(t.name)}</h4>
-    <p>${esc(t.d)}</p>
-    <span class="out">${t.url ? (t.out || "Sign in &nearr;") : "Link not set"}</span>`;
-  const external = t.url && /^https?:/i.test(t.url);
-  return t.url
-    ? `<a class="tile" href="${esc(t.url)}"${external ? ` target="_blank" rel="noopener noreferrer"` : ""}>${inner}</a>`
-    : `<div class="tile off">${inner}</div>`;
-}
-
 function boxHTML(t) {
-  const inner = `<span class="lg">
-      ${markHTML(t.logo, (t.name || "").slice(0, 2).toUpperCase())}
+  const inner = `<span class="head">
+      <span class="lg">${markHTML(t.logo, t.mono || (t.name || "").slice(0, 2).toUpperCase())}</span>
+      <h4>${esc(t.name)}</h4>
     </span>
-    <h4>${esc(t.name)}</h4>
     ${t.blurb ? `<span class="blurb">${esc(t.blurb)}</span>` : ""}`;
-  return t.url
-    ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">${inner}
-        <span class="go">Sign in &nearr;</span></a>`
-    : `<div class="off">${inner}<span class="go">Link not set</span></div>`;
+  if (!t.url) return `<div class="off">${inner}<span class="go">Link not set</span></div>`;
+  const external = /^https?:/i.test(t.url);
+  return `<a href="${esc(t.url)}"${external ? ` target="_blank" rel="noopener noreferrer"` : ""}>${inner}
+      <span class="go">${t.foot || "Sign in &nearr;"}</span></a>`;
 }
 
 function renderResources() {
@@ -1256,7 +1228,7 @@ function renderResources() {
     employeeHTML = `<div class="resgroup">
       <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Employee resources</h3>
       <span class="aside">${n} ${n === 1 ? "item" : "items"}</span></div>
-      ${tiles.length ? `<div class="tiles">${tiles.map(tileHTML).join("")}</div>` : ""}
+      ${tiles.length ? `<div class="launch" style="margin-bottom:${items.length ? "var(--s4)" : "0"}">${tiles.map(t => boxHTML(Object.assign({}, t, { blurb: t.d }))).join("")}</div>` : ""}
       ${items.length ? `<div class="ledger" style="margin-top:var(--s5)">${items.map(rowHTML).join("")}</div>` : ""}
     </div>`;
   }
@@ -1268,7 +1240,7 @@ function renderResources() {
     partnerHTML = `<div class="resgroup">
       <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Strategic partners</h3>
       <span class="aside"><a href="partners.html" style="color:var(--bronze-ink)">All partners &rarr;</a></span></div>
-      <div class="tiles">${pt.map(t => tileHTML(Object.assign({}, t, { out: "Contacts &rarr;" }))).join("")}</div>
+      <div class="launch">${pt.map(t => boxHTML(Object.assign({}, t, { blurb: t.d, foot: "Contacts &rarr;" }))).join("")}</div>
     </div>`;
   }
 
