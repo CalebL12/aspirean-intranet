@@ -273,26 +273,19 @@ main{max-width:var(--wrap);margin:0 auto;padding:var(--s7) var(--pad) var(--s9)}
 .empty p{font-size:13.5px;color:var(--ink-soft);margin-top:var(--s2);max-width:62ch;line-height:1.65}
 .axis{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:var(--s5);padding-top:var(--s2);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
 
-/* ---------- sign-in bars ---------- */
-.bars{display:flex;flex-direction:column;gap:var(--s3)}
-.bar{display:grid;grid-template-columns:56px auto 1fr;gap:var(--s4);align-items:center;
-  background:var(--paper);border:1px solid var(--line);border-radius:4px;
-  padding:var(--s4) var(--s5);text-decoration:none;min-height:76px;
+/* ---------- sign-in launcher ---------- */
+.launch{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s3)}
+.launch a{display:flex;flex-direction:column;align-items:center;gap:var(--s3);
+  padding:var(--s5) var(--s3) var(--s4);background:var(--paper);border:1px solid var(--line);
+  border-radius:4px;text-decoration:none;
   transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
-a.bar:hover{border-color:var(--bronze);transform:translateY(-1px);box-shadow:0 5px 18px rgba(20,36,59,.06)}
-a.bar:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
-a.bar:active{transform:none}
-.bar.off{background:var(--paper-2)}
-.bar-mark{display:flex;align-items:center;justify-content:flex-start;height:44px}
-.bar-mark img{max-height:40px;max-width:52px;width:auto;object-fit:contain;display:block}
-.bar-mark .tile-mono{height:40px;min-width:40px}
-.bar h4{font-family:var(--serif);font-weight:500;font-size:23px;color:var(--navy);letter-spacing:-.01em;white-space:nowrap}
-.bar p{font-size:13px;color:var(--ink-soft);justify-self:end;text-align:right;line-height:1.5;max-width:46ch}
-.bar .tag{justify-self:end}
-@media (max-width:680px){
-  .bar{grid-template-columns:48px 1fr;min-height:0}
-  .bar p{grid-column:1/-1;justify-self:start;text-align:left;margin-top:2px}
-}
+.launch a:hover{border-color:var(--bronze);transform:translateY(-2px);
+  box-shadow:0 6px 20px rgba(20,36,59,.07)}
+.launch a:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+.launch a:active{transform:none}
+.launch .lg{height:48px;display:flex;align-items:center;justify-content:center}
+.launch .lg img{max-height:48px;max-width:118px;width:auto;object-fit:contain;display:block}
+.launch h4{font-size:13px;color:var(--navy);font-weight:500;text-align:center;line-height:1.35}
 
 /* ---------- sign-in tiles ---------- */
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:var(--s4)}
@@ -835,34 +828,37 @@ const DATA = {
     ]
   },
 
-  /* Firm system sign-ins. Each row goes straight to the login. */
+  /* Firm system sign-ins. Each box goes straight to the login.
+     `d` is search bait only and never renders. */
   signins: [
-    { name: "eMoney", logo: "assets/logos/emoney.webp",
-      d: "Financial planning and the client portal.", url: "https://wealth.emaplan.com" },
-    { name: "Wealthbox", logo: "assets/logos/wealthbox.webp",
-      d: "The CRM. Households, activity, and the record of what was said.", url: "https://app.crmworkspace.com/users/sign_in" },
-    { name: "Schwab Advisor Center", logo: "assets/logos/schwab.webp",
-      d: "Custody. Accounts, trading, transfers, service requests.", url: "https://sac.schwabinstitutional.com" },
-    { name: "Jump", logo: "assets/logos/jump.webp",
-      d: "Meeting notes and follow-ups.", url: "https://my.jumpapp.com" },
-    { name: "Holistiplan", logo: "assets/logos/holistiplan.webp",
-      d: "Tax return reading and planning scenarios.", url: "https://app.holistiplan.com" },
-    { name: "EncorEstate Plans", logo: "assets/logos/encoreestate.webp",
-      d: "Estate planning documents and trust funding.", url: "https://app.encorestateplans.com" },
-    { name: "Flourish", logo: "assets/logos/flourish.webp",
-      d: "Cash management, adviser side.", url: "https://www.flourish.com/login" },
-    { name: "Constant Contact", logo: "assets/logos/constantcontact.webp",
-      d: "The newsletter and client email campaigns.", url: "https://login.constantcontact.com" },
-    { name: "OnceHub", logo: "assets/logos/oncehub.webp",
-      d: "Scheduling links and booking pages.", url: "https://account.oncehub.com/signin" },
-    { name: "Focus Partners portal", logo: "assets/logos/focuspartners.webp",
-      d: "Partner firm platform.", url: null },
-    { name: "1Password", logo: "assets/logos/passwords.webp",
-      d: "The firm vault. Credentials live here and nowhere else.", url: "https://my.1password.com" },
-    { name: "GitHub", logo: "assets/logos/github.webp",
-      d: "Source for the public site and this intranet.", url: "https://github.com/CalebL12/aspirean-intranet" },
-    { name: "Netlify", logo: "assets/logos/netlify.webp",
-      d: "Hosting, forms, and functions for both sites.", url: "https://app.netlify.com" }
+    { name: "eMoney", logo: "assets/logos/emoney.webp", d: "financial planning client portal",
+      url: "https://wealth.emaplan.com/ema/SignIn?ema%2Fria%2Fbuckinghamsp%2Flegacyadvisorswealthmgmt" },
+    { name: "Wealthbox", logo: "assets/logos/wealthbox.webp", d: "crm households activity",
+      url: "https://app.crmworkspace.com/login?uid=226a652c221480643ae8b817a5f049ce" },
+    { name: "Schwab Advisor", logo: "assets/logos/schwab.webp", d: "custody trading transfers advisor center",
+      url: "https://advisorservices.schwab.com/advisor/login" },
+    { name: "Jump", logo: "assets/logos/jump.webp", d: "meeting notes follow-ups",
+      url: "https://my.jumpapp.com" },
+    { name: "Holistiplan", logo: "assets/logos/holistiplan.webp", d: "tax return planning scenarios",
+      url: "https://app.holistiplan.com" },
+    { name: "EncorEstate Plans", logo: "assets/logos/encoreestate.webp", d: "estate planning documents trust",
+      url: "https://app.encorestateplans.com" },
+    { name: "Flourish", logo: "assets/logos/flourish.webp", d: "cash management adviser",
+      url: "https://www.flourish.com/login" },
+    { name: "Constant Contact", logo: "assets/logos/constantcontact.webp", d: "newsletter email campaigns",
+      url: "https://login.constantcontact.com" },
+    { name: "OnceHub", logo: "assets/logos/oncehub.webp", d: "scheduling booking pages",
+      url: "https://account.oncehub.com/signin" },
+    { name: "Focus Portal", logo: "assets/logos/focuspartners.webp", d: "partner firm platform",
+      url: "https://portal.advisor.focuspartners.com/s/" },
+    { name: "Claude", logo: "assets/logos/claude.webp", d: "ai assistant anthropic",
+      url: "https://claude.ai/login" },
+    { name: "1Password", logo: "assets/logos/passwords.webp", d: "password manager vault credentials",
+      url: "https://my.1password.com" },
+    { name: "GitHub", logo: "assets/logos/github.webp", d: "source repository site code",
+      url: "https://github.com/login" },
+    { name: "Netlify", logo: "assets/logos/netlify.webp", d: "hosting forms functions deploys",
+      url: "https://app.netlify.com/" }
   ],
 
   /* Strategic partner tiles. Anchors into partners.html. */
@@ -1197,7 +1193,7 @@ function tileHTML(t) {
 }
 
 function swapLogos() {
-  $$("#resList .tile-mark img, #resList .bar-mark img").forEach(img => {
+  $$("#resList .tile-mark img, #resList .launch .lg img").forEach(img => {
     const show = () => {
       img.hidden = false;
       const mono = img.parentElement.querySelector(".tile-mono");
@@ -1208,16 +1204,14 @@ function swapLogos() {
   });
 }
 
-function barHTML(t) {
-  const inner = `<span class="bar-mark">
+function boxHTML(t) {
+  return `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">
+    <span class="lg">
       <span class="tile-mono">${esc((t.name || "").slice(0, 2).toUpperCase())}</span>
       ${t.logo ? `<img src="${esc(t.logo)}" alt="" hidden>` : ""}
     </span>
     <h4>${esc(t.name)}</h4>
-    ${t.url ? `<p>${esc(t.d)}</p>` : `<span class="tag">Link not set</span>`}`;
-  return t.url
-    ? `<a class="bar" href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">${inner}</a>`
-    : `<div class="bar off">${inner}</div>`;
+  </a>`;
 }
 
 function renderResources() {
@@ -1231,8 +1225,8 @@ function renderResources() {
     shown += si.length;
     signinHTML = `<div class="resgroup">
       <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Sign-ins</h3>
-      <span class="aside">${si.filter(t => t.url).length} of ${si.length} live</span></div>
-      <div class="bars">${si.map(barHTML).join("")}</div>
+      <span class="aside">${si.length} systems</span></div>
+      <div class="launch">${si.map(boxHTML).join("")}</div>
     </div>`;
   }
 
