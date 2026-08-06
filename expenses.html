@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Expense reimbursement — Aspirean Intranet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/page.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="mast-wrap">
+    <a class="wordmark" href="index.html">Aspirean <em>Intranet</em></a>
+    <a class="crumb" href="index.html#/resources">&larr; Employee resources</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="page-head">
+    <p class="eyebrow">Expenses</p>
+    <h1>Expense <em>reimbursement</em></h1>
+    <p class="prose">One submission can carry as many lines as you need, so a whole trip goes in
+      at once rather than one form per receipt. Upload the receipts first, then fill this in.</p>
+  </div>
+
+  <div class="callout">
+    <h3>Receipts go here first</h3>
+    <p>Upload before you submit, and name each file so it matches a line below:
+      <b>YYYY-MM-DD vendor amount</b>, as in <b>2026-08-04 United 412.60</b>. A submission
+      without matching receipts waits until they turn up, which is nobody's favourite way
+      to spend a Friday.</p>
+    <a class="btn primary" href="https://aspirean-my.sharepoint.com/:f:/p/caleb/IgCGh0_9u7pmTKOjpbT2YZMMASPtRVhTfPWFdiGj_1XZgvE" target="_blank" rel="noopener noreferrer">Open receipt folder &nearr;</a>
+  </div>
+
+  <div class="card block">
+    <div class="grid2">
+      <div class="field">
+        <label for="person">Who is claiming <span class="req">*</span></label>
+        <select id="person"></select>
+      </div>
+      <div class="field">
+        <label for="period">What this covers <span class="req">*</span></label>
+        <input type="text" id="period" placeholder="e.g. Schwab IMPACT, October 12 to 15">
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="lbl">How it was paid</span>
+      <div class="chips" id="methods" role="group" aria-label="Payment method"></div>
+      <p class="hint" id="methodNote">Personal card and cash come back to you. Firm card is logged here for the record only, with nothing to reimburse.</p>
+    </div>
+
+    <div class="field">
+      <span class="lbl">Lines <span class="req">*</span></span>
+      <div class="line-head" aria-hidden="true">
+        <span>Date</span><span>Category</span><span>Amount</span><span></span>
+      </div>
+      <div class="lines" id="lines"></div>
+      <div class="total-row">
+        <span class="k">Total</span><span class="v" id="total">$0.00</span>
+      </div>
+      <div style="margin-top:var(--s4)">
+        <button class="btn quiet" type="button" id="addLine">Add a line</button>
+      </div>
+      <p class="hint" id="live" role="status" aria-live="polite"></p>
+    </div>
+
+    <div class="field">
+      <label class="check">
+        <input type="checkbox" id="receipts">
+        <span>Receipts for every line above are in the folder, named to match. <span class="req">*</span></span>
+      </label>
+    </div>
+
+    <div class="field">
+      <label for="notes">Anything the reviewer should know</label>
+      <textarea id="notes" style="min-height:76px" placeholder="Optional. Split costs, a missing receipt and why, anything unusual."></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="button" id="send">Submit for reimbursement</button>
+      <span class="hint spacer" id="status">Nothing sent yet</span>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h2>Worth knowing</h2></div>
+    <div class="ledger">
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Business purpose is the field that matters</span>
+        <span class="ldesc">"Client lunch" is not a purpose. Who, and what it was for, is.</span></span>
+        <span class="tag">Every line</span></div>
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Gifts and entertainment may need logging twice</span>
+        <span class="ldesc">The code of ethics keeps its own record separate from expenses. Check with Brad before assuming this covers it.</span></span>
+        <span class="tag">Compliance</span></div>
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Mileage</span>
+        <span class="ldesc">Enter the dollar amount you are claiming. Whoever processes it applies the current rate, which changes annually.</span></span>
+        <span class="tag">Method</span></div>
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Where it lands</span>
+        <span class="ldesc">Netlify Forms, with an email. Receipts stay in SharePoint; this form never holds a file.</span></span>
+        <span class="tag">Record</span></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div><b>Internal use only.</b> Nothing on this page is client-facing.</div>
+    <div>Mill Valley, CA &nbsp;·&nbsp; Chesterton, IN &nbsp;·&nbsp; St. Joseph, MI</div>
+  </div>
+</footer>
+
+<script src="assets/page.js"></script>
+<script>
+/* ============================================================
+   EXPENSES
+   ============================================================ */
+const CATEGORIES = ["Travel", "Lodging", "Meals", "Client entertainment", "Client gifts",
+  "Software and subscriptions", "Dues and licensing", "Continuing education", "Conferences",
+  "Office supplies", "Mileage", "Postage and shipping", "Other"];
+const METHODS = ["Personal card", "Personal cash", "Firm card"];
+
+let method = "Personal card";
+let seq = 0;
+
+fillPeople($("#person"));
+
+$("#methods").innerHTML = METHODS.map(m =>
+  `<button class="chip" type="button" data-m="${esc(m)}" aria-pressed="${m === method}">${esc(m)}</button>`).join("");
+$("#methods").addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  method = b.dataset.m;
+  $$("#methods .chip").forEach(c => c.setAttribute("aria-pressed", String(c === b)));
+  $("#send").textContent = method === "Firm card" ? "Submit for the record" : "Submit for reimbursement";
+  $("#methodNote").textContent = method === "Firm card"
+    ? "Logged for the record. Nothing is reimbursed, but the business purpose still has to be there."
+    : "Personal card and cash come back to you. Firm card is logged here for the record only, with nothing to reimburse.";
+});
+
+/* ---------- lines ---------- */
+function addLine(prefill) {
+  const i = seq++;
+  const row = document.createElement("div");
+  row.className = "line";
+  row.dataset.i = i;
+  row.innerHTML = `
+    <div><label class="lbl" for="d${i}" style="display:none">Date</label>
+      <input type="date" id="d${i}" data-f="date" value="${esc((prefill && prefill.date) || "")}"></div>
+    <div><label class="lbl" for="c${i}" style="display:none">Category</label>
+      <select id="c${i}" data-f="category">${CATEGORIES.map(c => `<option>${esc(c)}</option>`).join("")}</select></div>
+    <div><label class="lbl" for="a${i}" style="display:none">Amount</label>
+      <input type="number" id="a${i}" data-f="amount" step="0.01" min="0" inputmode="decimal" placeholder="0.00"></div>
+    <button class="line-x" type="button" data-x aria-label="Remove this line">&times;</button>
+    <div class="purpose"><label class="lbl" for="p${i}" style="display:none">Business purpose</label>
+      <input type="text" id="p${i}" data-f="purpose" placeholder="Business purpose: who it was with and what it was for"></div>`;
+  $("#lines").appendChild(row);
+  return row;
+}
+
+function readLines() {
+  return $$("#lines .line").map(row => {
+    const get = f => {
+      const el = row.querySelector(`[data-f="${f}"]`);
+      return el ? el.value.trim() : "";
+    };
+    return { date: get("date"), category: get("category"), amount: get("amount"), purpose: get("purpose") };
+  });
+}
+
+function recalc() {
+  const lines = readLines();
+  const total = lines.reduce((a, l) => a + (parseFloat(l.amount) || 0), 0);
+  $("#total").textContent = money(total);
+  const filled = lines.filter(l => parseFloat(l.amount) > 0).length;
+  $("#live").textContent = filled
+    ? `${filled} ${filled === 1 ? "line" : "lines"} totalling ${money(total)}.`
+    : "";
+  return { lines, total };
+}
+
+$("#lines").addEventListener("input", recalc);
+$("#lines").addEventListener("change", recalc);
+$("#lines").addEventListener("click", e => {
+  if (!e.target.closest("[data-x]")) return;
+  const rows = $$("#lines .line");
+  if (rows.length === 1) { toast("Keep at least one line."); return; }
+  e.target.closest(".line").remove();
+  recalc();
+});
+$("#addLine").addEventListener("click", () => {
+  const prev = $$("#lines .line").pop();
+  const carry = prev ? prev.querySelector('[data-f="date"]').value : "";
+  const row = addLine({ date: carry });
+  row.querySelector('[data-f="amount"]').focus();
+  recalc();
+});
+
+addLine({ date: toISO(new Date()) });
+recalc();
+
+/* ---------- send ---------- */
+$("#send").addEventListener("click", async () => {
+  const email = $("#person").value;
+  if (!email) { $("#person").focus(); toast("Choose your name first."); return; }
+  const period = $("#period").value.trim();
+  if (!period) { $("#period").focus(); toast("Say what this claim covers."); return; }
+
+  const { lines, total } = recalc();
+  const real = lines.filter(l => parseFloat(l.amount) > 0);
+  if (!real.length) { toast("Add at least one line with an amount."); return; }
+  const noPurpose = real.filter(l => !l.purpose);
+  if (noPurpose.length) { toast("Every line needs a business purpose."); return; }
+  const noDate = real.filter(l => !l.date);
+  if (noDate.length) { toast("Every line needs a date."); return; }
+  if (!$("#receipts").checked) { $("#receipts").focus(); toast("Confirm the receipts are uploaded."); return; }
+
+  const readable = real.map(l =>
+    `${shortDate(l.date)}  ${l.category}  ${money(l.amount)}\n    ${l.purpose}`).join("\n");
+  const summary = `${nameFor(email)} — ${period} — ${real.length} ${real.length === 1 ? "line" : "lines"}, ${money(total)} on ${method}\n\n${readable}`;
+
+  const btn = $("#send");
+  const rest = btn.textContent;
+  setBusy(btn, true, rest);
+  try {
+    await submitToNetlify("expense-report", {
+      person: nameFor(email), email, period, payment_method: method,
+      total: total.toFixed(2), count: String(real.length),
+      receipts: "confirmed uploaded",
+      summary, lines: JSON.stringify(real), notes: $("#notes").value.trim()
+    });
+    $("#status").textContent = "Sent " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    modal(method === "Firm card" ? "Logged" : "Submitted",
+      `${real.length} ${real.length === 1 ? "line" : "lines"}, ${money(total)}`,
+      `<p>${method === "Firm card"
+        ? "Recorded against the firm card. Nothing to reimburse."
+        : "It will come through on the next payroll run unless somebody comes back to you."}</p>
+       <p>Leave the receipts where they are. They are the documentation, and this form only points at them.</p>`,
+      [{ label: "Open receipt folder", fn: () => window.open("https://aspirean-my.sharepoint.com/:f:/p/caleb/IgCGh0_9u7pmTKOjpbT2YZMMASPtRVhTfPWFdiGj_1XZgvE", "_blank", "noopener") },
+       { label: "Done", primary: true, fn: closeModal }]);
+  } catch (err) {
+    submitFailed(err);
+  } finally {
+    setBusy(btn, false, rest);
+  }
+});
+</script>
+</body>
+</html>

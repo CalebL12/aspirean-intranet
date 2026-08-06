@@ -6,7 +6,14 @@ Netlify on deploy. Push to the repo and Netlify redeploys.
 ```
 index.html                     Home, Moving Future, Responses, Archive, Resources
 moving-future-intake.html      the reflection form, posts to Netlify Forms
-__forms.html                   field blueprint so Netlify detects the form at deploy
+time-off.html                  time off request, calendar range picker
+expenses.html                  expense claim, multiple lines per submission
+new-hire.html                  onboarding guide, structure only so far
+advs.html                      Form ADV shelf and filing calendar
+assets/page.css                shared chrome for the four pages above
+assets/page.js                 shared roster, submission, modal and toast
+assets/logos/                  sign-in tile logos
+__forms.html                   field blueprints so Netlify detects the forms at deploy
 netlify/functions/
   mf-submit.mjs                the form posts here on send, records it at once
   submission-created.mjs       backstop, runs itself on every verified submission
@@ -73,9 +80,17 @@ a new deploy afterwards, because variables only apply to deploys made after they
 are set. Remove it again once the backfill has been read; nothing else depends on
 it.
 
-**4. Turn on email notification.** **Forms > moving-future > Settings and usage >
-Form notifications**, add an email notification. Each submission then arrives with
-the readable markdown in the body. Point it at whoever is building the synthesis.
+**4. Turn on email notifications.** **Forms > Settings and usage > Form
+notifications**, and add one for each of the three forms:
+
+| Form | Send to | Body carries |
+| --- | --- | --- |
+| `moving-future` | whoever builds the synthesis | the readable markdown |
+| `time-off` | the team | dates, working days, coverage |
+| `expense-report` | whoever runs payroll | the itemised claim and total |
+
+Without notifications the submissions still arrive, but only into the Forms tab,
+which nobody thinks to check.
 
 **5. Close the site.** See Access below.
 
@@ -157,6 +172,27 @@ the number never has to be guessed at.
 The four score sliders sit at the midpoint until dragged and read **not set** until
 then, since a slider that looks answered but isn't was the easiest way to lose four
 units without noticing.
+
+## The three forms
+
+All three post the same way: a static blueprint in `__forms.html` declares the
+fields, and the page submits over fetch. Netlify only recognises fields it found in
+static HTML at deploy time, so **adding a field to a form means adding it to
+`__forms.html` as well**, or it is dropped on submission without an error.
+
+Only `moving-future` mirrors into Blobs and reads back into the site. Time off and
+expenses are one-way: they reach Netlify Forms and the notification email, and
+nothing on the intranet reads them back.
+
+`time-off.html` carries its own calendar rather than pulling in a date-picker
+library. It is a few dozen lines of vanilla JavaScript, so there is no CDN to fail
+and nothing to keep current. Weekends are excluded from the working-day count, and
+a single selected day can be marked as a half day.
+
+`expenses.html` holds no files at all. Receipts live in the SharePoint folder linked
+at the top of the page, and the form points at them rather than carrying them. That
+link is a personal OneDrive share; moving it to a shared library at some point would
+survive an account change.
 
 ## The blob store
 

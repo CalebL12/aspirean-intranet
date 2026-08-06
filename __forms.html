@@ -17,7 +17,7 @@
 <h1>Form blueprint</h1>
 <p>
   Netlify detects forms by reading static HTML at deploy time, so the fields for
-  the Moving Future form are declared here. The form people actually fill in is
+  the Moving Future form, time off requests, and expense reports are declared here. The form people actually fill in is
   <code>moving-future-intake.html</code>, which posts to this page over fetch.
   Nothing on this page needs to be visited or edited unless the field list
   changes.
@@ -41,6 +41,34 @@
   <input type="text" name="score_align">
   <textarea name="readable"></textarea>
   <textarea name="payload"></textarea>
+  <input type="text" name="bot-field">
+</form>
+
+<form name="time-off" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="person">
+  <input type="email" name="email">
+  <input type="text" name="type">
+  <input type="text" name="start_date">
+  <input type="text" name="end_date">
+  <input type="text" name="days">
+  <input type="text" name="half_day">
+  <textarea name="summary"></textarea>
+  <textarea name="coverage"></textarea>
+  <textarea name="notes"></textarea>
+  <input type="text" name="bot-field">
+</form>
+
+<form name="expense-report" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="person">
+  <input type="email" name="email">
+  <input type="text" name="period">
+  <input type="text" name="payment_method">
+  <input type="text" name="total">
+  <input type="text" name="count">
+  <input type="text" name="receipts">
+  <textarea name="summary"></textarea>
+  <textarea name="lines"></textarea>
+  <textarea name="notes"></textarea>
   <input type="text" name="bot-field">
 </form>
 

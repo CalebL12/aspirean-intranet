@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Time off — Aspirean Intranet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/page.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="mast-wrap">
+    <a class="wordmark" href="index.html">Aspirean <em>Intranet</em></a>
+    <a class="crumb" href="index.html#/resources">&larr; Employee resources</a>
+  </div>
+</header>
+
+<main id="main">
+
+  <div class="page-head">
+    <p class="eyebrow">Time off</p>
+    <h1>Request <em>time away</em></h1>
+    <p class="prose">Pick the days, say who is covering what, and send. It goes to the team by
+      email straight away. Give as much notice as you reasonably can, and flag anything
+      client-facing that needs moving rather than covering.</p>
+  </div>
+
+  <div class="card block">
+    <div class="grid2">
+      <div class="field">
+        <label for="person">Who is asking <span class="req">*</span></label>
+        <select id="person"></select>
+      </div>
+      <div class="field">
+        <span class="lbl">Kind of time</span>
+        <div class="chips" id="types" role="group" aria-label="Kind of time off"></div>
+      </div>
+    </div>
+
+    <div class="field">
+      <span class="lbl">Dates <span class="req">*</span></span>
+      <p class="hint" style="margin:0 0 12px">Click a day to start, then click another to close the range.
+        Clicking a third time starts over.</p>
+
+      <div class="cal">
+        <div class="cal-head">
+          <button class="cal-nav" type="button" id="prev" aria-label="Previous month">&#8249;</button>
+          <span class="cal-title" id="calTitle"></span>
+          <button class="cal-nav" type="button" id="next" aria-label="Next month">&#8250;</button>
+        </div>
+        <div class="cal-dow" aria-hidden="true">
+          <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
+        </div>
+        <div class="cal-grid" id="calGrid" role="group" aria-label="Choose dates"></div>
+        <div class="cal-foot">
+          <span class="picked" id="picked">Nothing chosen yet</span>
+          <button type="button" id="clearDates">Clear</button>
+        </div>
+      </div>
+
+      <div class="tally">
+        <div><span class="n" id="nDays">0</span><span class="k">Working days</span></div>
+        <div><span class="n" id="nSpan">0</span><span class="k">Days away</span></div>
+        <div style="min-width:200px">
+          <label class="check" id="halfWrap" hidden>
+            <input type="checkbox" id="halfDay">
+            <span>Half day only</span>
+          </label>
+          <p class="hint" id="tallyNote" style="margin-top:0">Weekends are not counted.</p>
+        </div>
+      </div>
+      <p class="hint" id="live" role="status" aria-live="polite" style="margin-top:10px"></p>
+    </div>
+
+    <div class="field">
+      <label for="coverage">Coverage <span class="req">*</span></label>
+      <textarea id="coverage" placeholder="Client meetings in that window and what happens to them. Anything time-sensitive that lands while you are out. Who has agreed to pick it up."></textarea>
+      <p class="hint">The part that actually matters. A date with no coverage note is a date somebody else discovers on the day.</p>
+    </div>
+
+    <div class="field">
+      <label for="notes">Anything else</label>
+      <textarea id="notes" style="min-height:76px" placeholder="Optional. Reachable or not, timezone, phone if it is urgent."></textarea>
+    </div>
+
+    <div class="actions">
+      <button class="btn primary" type="button" id="send">Send request</button>
+      <span class="hint spacer" id="status">Nothing sent yet</span>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h2>How this works</h2></div>
+    <div class="ledger">
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">It is a request, not a notification</span>
+        <span class="ldesc">Wait for a reply before booking anything you cannot refund.</span></span>
+        <span class="tag">Etiquette</span></div>
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Client meetings come first</span>
+        <span class="ldesc">Review meetings inside your window get moved before the request is approved, not after.</span></span>
+        <span class="tag">Coverage</span></div>
+      <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+        <span><span class="lname">Where it lands</span>
+        <span class="ldesc">Netlify Forms, with an email to the team. Nothing here writes to a payroll system.</span></span>
+        <span class="tag">Record</span></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div><b>Internal use only.</b> Nothing on this page is client-facing.</div>
+    <div>Mill Valley, CA &nbsp;·&nbsp; Chesterton, IN &nbsp;·&nbsp; St. Joseph, MI</div>
+  </div>
+</footer>
+
+<script src="assets/page.js"></script>
+<script>
+/* ============================================================
+   TIME OFF
+   ============================================================ */
+const TYPES = ["Vacation", "Sick", "Personal", "Parental", "Unpaid", "Other"];
+const DOW = ["Mo","Tu","We","Th","Fr","Sa","Su"];
+
+const S = { type: "Vacation", start: null, end: null, focus: null, view: null };
+
+const grid = $("#calGrid");
+const today = new Date(); today.setHours(0,0,0,0);
+S.view = new Date(today.getFullYear(), today.getMonth(), 1);
+S.focus = toISO(today);
+
+/* ---------- type chips ---------- */
+$("#types").innerHTML = TYPES.map(t =>
+  `<button class="chip" type="button" data-type="${esc(t)}" aria-pressed="${t === S.type}">${esc(t)}</button>`).join("");
+$("#types").addEventListener("click", e => {
+  const b = e.target.closest(".chip");
+  if (!b) return;
+  S.type = b.dataset.type;
+  $$("#types .chip").forEach(c => c.setAttribute("aria-pressed", String(c === b)));
+});
+
+/* ---------- people ---------- */
+fillPeople($("#person"));
+
+/* ---------- calendar ---------- */
+/* Monday-first grid. Dates are held as YYYY-MM-DD strings, which sort
+   correctly as text and avoid every timezone problem going. */
+function monthMatrix(view) {
+  const first = new Date(view.getFullYear(), view.getMonth(), 1);
+  const lead = (first.getDay() + 6) % 7;            // Sunday is 0, we want Monday first
+  const startCell = new Date(first.getFullYear(), first.getMonth(), 1 - lead);
+  const cells = [];
+  for (let i = 0; i < 42; i++) {
+    const d = new Date(startCell.getFullYear(), startCell.getMonth(), startCell.getDate() + i);
+    cells.push(d);
+    if (i >= 34 && d.getMonth() !== view.getMonth() && (i + 1) % 7 === 0) break;
+  }
+  return cells;
+}
+
+function renderCal() {
+  $("#calTitle").textContent = S.view.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const todayISO = toISO(today);
+  grid.innerHTML = monthMatrix(S.view).map(d => {
+    const iso = toISO(d);
+    const wknd = d.getDay() === 0 || d.getDay() === 6;
+    const out = d.getMonth() !== S.view.getMonth();
+    const edge = iso === S.start || iso === S.end;
+    const inRange = S.start && S.end && iso > S.start && iso < S.end;
+    const cls = ["day"];
+    if (wknd) cls.push("wknd");
+    if (out) cls.push("out");
+    if (iso === todayISO) cls.push("today");
+    if (edge) cls.push("edge");
+    if (inRange) cls.push("in");
+    return `<button type="button" class="${cls.join(" ")}" data-iso="${iso}"
+      tabindex="${iso === S.focus ? 0 : -1}"
+      aria-pressed="${edge}"
+      aria-label="${d.toLocaleDateString("en-US", { weekday:"long", month:"long", day:"numeric", year:"numeric" })}"
+      >${d.getDate()}</button>`;
+  }).join("");
+}
+
+function workingDays(a, b) {
+  if (!a) return 0;
+  let n = 0;
+  const end = toDate(b || a), cur = toDate(a);
+  while (cur <= end) {
+    const g = cur.getDay();
+    if (g !== 0 && g !== 6) n++;
+    cur.setDate(cur.getDate() + 1);
+  }
+  return n;
+}
+function spanDays(a, b) {
+  if (!a) return 0;
+  return Math.round((toDate(b || a) - toDate(a)) / 86400000) + 1;
+}
+
+function sync() {
+  renderCal();
+  const single = S.start && (!S.end || S.end === S.start);
+  $("#halfWrap").hidden = !single;
+  if (!single) $("#halfDay").checked = false;
+
+  let wd = workingDays(S.start, S.end);
+  if (single && $("#halfDay").checked) wd = wd ? 0.5 : 0;
+  $("#nDays").textContent = wd;
+  $("#nSpan").textContent = spanDays(S.start, S.end);
+
+  const picked = !S.start ? "Nothing chosen yet"
+    : (!S.end || S.end === S.start)
+      ? `<b>${shortDate(S.start)}</b>`
+      : `<b>${shortDate(S.start)}</b> to <b>${shortDate(S.end)}</b>`;
+  $("#picked").innerHTML = picked;
+
+  $("#live").textContent = !S.start ? ""
+    : (!S.end || S.end === S.start)
+      ? `${longDate(S.start)} selected. Click a second day to make it a range.`
+      : `${longDate(S.start)} through ${longDate(S.end)} selected, ${wd} working ${wd === 1 ? "day" : "days"}.`;
+
+  const past = S.start && S.start < toISO(today);
+  $("#tallyNote").textContent = past
+    ? "This starts in the past. Fine if you are recording something after the fact."
+    : "Weekends are not counted.";
+}
+
+grid.addEventListener("click", e => {
+  const b = e.target.closest(".day");
+  if (!b) return;
+  const iso = b.dataset.iso;
+  if (!S.start || (S.start && S.end)) { S.start = iso; S.end = null; }
+  else if (iso < S.start) { S.end = S.start; S.start = iso; }
+  else { S.end = iso; }
+  S.focus = iso;
+  sync();
+});
+
+grid.addEventListener("keydown", e => {
+  const step = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
+  if (!(e.key in step) && e.key !== "Home" && e.key !== "End") return;
+  e.preventDefault();
+  let d = toDate(S.focus) || today;
+  if (e.key === "Home") d = new Date(d.getFullYear(), d.getMonth(), 1);
+  else if (e.key === "End") d = new Date(d.getFullYear(), d.getMonth() + 1, 0);
+  else d = new Date(d.getFullYear(), d.getMonth(), d.getDate() + step[e.key]);
+  S.focus = toISO(d);
+  S.view = new Date(d.getFullYear(), d.getMonth(), 1);
+  renderCal();
+  const btn = grid.querySelector(`[data-iso="${S.focus}"]`);
+  if (btn) btn.focus();
+});
+
+$("#prev").addEventListener("click", () => {
+  S.view = new Date(S.view.getFullYear(), S.view.getMonth() - 1, 1); renderCal();
+});
+$("#next").addEventListener("click", () => {
+  S.view = new Date(S.view.getFullYear(), S.view.getMonth() + 1, 1); renderCal();
+});
+$("#clearDates").addEventListener("click", () => {
+  S.start = S.end = null; sync(); toast("Dates cleared.");
+});
+$("#halfDay").addEventListener("change", sync);
+
+/* ---------- send ---------- */
+$("#send").addEventListener("click", async () => {
+  const email = $("#person").value;
+  if (!email) { $("#person").focus(); toast("Choose your name first."); return; }
+  if (!S.start) { toast("Pick at least one day."); return; }
+  const coverage = $("#coverage").value.trim();
+  if (!coverage) { $("#coverage").focus(); toast("Say what happens to your coverage."); return; }
+
+  const single = !S.end || S.end === S.start;
+  const half = single && $("#halfDay").checked;
+  let days = workingDays(S.start, S.end);
+  if (half) days = 0.5;
+
+  const range = single ? longDate(S.start) : `${longDate(S.start)} through ${longDate(S.end)}`;
+  const summary = `${S.type}${half ? ", half day" : ""} — ${range} — ${days} working ${days === 1 ? "day" : "days"}`;
+
+  const btn = $("#send");
+  setBusy(btn, true, "Send request");
+  try {
+    await submitToNetlify("time-off", {
+      person: nameFor(email), email, type: S.type,
+      start_date: S.start, end_date: S.end || S.start,
+      days: String(days), half_day: half ? "yes" : "no",
+      summary, coverage, notes: $("#notes").value.trim()
+    });
+    $("#status").textContent = "Sent " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+    modal("Request sent", summary,
+      `<p>The team has it by email. Treat it as pending until somebody replies.</p>
+       <p>Nothing here books anything, so if a client meeting sits inside those dates it still needs moving.</p>`,
+      [{ label: "Back to resources", fn: () => { location.href = "index.html#/resources"; } },
+       { label: "Done", primary: true, fn: closeModal }]);
+  } catch (err) {
+    submitFailed(err);
+  } finally {
+    setBusy(btn, false, "Send request");
+  }
+});
+
+sync();
+</script>
+</body>
+</html>
