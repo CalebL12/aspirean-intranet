@@ -59,11 +59,10 @@ const PARTNERS = [
     id: "dimensional",
     name: "Dimensional Fund Advisors",
     logo: "assets/logos/dimensional.webp", logoH: 30,
-    what: "Fund manager. Approved-adviser access to the Dimensional funds we use.",
+    what: "Fund manager. Approved-adviser access to the Dimensional funds we use. Emails are first.last@dimensional.com.",
     links: [
-      { label: "Adviser portal", url: null },
-      { label: "Fund documents and prospectuses", url: null },
-      { label: "Research and practice management library", url: null }
+      { label: "Dimensional login", url: "https://my.dimensional.com/login" },
+      { label: "Research library", url: "https://my.dimensional.com/collections/dimensional-research" }
     ],
     contacts: [
       { name: "Avery Bonahoom", role: "Regional director",
@@ -73,9 +72,11 @@ const PARTNERS = [
         notes: "Replaced Harry Pershing in this seat. Direct line not on file yet." },
       { name: "Alex Cheriyan", role: "Vice president",
         email: "alex.cheriyan@dimensional.com", phone: "512.306.4786",
-        notes: "Austin. Exact role unclear; has answered emails to the SMA group, so may sit on the SMA side." }
+        notes: "Austin. Exact role unclear; has answered emails to the SMA group, so may sit on the SMA side." },
+      { name: "UMA Solutions desk", role: "Team inbox",
+        email: "uma@dimensional.com", phone: "310.576.1150", notes: null }
     ],
-    notes: "Emails are first.last@dimensional.com. UMA Solutions desk: uma@dimensional.com, 310.576.1150."
+    notes: null
   },
   {
     id: "aqr",
@@ -247,9 +248,15 @@ const val = (v, scheme) => {
   return `<dd><a href="${esc(scheme)}${esc(target)}">${esc(v)}</a></dd>`;
 };
 
-function contactHTML(c, i) {
+function contactHTML(c, i, partner) {
   const filled = !!c.name;
+  const avatar = c.photo
+    ? `<span class="avatar"><img src="${esc(c.photo)}" alt="" loading="lazy"></span>`
+    : partner && partner.logo
+      ? `<span class="avatar holder"><img src="${esc(partner.logo)}" alt="" loading="lazy"></span>`
+      : `<span class="avatar holder mono">${esc((c.name || partner.name || "?").slice(0, 2).toUpperCase())}</span>`;
   return `<div class="contact${filled ? " filled" : ""}">
+    ${avatar}
     <h4${filled ? "" : ' class="empty-name"'}>${esc(c.name || "Contact " + (i + 1))}</h4>
     <p class="role">${esc(c.role || "Role not set")}</p>
     <dl class="meta">
@@ -279,12 +286,11 @@ $("#partners").innerHTML = PARTNERS.map((p, n) => `
       <span class="mark" aria-hidden="true">${["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"][n] || "&middot;"}</span>
       ${p.logo ? `<img src="${esc(p.logo)}" alt="" style="height:${Number(p.logoH) || 28}px;width:auto;align-self:center" onerror="this.remove()">` : ""}
       <h2>${esc(p.name)}</h2>
-      <span class="aside">${p.contacts.filter(c => c.name).length} of ${p.contacts.length} contacts set</span>
     </div>
     <p class="prose" style="margin-bottom:var(--s5)">${esc(p.what)}</p>
 
     <p class="lbl">Our contacts there</p>
-    <div class="contacts">${p.contacts.map(contactHTML).join("")}</div>
+    <div class="contacts">${p.contacts.map((c, i) => contactHTML(c, i, p)).join("")}</div>
 
     ${p.links.length ? `<p class="lbl" style="margin-top:var(--s6)">Links</p>
     <div class="ledger">${p.links.map(linkRow).join("")}</div>` : ""}

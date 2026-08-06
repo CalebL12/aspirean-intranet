@@ -214,6 +214,14 @@ dl.meta dd.unset{color:var(--ink-faint);font-family:var(--serif);font-size:16px;
 .tool-head .tag{margin-left:auto}
 
 /* ---------- contact slots ---------- */
+.avatar{display:flex;align-items:center;justify-content:center;width:56px;height:56px;
+  border-radius:50%;overflow:hidden;margin-bottom:var(--s3);background:var(--paper);
+  border:1px solid var(--line)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar.holder{background:var(--paper-2)}
+.avatar.holder img{width:70%;height:70%;object-fit:contain}
+.avatar.mono{font-family:var(--serif);font-size:18px;color:var(--bronze-ink);letter-spacing:.04em}
+
 .contacts{display:grid;grid-template-columns:repeat(auto-fit,minmax(224px,1fr));gap:var(--s4)}
 .contact{border:1px dashed var(--line);border-radius:4px;padding:var(--s5);background:var(--paper-2)}
 .contact.filled{border-style:solid;background:var(--paper)}
