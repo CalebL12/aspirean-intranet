@@ -28,8 +28,11 @@
     <h1>Strategic <em>partners</em></h1>
     <p class="prose">Who we work with, and the specific person to call rather than a general
       support line. A relationship that only one of us knows how to reach is a relationship the
-      firm does not really have.</p>
+      firm does not really have. Each partner has its own address, so
+      <b>partners.html#aqr</b> links straight to that section.</p>
   </div>
+
+  <nav class="jump" id="jump" aria-label="Jump to a partner"></nav>
 
   <div id="partners"></div>
 
@@ -84,6 +87,22 @@ const PARTNERS = [
     notes: "What we go to them for, and what we handle ourselves. Not written yet."
   },
   {
+    id: "aqr",
+    name: "AQR",
+    what: "Asset manager. Systematic and alternative strategies.",
+    links: [
+      { label: "Adviser site", url: null },
+      { label: "Fund documents and prospectuses", url: null },
+      { label: "Research library", url: null }
+    ],
+    contacts: [
+      { name: null, role: "Regional director", email: null, phone: null, notes: null },
+      { name: null, role: "Internal sales and service", email: null, phone: null, notes: null },
+      { name: null, role: "Investment specialist", email: null, phone: null, notes: null }
+    ],
+    notes: "Which strategies we actually use, and where they sit in the models. Not written yet."
+  },
+  {
     id: "focus",
     name: "Focus Partners",
     what: "Partner firm. Set out here what the relationship actually covers.",
@@ -98,6 +117,41 @@ const PARTNERS = [
       { name: null, role: "Escalation", email: null, phone: null, notes: null }
     ],
     notes: "What the relationship covers, and who decides when to use it. Not written yet."
+  },
+  {
+    id: "claude",
+    name: "Claude",
+    what: "Anthropic. The AI assistant the firm works in, and the account behind it.",
+    links: [
+      { label: "Claude", url: "https://claude.ai" },
+      { label: "Support centre", url: "https://support.claude.com" },
+      { label: "Enterprise sales", url: "https://www.anthropic.com/contact-sales" },
+      { label: "Our internal Claude guide", url: null }
+    ],
+    contacts: [
+      { name: null, role: "Anthropic account contact", email: null, phone: null, notes: null },
+      { name: "Caleb", role: "Internal owner", email: "caleb@aspirean.com", phone: null,
+        notes: "Seats, skill files, and what the team is using it for." },
+      { name: null, role: "Billing", email: null, phone: null, notes: null }
+    ],
+    notes: "The rules on what may be put into an assistant, and on reviewing output before it reaches a client, sit in the AI row on the policies page rather than here."
+  },
+  {
+    id: "breachsecurenow",
+    name: "Breach Secure Now",
+    what: "Security awareness training, simulated phishing, dark web monitoring, and the written security policies that come with it.",
+    links: [
+      { label: "Training platform", url: null },
+      { label: "Our MSP, who resells it", url: null },
+      { label: "Training completion records", url: null }
+    ],
+    contacts: [
+      { name: null, role: "Our MSP account manager", email: null, phone: null,
+        notes: "Usually the first call: Breach Secure Now sells through IT providers rather than direct." },
+      { name: null, role: "Breach Secure Now contact", email: null, phone: null, notes: null },
+      { name: null, role: "Support and escalation", email: null, phone: null, notes: null }
+    ],
+    notes: "This is where the evidence of annual cybersecurity training comes from, which is the part an examiner asks to see. Keep the completion records somewhere Brad can produce them."
   }
 ];
 
@@ -129,6 +183,8 @@ function linkRow(l) {
          <span><span class="lname">${esc(l.label)}</span></span>
          <span class="tag">Link not set</span></div>`;
 }
+
+$("#jump").innerHTML = PARTNERS.map(p => `<a href="#${esc(p.id)}">${esc(p.name)}</a>`).join("");
 
 $("#partners").innerHTML = PARTNERS.map((p, n) => `
   <div class="block" id="${esc(p.id)}">
