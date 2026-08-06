@@ -262,6 +262,28 @@ main{max-width:var(--wrap);margin:0 auto;padding:var(--s7) var(--pad) var(--s9)}
 .empty p{font-size:13.5px;color:var(--ink-soft);margin-top:var(--s2);max-width:62ch;line-height:1.65}
 .axis{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:var(--s5);padding-top:var(--s2);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
 
+/* ---------- sign-in tiles ---------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:var(--s4)}
+.tile{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);
+  border-radius:4px;padding:var(--s5);text-decoration:none;
+  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+a.tile:hover{border-color:var(--bronze);transform:translateY(-2px);box-shadow:0 6px 22px rgba(20,36,59,.07)}
+a.tile:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+a.tile:active{transform:none}
+.tile.off{background:var(--paper-2)}
+.tile-mark{display:flex;align-items:center;height:40px;margin-bottom:var(--s4)}
+/* Height is set per logo so a square mark and a long wordmark read with the
+   same visual weight. Files are exported at twice their display height. */
+.tile-mark img{max-width:100%;width:auto;object-fit:contain;object-position:left center;display:block}
+.tile-mono{display:inline-flex;align-items:center;justify-content:center;height:34px;min-width:34px;
+  padding:0 11px;border:1px solid var(--line);border-radius:3px;background:var(--paper-2);
+  font-family:var(--serif);font-size:16px;letter-spacing:.08em;color:var(--bronze-ink)}
+.tile h4{font-size:14.5px;color:var(--navy);font-weight:500}
+.tile p{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.5}
+.tile .out{margin-top:auto;padding-top:var(--s4);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-faint)}
+a.tile:hover .out{color:var(--bronze-ink)}
+
 /* ---------- resources ---------- */
 .resgroup{margin-bottom:var(--s7)}
 .resgroup:last-child{margin-bottom:0}
@@ -598,7 +620,7 @@ footer{border-top:1px solid var(--line);background:var(--paper-2)}
     <div class="panel-head">
       <p class="eyebrow">Resources</p>
       <h2>Company resources</h2>
-      <p class="prose">The documents and destinations we reach for most. Items marked <b>link not set</b> are placeholders waiting on a URL.</p>
+      <p class="prose">The documents and destinations we reach for most, starting with the ones you sign into. Items marked <b>link not set</b> are placeholders waiting on a URL.</p>
     </div>
 
     <div class="controls">
@@ -697,6 +719,36 @@ const DATA = {
     { t: "Commitment log", d: "What each person committed to, carried into the next form.", url: null }
   ],
 
+  /* Employee resources. Logos are optional: drop a .webp into assets/logos/
+     with the filename below and it replaces the monogram automatically. */
+  employee: {
+    tiles: [
+      { name: "Schwab", mono: "CS", logo: "assets/logos/schwab.webp", h: 34,
+        d: "Your own brokerage and checking, not the advisor platform.",
+        url: "https://client.schwab.com" },
+      { name: "JULY Services", mono: "JY", logo: "assets/logos/july.webp", h: 30,
+        d: "The firm 401(k). Balance, contribution rate, investments.",
+        url: "https://401k.julyservices.com" },
+      { name: "Flourish Cash", mono: "FC", logo: "assets/logos/flourish.webp", h: 36,
+        d: "Cash management, on the same platform clients use.",
+        url: "https://www.flourish.com/login" },
+      { name: "Pay-Net Online", mono: "PN", logo: "assets/logos/paynet.webp", h: 34,
+        d: "Payroll. Employees continue through to myPay Kiosk.",
+        url: "https://www.pay-netonline.com/PayNet/Login/Login.aspx" },
+      { name: "Password manager", mono: "PW", logo: "assets/logos/passwords.webp",
+        d: "Every other credential belongs here, not in this list.", url: null },
+      { name: "Email and calendar", mono: "EC", logo: "assets/logos/email.webp",
+        d: "Webmail, for when you are not on your own machine.", url: null }
+    ],
+    items: [
+      { t: "Time off", d: "How to request it, and where it is tracked.", url: null },
+      { t: "Expense reimbursement", d: "What is covered, and how to submit it.", url: null },
+      { t: "Benefits summary", d: "Health and dental, and what renews when.", url: null },
+      { t: "Payroll calendar", d: "Pay dates and submission cutoffs for the year.", url: null },
+      { t: "New hire setup", d: "Accounts, access, and the first-week checklist.", url: null }
+    ]
+  },
+
   /* Company resources */
   resources: [
     { group: "Compliance", items: [
@@ -723,8 +775,6 @@ const DATA = {
       { t: "Email signature standards", d: "Format, disclosures, and the current footer language.", url: null }
     ]},
     { group: "People and firm", items: [
-      { t: "Time off calendar", d: "Request, approve, and see who is out.", url: null },
-      { t: "Expense reimbursement", d: "What is covered, and how to submit it.", url: null },
       { t: "Office directory", d: "Mill Valley, Chesterton, and St. Joseph.", url: null },
       { t: "Moving Future", d: "The twice-yearly reflection and its archive.", url: "#/moving-future" }
     ]}
@@ -973,11 +1023,54 @@ function renderArchive() {
 /* ============================================================
    RESOURCES
    ============================================================ */
+/* A sign-in destination. The monogram shows until a logo file loads, so the
+   grid looks deliberate whether or not the images have been added yet. */
+function tileHTML(t) {
+  const inner = `<span class="tile-mark">
+      <span class="tile-mono">${esc(t.mono)}</span>
+      ${t.logo ? `<img src="${esc(t.logo)}" alt="${esc(t.name)}" style="height:${Number(t.h) || 34}px" hidden>` : ""}
+    </span>
+    <h4>${esc(t.name)}</h4>
+    <p>${esc(t.d)}</p>
+    <span class="out">${t.url ? "Sign in &nearr;" : "Link not set"}</span>`;
+  return t.url
+    ? `<a class="tile" href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">${inner}</a>`
+    : `<div class="tile off">${inner}</div>`;
+}
+
+function swapLogos() {
+  $$("#resList .tile-mark img").forEach(img => {
+    const show = () => {
+      img.hidden = false;
+      const mono = img.parentElement.querySelector(".tile-mono");
+      if (mono) mono.hidden = true;
+    };
+    if (img.complete && img.naturalWidth > 0) show();
+    else img.addEventListener("load", show, { once: true });
+  });
+}
+
 function renderResources() {
   const q = ($("#fRes").value || "").trim().toLowerCase();
+  const hit = (...parts) => !q || parts.filter(Boolean).join(" ").toLowerCase().includes(q);
   let shown = 0;
 
-  const html = DATA.resources.map(g => {
+  const emp = DATA.employee || { tiles: [], items: [] };
+  const tiles = emp.tiles.filter(t => hit(t.name, t.d, "employee resources sign in login"));
+  const items = emp.items.filter(it => hit(it.t, it.d, "employee resources"));
+  let employeeHTML = "";
+  if (tiles.length || items.length) {
+    const n = tiles.length + items.length;
+    shown += n;
+    employeeHTML = `<div class="resgroup">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Employee resources</h3>
+      <span class="aside">${n} ${n === 1 ? "item" : "items"}</span></div>
+      ${tiles.length ? `<div class="tiles">${tiles.map(tileHTML).join("")}</div>` : ""}
+      ${items.length ? `<div class="ledger" style="margin-top:var(--s5)">${items.map(rowHTML).join("")}</div>` : ""}
+    </div>`;
+  }
+
+  const html = employeeHTML + DATA.resources.map(g => {
     const items = g.items.filter(it =>
       !q || (it.t + " " + it.d + " " + g.group).toLowerCase().includes(q)
     );
@@ -993,6 +1086,7 @@ function renderResources() {
   $("#resList").innerHTML = html ||
     `<div class="empty"><h4>No match</h4><p>Nothing here uses that word. Try the group name, or clear the search to see everything.</p></div>`;
   $("#resCount").textContent = q ? `${shown} matching` : `${shown} items`;
+  swapLogos();
 }
 
 /* ============================================================
