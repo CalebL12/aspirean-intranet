@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Aspirean Intranet</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -289,6 +292,15 @@ a.tile:hover .out{color:var(--bronze-ink)}
 .resgroup:last-child{margin-bottom:0}
 .nores{padding:var(--s5) 0;font-size:14px;color:var(--ink-soft)}
 
+/* ---------- section subnav ---------- */
+.subnav{display:flex;gap:var(--s2);margin-bottom:var(--s6);flex-wrap:wrap}
+.subnav a{border:1px solid var(--line);background:var(--paper);border-radius:3px;padding:9px 15px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+  text-decoration:none;transition:border-color .15s ease,color .15s ease,background .15s ease}
+.subnav a:hover{border-color:var(--bronze);color:var(--bronze-ink)}
+.subnav a.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.subnav a:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+
 /* ---------- collapsed reference fold ---------- */
 details.fold{border:1px solid var(--line);border-radius:4px;background:var(--paper);margin-bottom:var(--s7)}
 details.fold > summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:var(--s3);
@@ -449,9 +461,8 @@ footer{border-top:1px solid var(--line);background:var(--paper-2)}
   <nav class="tabs" aria-label="Intranet sections">
     <a class="tab" href="#/home" data-route="home">Home</a>
     <a class="tab" href="#/moving-future" data-route="moving-future">Moving Future 2026</a>
-    <a class="tab" href="#/responses" data-route="responses">Responses</a>
-    <a class="tab" href="#/archive" data-route="archive">Archive</a>
     <a class="tab" href="#/resources" data-route="resources">Resources</a>
+    <a class="tab" href="softwares.html">Software</a>
   </nav>
 </div>
 
@@ -495,7 +506,7 @@ footer{border-top:1px solid var(--line);background:var(--paper-2)}
           <a class="door" href="#/responses">
             <span class="mark" aria-hidden="true">II</span>
             <h3>Responses</h3>
-            <p>Everyone's answers for the open cycle, side by side. Opens once yours is in.</p>
+            <p>Everyone's answers for the open cycle, side by side. Opens once yours is in. Lives under Moving Future.</p>
             <span class="go">Read the room &rarr;</span>
           </a>
           <a class="door" href="#/archive">
@@ -522,6 +533,11 @@ footer{border-top:1px solid var(--line);background:var(--paper-2)}
 
   <!-- ==================== MOVING FUTURE ==================== -->
   <section class="panel" id="panel-moving-future" hidden>
+    <nav class="subnav" aria-label="Moving Future sections">
+      <a href="#/moving-future" data-sub="moving-future">This cycle</a>
+      <a href="#/responses" data-sub="responses">Responses</a>
+      <a href="#/archive" data-sub="archive">Archive</a>
+    </nav>
     <div class="panel-head">
       <p class="eyebrow">Moving Future</p>
       <h2>This year's cycle</h2>
@@ -594,8 +610,13 @@ footer{border-top:1px solid var(--line);background:var(--paper-2)}
 
   <!-- ==================== RESPONSES ==================== -->
   <section class="panel" id="panel-responses" hidden>
+    <nav class="subnav" aria-label="Moving Future sections">
+      <a href="#/moving-future" data-sub="moving-future">This cycle</a>
+      <a href="#/responses" data-sub="responses">Responses</a>
+      <a href="#/archive" data-sub="archive">Archive</a>
+    </nav>
     <div class="panel-head">
-      <p class="eyebrow">Responses</p>
+      <p class="eyebrow">Moving Future &nbsp;&middot;&nbsp; Responses</p>
       <h2>The reading room</h2>
       <p class="prose">Every answer for the open cycle, side by side. It unlocks once your own response is in, which is the only rule. Read it before the discussion, not during.</p>
     </div>
@@ -605,8 +626,13 @@ footer{border-top:1px solid var(--line);background:var(--paper-2)}
 
   <!-- ==================== ARCHIVE ==================== -->
   <section class="panel" id="panel-archive" hidden>
+    <nav class="subnav" aria-label="Moving Future sections">
+      <a href="#/moving-future" data-sub="moving-future">This cycle</a>
+      <a href="#/responses" data-sub="responses">Responses</a>
+      <a href="#/archive" data-sub="archive">Archive</a>
+    </nav>
     <div class="panel-head">
-      <p class="eyebrow">Archive</p>
+      <p class="eyebrow">Moving Future &nbsp;&middot;&nbsp; Archive</p>
       <h2>Every cycle on record</h2>
       <p class="prose">One entry per cycle, newest first. What was submitted, what came out of the discussion, and where the files sit. The point of keeping it is being able to read January against July, and this year against last.</p>
     </div>
@@ -764,7 +790,7 @@ const DATA = {
       { name: "1Password", mono: "PW", logo: "assets/logos/passwords.webp", h: 30,
         d: "The firm vault. Every other credential belongs here, not in this list.",
         url: "https://my.1password.com" },
-      { name: "Email and calendar", mono: "EC", logo: "assets/logos/email.webp",
+      { name: "Email and calendar", mono: "EC", logo: null,
         d: "Webmail, for when you are not on your own machine.", url: null }
     ],
     items: [
@@ -785,13 +811,13 @@ const DATA = {
       d: "Asset manager. Works through team inboxes rather than one rep.", url: "partners.html#aqr" },
     { name: "Focus Partners", mono: "FP", logo: "assets/logos/focuspartners.webp", h: 30,
       d: "Partner firm. Sean Brooks, plus the FAS trading desk.", url: "partners.html#focus" },
-    { name: "Nationwide", mono: "NW", logo: null, h: 30,
+    { name: "Nationwide", mono: "NW", logo: "assets/logos/nationwide.webp", h: 32,
       d: "Retirement solutions servicing. Luke Kilbert.", url: "partners.html#nationwide" },
-    { name: "Inhouse CIO", mono: "IC", logo: null, h: 30,
+    { name: "Inhouse CIO", mono: "IC", logo: "assets/logos/inhousecio.webp", h: 28,
       d: "The firm's IT provider. Helpdesk first.", url: "partners.html#inhousecio" },
-    { name: "Claude", mono: "CL", logo: null, h: 30,
+    { name: "Claude", mono: "CL", logo: "assets/logos/claude.webp", h: 30,
       d: "Anthropic. The assistant the firm works in.", url: "partners.html#claude" },
-    { name: "Breach Secure Now", mono: "BS", logo: null, h: 30,
+    { name: "Breach Secure Now", mono: "BS", logo: "assets/logos/bsn.webp", h: 30,
       d: "Security training and phishing, through Inhouse CIO.", url: "partners.html#breachsecurenow" }
   ],
 
@@ -1488,13 +1514,21 @@ const TITLES = {
 };
 let booted = false;
 
+const TOP_TAB = { "responses": "moving-future", "archive": "moving-future" };
+
 function route() {
   const raw = (location.hash || "").replace(/^#\/?/, "");
   const id = ROUTES.includes(raw) ? raw : "home";
+  const top = TOP_TAB[id] || id;
 
   $$(".panel").forEach(p => { p.hidden = (p.id !== "panel-" + id); });
   $$(".tab").forEach(a => {
-    const on = a.dataset.route === id;
+    const on = a.dataset.route === top;
+    a.classList.toggle("on", on);
+    if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  });
+  $$(".subnav a").forEach(a => {
+    const on = a.dataset.sub === id;
     a.classList.toggle("on", on);
     if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
   });
