@@ -1,0 +1,1697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Aspirean Intranet</title>
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   ASPIREAN INTRANET
+   Direction: private-bank letterhead run as an instrument panel.
+   Navy masthead, cream paper, bronze hairlines, Cormorant numerals
+   as ledger marks. Inherits the Moving Future palette exactly.
+   ============================================================ */
+:root{
+  color-scheme:light;
+
+  --navy:#14243B; --navy-deep:#0C1727; --navy-soft:#2A3F5C;
+  --on-navy:#DCE3EC; --on-navy-dim:#9BAABC; --navy-hair:rgba(255,255,255,.13);
+
+  --bronze:#A8874F; --bronze-light:#C4A876; --bronze-ink:#8A6C36;
+
+  --cream:#FBF9F5; --paper:#FFFFFF; --paper-2:#F5F2EA;
+  --line:#E2DDD3; --line-soft:#EEEAE2;
+
+  --ink:#1C1C1A; --ink-soft:#5A5A55; --ink-faint:#6E6E66;
+  --good:#3F5C46; --open:#8A6C36; --idle:#9A9A92;
+
+  --serif:'Cormorant Garamond',Cormorant,Garamond,Georgia,'Times New Roman',serif;
+  --sans:'DM Sans',system-ui,-apple-system,'Segoe UI',Helvetica,sans-serif;
+
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:24px;
+  --s6:32px; --s7:48px; --s8:64px; --s9:88px;
+
+  --t0:15px; --t1:19px; --t2:24px; --t3:31px;
+  --t4:clamp(34px,4.6vw,52px);
+
+  --wrap:1080px;
+  --pad:40px;
+}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--cream);color:var(--ink);
+  font-family:var(--sans);font-size:var(--t0);line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4,p{margin:0}
+a{color:inherit}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- shared type ---------- */
+.eyebrow{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint)}
+.eyebrow.on-navy{color:var(--bronze-light)}
+.display{font-family:var(--serif);font-weight:300;line-height:1.06;letter-spacing:-.01em}
+.display em{font-style:italic;color:var(--bronze-light)}
+.prose{max-width:64ch;color:var(--ink-soft)}
+.mark{font-family:var(--serif);color:var(--bronze-ink);font-size:15px;letter-spacing:.06em}
+
+/* ---------- skip link ---------- */
+.skip{position:absolute;left:-9999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;z-index:200}
+.skip:focus{left:12px;top:12px}
+
+/* ---------- masthead ---------- */
+.masthead{background:var(--navy);color:#fff;padding:var(--s7) var(--pad) var(--s6)}
+.mast-quote{max-width:var(--wrap);margin:var(--s6) auto 0;padding-top:var(--s5);
+  border-top:1px solid var(--navy-hair)}
+.mast-quote blockquote{margin:0;font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:19px;line-height:1.55;color:#CDD6E1;letter-spacing:.005em;max-width:76ch}
+.mast-quote figcaption{margin-top:var(--s2);font-size:10px;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--bronze-light)}
+.mast-quote figcaption .src{color:var(--on-navy-dim);text-transform:none;letter-spacing:.04em;
+  font-size:11.5px;font-family:var(--serif);font-style:italic}
+.mast-wrap{max-width:var(--wrap);margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:var(--s5);flex-wrap:wrap}
+.mast-id h1{font-family:var(--serif);font-weight:300;font-size:40px;line-height:1;letter-spacing:-.01em;margin-top:var(--s3)}
+.mast-id h1 em{font-style:italic;color:var(--bronze-light)}
+.clocks{display:flex;gap:var(--s5);padding-bottom:var(--s1)}
+.clock{text-align:right}
+.clock .city{display:block;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--on-navy-dim)}
+.clock .time{display:block;font-family:var(--serif);font-size:21px;font-weight:400;color:var(--bronze-light);line-height:1.25;font-variant-numeric:tabular-nums}
+
+/* ---------- tabs ---------- */
+.tabbar{background:var(--navy-deep);border-bottom:1px solid var(--navy-hair);position:sticky;top:0;z-index:50}
+.tabs{max-width:var(--wrap);margin:0 auto;padding:0 var(--pad);display:flex;gap:var(--s6);overflow-x:auto}
+.tab{
+  display:block;padding:15px 0 13px;border-bottom:2px solid transparent;
+  font-size:11px;letter-spacing:.17em;text-transform:uppercase;
+  color:var(--on-navy-dim);text-decoration:none;white-space:nowrap;
+  transition:color .18s ease,border-color .18s ease;
+}
+.tab:hover{color:#fff}
+.tab.on{color:#fff;border-bottom-color:var(--bronze)}
+.tab:focus-visible{outline:2px solid var(--bronze-light);outline-offset:2px}
+
+/* ---------- layout ---------- */
+main{max-width:var(--wrap);margin:0 auto;padding:var(--s7) var(--pad) var(--s9)}
+.panel-head{margin-bottom:var(--s6)}
+.panel-head h2{font-family:var(--serif);font-weight:400;font-size:var(--t3);color:var(--navy);letter-spacing:-.01em;margin:var(--s2) 0 var(--s2)}
+.panel-head h2:focus{outline:none}
+.block{margin-bottom:var(--s7)}
+.block-head{display:flex;align-items:baseline;gap:var(--s3);border-bottom:1px solid var(--navy);padding-bottom:var(--s3);margin-bottom:var(--s5)}
+.block-head h3{font-family:var(--serif);font-weight:400;font-size:var(--t2);color:var(--navy)}
+.block-head .aside{margin-left:auto;font-size:12px;color:var(--ink-faint)}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-block;border:1px solid var(--navy);background:transparent;color:var(--navy);
+  font-family:var(--sans);font-size:12.5px;letter-spacing:.05em;padding:12px 20px;
+  border-radius:3px;cursor:pointer;text-decoration:none;min-height:44px;
+  transition:background .18s ease,transform .12s ease,color .18s ease;
+}
+.btn:hover{background:rgba(20,36,59,.07)}
+.btn:active{transform:translateY(1px)}
+.btn:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+.btn.primary{background:var(--navy);color:#fff}
+.btn.primary:hover{background:var(--navy-deep)}
+.btn.on-navy{border-color:var(--bronze);background:var(--bronze);color:var(--navy-deep);font-weight:500}
+.btn.on-navy:hover{background:var(--bronze-light)}
+.btn.on-navy:focus-visible{outline-color:#fff}
+.btn.quiet{border-color:var(--line);color:var(--ink-soft)}
+.btn.on-navy-quiet{border-color:rgba(255,255,255,.3);color:var(--on-navy)}
+.btn.on-navy-quiet:hover{background:rgba(255,255,255,.08);border-color:var(--bronze-light);color:#fff}
+.btn.on-navy-quiet:focus-visible{outline-color:var(--bronze-light)}
+.btn.quiet:hover{border-color:var(--ink-faint);background:transparent}
+
+/* ---------- status band (home) ---------- */
+.band{background:var(--navy);color:#fff;border-radius:4px;padding:var(--s6) var(--s6) var(--s5)}
+.band-grid{display:grid;grid-template-columns:1.5fr auto 1fr;gap:var(--s7);align-items:end}
+.band h3{font-family:var(--serif);font-weight:300;font-size:34px;line-height:1.08;margin-top:var(--s3)}
+.band h3 em{font-style:italic;color:var(--bronze-light)}
+.band-meta{margin-top:var(--s3);font-size:13px;color:var(--on-navy);line-height:1.7}
+.band-meta b{color:#fff;font-weight:500}
+.countdown{text-align:center;padding:0 var(--s5);border-left:1px solid var(--navy-hair);border-right:1px solid var(--navy-hair)}
+.countdown .n{display:block;font-family:var(--serif);font-weight:300;font-size:66px;line-height:.9;color:var(--bronze-light);font-variant-numeric:tabular-nums}
+.countdown .l{display:block;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--on-navy-dim);margin-top:var(--s2)}
+.band-act{text-align:right}
+.band-act .btn{width:100%;text-align:center}
+.band-act .sub{display:block;margin-top:var(--s3);font-size:12px;color:var(--on-navy-dim)}
+
+/* ---------- doors (home) ---------- */
+.doors{display:grid;grid-template-columns:1.35fr 1fr;gap:var(--s4)}
+.door-col{display:grid;gap:var(--s4)}
+.door{
+  display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);
+  border-radius:4px;padding:var(--s5) var(--s5) var(--s4);text-decoration:none;
+  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;
+}
+.door:hover{border-color:var(--bronze);transform:translateY(-2px);box-shadow:0 6px 22px rgba(20,36,59,.07)}
+.door:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+.door:active{transform:none}
+.door h3{font-family:var(--serif);font-weight:500;font-size:var(--t2);color:var(--navy);margin:var(--s3) 0 var(--s2)}
+.door p{font-size:13.5px;color:var(--ink-soft);line-height:1.6}
+.door .go{margin-top:auto;padding-top:var(--s4);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--bronze-ink)}
+.door-lg h3{font-size:29px}
+.door-lg p{font-size:15px;max-width:44ch}
+
+/* ---------- ledger rows ---------- */
+.ledger{border-top:1px solid var(--line)}
+.lrow{display:grid;grid-template-columns:auto 1fr auto;gap:var(--s4);align-items:baseline;padding:var(--s4) 0;border-bottom:1px solid var(--line-soft)}
+.lrow .lname{font-size:14.5px;color:var(--ink);font-weight:500}
+.lrow .ldesc{font-size:13px;color:var(--ink-soft);margin-top:2px;line-height:1.55}
+.lrow .lright{font-size:12px;color:var(--ink-faint);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.lrow.linkrow{cursor:pointer;text-decoration:none;transition:background .15s ease}
+.lrow.linkrow:hover{background:var(--paper)}
+.lrow.linkrow:hover .lname{color:var(--bronze-ink)}
+.lrow.linkrow:focus-visible{outline:2px solid var(--bronze);outline-offset:-2px}
+.tag{font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--line);border-radius:2px;padding:4px 7px}
+.tag.set{color:var(--bronze-ink);border-color:#DED3BC}
+
+/* ---------- dots ---------- */
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:7px;vertical-align:1px}
+.dot.complete{background:var(--good)}
+.dot.open{background:var(--bronze)}
+.dot.idle{background:var(--idle)}
+.dot.none{background:transparent;border:1px solid var(--idle)}
+
+/* ---------- roster ---------- */
+.roster{width:100%;border-collapse:collapse}
+.roster caption{text-align:left;font-size:13px;color:var(--ink-faint);padding-bottom:var(--s3)}
+.roster th{
+  text-align:left;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--ink-faint);font-weight:400;padding:0 var(--s4) var(--s2) 0;border-bottom:1px solid var(--line)
+}
+.roster td{padding:var(--s4) var(--s4) var(--s4) 0;border-bottom:1px solid var(--line-soft);font-size:14px;vertical-align:middle}
+.roster td.who{font-weight:500;width:34%}
+.roster td.who .sub-email{display:block;font-weight:400;font-size:12px;color:var(--ink-faint);margin-top:2px}
+.livenote{font-size:12.5px;color:var(--ink-faint);margin-top:var(--s4);line-height:1.6}
+.livenote.warn{color:var(--bronze-ink)}
+.roster td.status{width:24%;color:var(--ink-soft)}
+.roster td.role{color:var(--ink-faint);font-style:italic;font-family:var(--serif);font-size:16px}
+.roster td.pct{text-align:right;font-variant-numeric:tabular-nums;color:var(--ink-soft);width:14%}
+.meter{display:block;height:2px;background:var(--line);margin-top:6px;max-width:120px;margin-left:auto}
+.meter span{display:block;height:100%;background:var(--bronze)}
+
+/* ---------- cycle card (navy, moving future) ---------- */
+.cyc{background:var(--navy);color:#fff;border-radius:4px;padding:var(--s6);display:grid;grid-template-columns:1fr auto;gap:var(--s7);align-items:center}
+.cyc h3{font-family:var(--serif);font-weight:300;font-size:32px;line-height:1.1}
+.cyc h3 em{font-style:italic;color:var(--bronze-light)}
+.dates{display:flex;gap:var(--s6);margin-top:var(--s4);flex-wrap:wrap}
+.date .k{display:block;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--on-navy-dim);margin-bottom:var(--s1)}
+.date .v{display:block;font-size:14px;color:#fff}
+.cyc-act{display:grid;gap:var(--s3);min-width:220px}
+.cyc-note{grid-column:1/-1;border-top:1px solid var(--navy-hair);padding-top:var(--s4);margin-top:var(--s2);font-size:13px;color:var(--on-navy);max-width:70ch}
+
+/* ---------- two-column list ---------- */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 var(--s7)}
+.sec{display:grid;grid-template-columns:26px 1fr;gap:var(--s3);padding:var(--s4) 0;border-bottom:1px solid var(--line-soft)}
+.sec .n{font-family:var(--serif);font-size:16px;color:var(--bronze-ink);letter-spacing:.04em}
+.sec h4{font-size:14.5px;color:var(--navy);font-weight:500}
+.sec p{font-size:13px;color:var(--ink-soft);margin-top:3px;line-height:1.55}
+
+/* ---------- rhythm ---------- */
+.rhythm{display:grid;grid-template-columns:1fr 1fr;gap:var(--s5);border-top:1px solid var(--line);padding-top:var(--s5)}
+.beat{border-left:2px solid var(--bronze);padding-left:var(--s4)}
+.beat.past{border-left-color:var(--line)}
+.beat .k{font-family:var(--serif);font-size:20px;color:var(--navy)}
+.beat .k em{font-style:italic;color:var(--bronze-ink)}
+.beat p{font-size:13px;color:var(--ink-soft);margin-top:var(--s2);line-height:1.6}
+
+/* ---------- steps ---------- */
+.steps{counter-reset:step;display:grid;gap:var(--s4)}
+.step{display:grid;grid-template-columns:34px 1fr;gap:var(--s3);align-items:baseline}
+.step::before{
+  counter-increment:step;content:counter(step,decimal-leading-zero);
+  font-family:var(--serif);font-size:17px;color:var(--bronze-ink);letter-spacing:.04em
+}
+.step p{font-size:14px;color:var(--ink-soft);line-height:1.6}
+.step p b{color:var(--ink);font-weight:500}
+
+/* ---------- archive controls ---------- */
+.controls{display:flex;gap:var(--s4);align-items:flex-end;flex-wrap:wrap;margin-bottom:var(--s5)}
+.field label{display:block;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
+.field select,.field input[type=search]{
+  font-family:var(--sans);font-size:14px;color:var(--ink);background:var(--paper);
+  border:1px solid var(--line);border-radius:3px;padding:10px 12px;min-height:44px;min-width:190px
+}
+.field select:hover,.field input[type=search]:hover{border-color:var(--ink-faint)}
+.field input[type=search]::placeholder{color:var(--ink-faint)}
+.field select:focus-visible,.field input[type=search]:focus-visible{outline:2px solid var(--bronze);outline-offset:1px;border-color:var(--bronze)}
+.count-note{margin-left:auto;font-size:12px;color:var(--ink-faint);padding-bottom:var(--s3)}
+
+/* ---------- archive entries ---------- */
+.entry{background:var(--paper);border:1px solid var(--line);border-radius:4px;margin-bottom:var(--s3)}
+.entry+.entry{margin-top:0}
+.entry > summary{
+  list-style:none;cursor:pointer;padding:var(--s5);display:grid;
+  grid-template-columns:auto 1fr auto auto;gap:var(--s4);align-items:baseline
+}
+.entry > summary::-webkit-details-marker{display:none}
+.entry > summary:focus-visible{outline:2px solid var(--bronze);outline-offset:-2px;border-radius:4px}
+.entry:hover{border-color:#D6CFC0}
+.entry .cy{font-family:var(--serif);font-size:22px;color:var(--navy);font-weight:500}
+.entry .cy em{font-style:italic;color:var(--bronze-ink);font-size:19px}
+.entry .st{font-size:12px;color:var(--ink-soft);white-space:nowrap}
+.entry .ct{font-size:12px;color:var(--ink-faint);white-space:nowrap;font-variant-numeric:tabular-nums}
+.entry .chev{font-size:11px;color:var(--ink-faint);transition:transform .2s ease}
+.entry[open] .chev{transform:rotate(90deg)}
+.entry .body{padding:0 var(--s5) var(--s5);border-top:1px solid var(--line-soft);margin-top:var(--s1)}
+.entry .body h4{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);font-weight:400;margin:var(--s5) 0 var(--s2)}
+.entry .note{font-size:13.5px;color:var(--ink-soft);max-width:70ch;margin-top:var(--s4);line-height:1.65}
+
+/* ---------- empty state ---------- */
+.empty{background:var(--paper-2);border:1px solid var(--line);border-radius:4px;padding:var(--s6)}
+.empty h4{font-family:var(--serif);font-size:var(--t1);color:var(--navy);font-weight:500}
+.empty p{font-size:13.5px;color:var(--ink-soft);margin-top:var(--s2);max-width:62ch;line-height:1.65}
+.axis{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:var(--s5);padding-top:var(--s2);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
+
+/* ---------- sign-in launcher ---------- */
+.launch{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:var(--s3)}
+.launch a,.launch .off{display:flex;flex-direction:column;align-items:flex-start;
+  background:var(--paper);border:1px solid var(--line);border-radius:6px;
+  padding:var(--s5) var(--s5) var(--s4);min-height:196px;text-decoration:none}
+.launch a{transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.launch a:hover{border-color:var(--bronze);transform:translateY(-2px);
+  box-shadow:0 8px 24px rgba(20,36,59,.08)}
+.launch a:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+.launch a:active{transform:none}
+.launch .off{background:var(--paper-2);border-style:dashed}
+.launch .lg{height:64px;display:flex;align-items:center;margin-bottom:var(--s4)}
+.launch .lg img{max-height:64px;max-width:150px;width:auto;object-fit:contain;display:block}
+.launch .lg .tile-mono{height:64px;min-width:64px;font-size:22px}
+.launch h4{font-size:15px;color:var(--navy);font-weight:700;letter-spacing:-.005em;line-height:1.3}
+.launch .blurb{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-top:5px}
+.launch .go{margin-top:auto;padding-top:var(--s4);font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink-faint);transition:color .15s ease}
+.launch a:hover .go{color:var(--bronze-ink)}
+
+/* ---------- sign-in tiles ---------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:var(--s4)}
+.tile{display:flex;flex-direction:column;background:var(--paper);border:1px solid var(--line);
+  border-radius:4px;padding:var(--s5);text-decoration:none;
+  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+a.tile:hover{border-color:var(--bronze);transform:translateY(-2px);box-shadow:0 6px 22px rgba(20,36,59,.07)}
+a.tile:focus-visible{outline:2px solid var(--bronze);outline-offset:3px}
+a.tile:active{transform:none}
+.tile.off{background:var(--paper-2)}
+.tile-mark{display:flex;align-items:center;height:40px;margin-bottom:var(--s4)}
+/* Height is set per logo so a square mark and a long wordmark read with the
+   same visual weight. Files are exported at twice their display height. */
+.tile-mark img{max-width:100%;width:auto;object-fit:contain;object-position:left center;display:block}
+.tile-mono{display:inline-flex;align-items:center;justify-content:center;height:34px;min-width:34px;
+  padding:0 11px;border:1px solid var(--line);border-radius:3px;background:var(--paper-2);
+  font-family:var(--serif);font-size:16px;letter-spacing:.08em;color:var(--bronze-ink)}
+.tile h4{font-size:14.5px;color:var(--navy);font-weight:500}
+.tile p{font-size:12.5px;color:var(--ink-soft);margin-top:4px;line-height:1.5}
+.tile .out{margin-top:auto;padding-top:var(--s4);font-size:9.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-faint)}
+a.tile:hover .out{color:var(--bronze-ink)}
+
+/* ---------- resources ---------- */
+.resgroup{margin-bottom:var(--s7)}
+.resgroup:last-child{margin-bottom:0}
+.nores{padding:var(--s5) 0;font-size:14px;color:var(--ink-soft)}
+
+/* ---------- section subnav ---------- */
+.subnav{display:flex;gap:var(--s2);margin-bottom:var(--s6);flex-wrap:wrap}
+.subnav a{border:1px solid var(--line);background:var(--paper);border-radius:3px;padding:9px 15px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);
+  text-decoration:none;transition:border-color .15s ease,color .15s ease,background .15s ease}
+.subnav a:hover{border-color:var(--bronze);color:var(--bronze-ink)}
+.subnav a.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.subnav a:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
+
+/* ---------- collapsed reference fold ---------- */
+details.fold{border:1px solid var(--line);border-radius:4px;background:var(--paper);margin-bottom:var(--s7)}
+details.fold > summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:var(--s3);
+  padding:var(--s5) var(--s5)}
+details.fold > summary::-webkit-details-marker{display:none}
+details.fold > summary:focus-visible{outline:2px solid var(--bronze);outline-offset:-2px;border-radius:4px}
+details.fold > summary h3{font-family:var(--serif);font-weight:400;font-size:var(--t2);color:var(--navy)}
+details.fold > summary .sub{font-size:12.5px;color:var(--ink-faint);margin-left:auto;text-align:right}
+details.fold > summary .chev{font-size:11px;color:var(--ink-faint);transition:transform .2s ease}
+details.fold[open] > summary .chev{transform:rotate(90deg)}
+details.fold > .fold-body{padding:0 var(--s5) var(--s5);border-top:1px solid var(--line-soft)}
+details.fold > .fold-body > .block:first-child{margin-top:var(--s5)}
+details.fold > .fold-body > .block:last-child{margin-bottom:0}
+
+/* ---------- gate + reading room ---------- */
+.gate{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:var(--s6)}
+.gate-row{display:flex;gap:var(--s4);align-items:flex-end;flex-wrap:wrap}
+.gate-row .btn{min-width:200px;text-align:center}
+.gate-note{font-size:13px;color:var(--ink-soft);margin-top:var(--s4);max-width:66ch;line-height:1.65}
+.gate.locked{background:var(--paper-2)}
+.gate h4{font-family:var(--serif);font-size:var(--t2);color:var(--navy);font-weight:500;margin-bottom:var(--s2)}
+.gate.warn{border-left:3px solid var(--bronze)}
+
+.rr-head{display:flex;align-items:flex-end;gap:var(--s5);flex-wrap:wrap;border-bottom:1px solid var(--navy);padding-bottom:var(--s4);margin-bottom:var(--s6)}
+.rr-head .rr-meta{font-size:13px;color:var(--ink-soft)}
+.rr-head .rr-meta b{color:var(--navy);font-weight:500}
+.seg{display:flex;border:1px solid var(--line);border-radius:3px;overflow:hidden;margin-left:auto}
+.seg button{border:none;background:var(--paper);color:var(--ink-soft);font-family:var(--sans);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;padding:11px 16px;cursor:pointer;min-height:44px;transition:background .15s ease,color .15s ease}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button:hover{background:var(--paper-2);color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.seg button:focus-visible{outline:2px solid var(--bronze);outline-offset:-2px}
+
+.qblock{margin-bottom:var(--s7)}
+.qblock-h{display:grid;grid-template-columns:34px 1fr;gap:var(--s3);align-items:baseline;margin-bottom:var(--s4)}
+.qblock-h .qn{font-family:var(--serif);font-size:17px;color:var(--bronze-ink);letter-spacing:.04em}
+.qblock-h h3{font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.3;color:var(--navy)}
+.qblock-h .sec{display:block;font-family:var(--sans);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);font-weight:400;margin-bottom:5px}
+.ansbox{border-left:2px solid var(--line);padding:0 0 0 var(--s4);margin:0 0 var(--s4) 34px}
+.ansbox.mine{border-left-color:var(--bronze)}
+.ansbox .who{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);font-weight:500;margin-bottom:var(--s2)}
+.ansbox .who span{color:var(--bronze-ink);letter-spacing:.12em}
+ul.ans{margin:0;padding-left:18px}
+ul.ans li{font-size:14.5px;line-height:1.6;color:var(--ink);margin-bottom:6px}
+ul.ans.keyed{list-style:none;padding-left:0}
+ul.ans.keyed li{margin-bottom:8px}
+.ans-k{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:2px}
+.ans-k.keep{color:var(--good)}.ans-k.start{color:var(--navy-soft)}.ans-k.stop{color:#8E4A3F}
+.ans-p{font-size:14.5px;line-height:1.65;color:var(--ink)}
+.ans-none{font-size:13px;color:var(--ink-faint);font-style:italic;font-family:var(--serif);font-size:16px}
+.cstat{display:inline-block;font-size:9px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--line);
+  border-radius:2px;padding:3px 6px;margin-right:8px;color:var(--ink-faint);vertical-align:1px}
+.cstat.done{border-color:#BFD0C2;color:var(--good)}
+.cstat.advanced{border-color:#DED3BC;color:var(--bronze-ink)}
+.cstat.dropped{color:var(--idle)}
+
+.pblock{border-top:1px solid var(--navy);padding-top:var(--s4);margin-bottom:var(--s7)}
+.pblock-h{display:flex;align-items:baseline;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s5)}
+.pblock-h h3{font-family:var(--serif);font-weight:500;font-size:25px;color:var(--navy)}
+.pblock-h .role{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--bronze-ink)}
+.pblock-h .stamp{margin-left:auto;font-size:12px;color:var(--ink-faint)}
+.pq{margin-bottom:var(--s5)}
+.pq h4{font-size:14px;color:var(--navy);font-weight:500;margin-bottom:var(--s2);max-width:74ch}
+.pq h4 span{color:var(--bronze-ink);font-family:var(--serif);font-size:15px;margin-right:6px}
+
+.sgrid{width:100%;border-collapse:collapse;margin-bottom:var(--s5)}
+.sgrid th{text-align:left;font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);
+  font-weight:400;padding:0 var(--s3) var(--s2) 0;border-bottom:1px solid var(--line)}
+.sgrid th.n,.sgrid td.n{text-align:right;font-variant-numeric:tabular-nums}
+.sgrid td{padding:var(--s4) var(--s3) var(--s4) 0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.sgrid td.m{font-weight:500;color:var(--navy)}
+.sgrid td.m span{display:block;font-weight:400;font-size:12.5px;color:var(--ink-soft);margin-top:2px;max-width:44ch}
+.sgrid td.n{font-family:var(--serif);font-size:22px;color:var(--navy)}
+.sgrid td.n.flag{color:var(--bronze-ink)}
+.sgrid td.n.flag::after{content:" \2022";color:var(--bronze)}
+.sgrid td.n.none{font-size:14px;color:var(--ink-faint)}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--line);background:var(--paper-2)}
+.foot{max-width:var(--wrap);margin:0 auto;padding:var(--s6) var(--pad);display:flex;justify-content:space-between;gap:var(--s5);flex-wrap:wrap;font-size:12px;color:var(--ink-faint)}
+.foot b{color:var(--ink-soft);font-weight:500}
+.offices{display:flex;gap:var(--s5);flex-wrap:wrap}
+
+/* ---------- motion ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:no-preference){
+  .panel:not([hidden]) > *{animation:rise .55s cubic-bezier(.22,.7,.2,1) both}
+  .panel:not([hidden]) > *:nth-child(2){animation-delay:.07s}
+  .panel:not([hidden]) > *:nth-child(3){animation-delay:.13s}
+  .panel:not([hidden]) > *:nth-child(4){animation-delay:.18s}
+  .panel:not([hidden]) > *:nth-child(n+5){animation-delay:.22s}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+
+/* ---------- responsive ---------- */
+@media (max-width:900px){
+  :root{--pad:24px}
+  .band-grid{grid-template-columns:1fr;gap:var(--s5)}
+  .countdown{border:none;border-top:1px solid var(--navy-hair);border-bottom:1px solid var(--navy-hair);padding:var(--s4) 0;text-align:left}
+  .countdown .n{font-size:52px}
+  .band-act{text-align:left}
+  .doors{grid-template-columns:1fr}
+  .cyc{grid-template-columns:1fr;gap:var(--s5)}
+  .cyc-act{min-width:0}
+  .two,.rhythm{grid-template-columns:1fr}
+}
+@media (max-width:600px){
+  .seg{margin-left:0}
+  .ansbox{margin-left:0}
+  .qblock-h{grid-template-columns:1fr}
+  .qblock-h .qn{display:none}
+  .sgrid td.m span{display:none}
+  .mast-wrap{align-items:flex-start}
+  .mast-id h1{font-size:32px}
+  .clocks{gap:var(--s4)}
+  .clock{text-align:left}
+  .clock .time{font-size:17px}
+  .tabs{gap:var(--s5)}
+  main{padding-top:var(--s6)}
+  .entry > summary{grid-template-columns:1fr auto;row-gap:var(--s2)}
+  .entry .st,.entry .ct{grid-column:1}
+  .entry .chev{grid-column:2;grid-row:1}
+  .roster td.role{display:none}
+  .roster th.role{display:none}
+  .lrow{grid-template-columns:1fr}
+  .lrow .lright{text-align:left}
+}
+@media print{
+  .tabbar,.clocks,.band-act,.cyc-act,.controls,.seg,.rr-print,.gate{display:none!important}
+  .qblock,.pblock,.ansbox{break-inside:avoid}
+  body{background:#fff}
+  .masthead,.band,.cyc{background:#fff;color:#000;border:1px solid #000}
+  .mast-id h1 em,.band h3 em,.cyc h3 em{color:#000}
+  .eyebrow.on-navy,.date .k,.countdown .l{color:#555}
+  .countdown .n,.clock .time{color:#000}
+  .entry{break-inside:avoid}
+}
+</style>
+</head>
+<body>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead">
+  <div class="mast-wrap">
+    <div class="mast-id">
+      <p class="eyebrow on-navy">Aspirean Wealth &nbsp;·&nbsp; Internal</p>
+      <h1>Aspirean <em>Intranet</em></h1>
+    </div>
+    <div class="clocks" id="clocks"></div>
+  </div>
+  <figure class="mast-quote" id="mastQuote" hidden>
+    <blockquote id="mqText"></blockquote>
+    <figcaption id="mqWho"></figcaption>
+  </figure>
+</header>
+
+<div class="tabbar">
+  <nav class="tabs" aria-label="Intranet sections">
+    <a class="tab" href="#/home" data-route="home">Home</a>
+    <a class="tab" href="#/moving-future" data-route="moving-future">Moving Future 2026</a>
+    <a class="tab" href="#/resources" data-route="resources">Resources</a>
+  </nav>
+</div>
+
+<main id="main">
+
+  <!-- ==================== HOME ==================== -->
+  <section class="panel" id="panel-home">
+    <div class="panel-head">
+      <p class="eyebrow">Home</p>
+      <h2>Where things stand</h2>
+      <p class="prose">Everything the five of us need in one place. The cycle in progress, the record of every cycle before it, and the documents nobody should have to ask twice for.</p>
+    </div>
+
+    <div class="band">
+      <div class="band-grid">
+        <div>
+          <p class="eyebrow on-navy">Current cycle</p>
+          <h3 id="bandCycle">&mdash;</h3>
+          <p class="band-meta" id="bandMeta">&mdash;</p>
+        </div>
+        <div class="countdown">
+          <span class="n" id="cdNum">&mdash;</span>
+          <span class="l" id="cdLab">days to submit</span>
+        </div>
+        <div class="band-act">
+          <a class="btn on-navy" id="bandCta" href="moving-future-intake.html">Open your Moving Future</a>
+          <span class="sub" id="bandSub">&mdash;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="block" style="margin-top:var(--s5)">
+      <div class="doors">
+        <a class="door door-lg" href="#/moving-future">
+          <span class="mark" aria-hidden="true">I</span>
+          <h3>Moving Future 2026</h3>
+          <p>The twice-yearly reflection. January sets the vision, July checks the traction. Open the form, see who has submitted, and read what the instrument actually asks before you sit down with it.</p>
+          <span class="go">Open the cycle &rarr;</span>
+        </a>
+        <div class="door-col">
+          <a class="door" href="#/responses">
+            <span class="mark" aria-hidden="true">II</span>
+            <h3>Responses</h3>
+            <p>Everyone's answers for the open cycle, side by side. Opens once yours is in. Lives under Moving Future.</p>
+            <span class="go">Read the room &rarr;</span>
+          </a>
+          <a class="door" href="#/archive">
+            <span class="mark" aria-hidden="true">III</span>
+            <h3>Archive</h3>
+            <p>Every prior cycle: responses, synthesis, and the commitments carried forward.</p>
+            <span class="go">Look back &rarr;</span>
+          </a>
+          <a class="door" href="#/resources">
+            <span class="mark" aria-hidden="true">IV</span>
+            <h3>Resources</h3>
+            <p>Compliance, client service, investments, operations, and the firm itself.</p>
+            <span class="go">Find a document &rarr;</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="mark" aria-hidden="true">V</span><h3>Quick links</h3></div>
+      <div class="ledger" id="quickLinks"></div>
+    </div>
+  </section>
+
+  <!-- ==================== MOVING FUTURE ==================== -->
+  <section class="panel" id="panel-moving-future" hidden>
+    <nav class="subnav" aria-label="Moving Future sections">
+      <a href="#/moving-future" data-sub="moving-future">This cycle</a>
+      <a href="#/responses" data-sub="responses">Responses</a>
+      <a href="#/archive" data-sub="archive">Archive</a>
+    </nav>
+    <div class="panel-head">
+      <p class="eyebrow">Moving Future</p>
+      <h2>This year's cycle</h2>
+      <p class="prose">Twenty minutes of honest thinking is worth more than an hour of polished writing. Answer in fragments. The form saves as you type, so you can leave it and come back.</p>
+    </div>
+
+    <div class="cyc">
+      <div>
+        <p class="eyebrow on-navy">In progress</p>
+        <h3 id="cycTitle">&mdash;</h3>
+        <div class="dates" id="cycDates"></div>
+      </div>
+      <div class="cyc-act">
+        <a class="btn on-navy" id="cycCta" href="moving-future-intake.html">Open the form</a>
+        <a class="btn on-navy-quiet" href="#/responses">Read everyone's responses</a>
+      </div>
+      <p class="cyc-note" id="cycNote"></p>
+    </div>
+
+    <div class="block" style="margin-top:var(--s7)">
+      <div class="block-head"><span class="mark" aria-hidden="true">I</span><h3>Who has submitted</h3><span class="aside" id="rosterAside"></span></div>
+      <table class="roster">
+        <caption>Role reads as each person wrote it on their own form, so it stays blank until they submit.</caption>
+        <thead>
+          <tr><th scope="col">Person</th><th scope="col">Status</th><th scope="col" class="role">Role, in their words</th><th scope="col" style="text-align:right">Complete</th></tr>
+        </thead>
+        <tbody id="rosterBody"></tbody>
+      </table>
+      <p class="livenote" id="rosterLive"></p>
+    </div>
+
+    <details class="fold">
+      <summary>
+        <span class="mark" aria-hidden="true">II</span>
+        <h3>About the instrument</h3>
+        <span class="sub">What it asks, the four measures, and how a cycle runs</span>
+        <span class="chev" aria-hidden="true">&#9656;</span>
+      </summary>
+      <div class="fold-body">
+
+    <div class="block">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>What the form asks</h3><span class="aside">Seven numbered sections, plus carry-forward</span></div>
+      <div class="two" id="sections"></div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>The four standing measures</h3></div>
+      <div class="ledger" id="measures"></div>
+      <p class="note" style="font-size:13.5px;color:var(--ink-soft);margin-top:var(--s4);max-width:70ch">Zero to ten, rated where you honestly are rather than where you would like to be seen. Anything at five or below gets flagged in the synthesis, and the answer to what one point higher looks like is what we actually discuss. The slope across cycles matters more than the level in any one.</p>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>How a cycle runs</h3></div>
+      <div class="steps">
+        <div class="step"><p><b>You write.</b> Answer the form in one sitting if you can. Aim for five points where it asks for five, since the fifth is usually the one worth discussing.</p></div>
+        <div class="step"><p><b>You send.</b> Finish and send produces two files. The <b>.json</b> goes to Chris for the synthesis. The <b>.md</b> is your readable copy to keep.</p></div>
+        <div class="step"><p><b>Chris synthesizes.</b> Responses are combined into one prep document: answers grouped by question, standing scores side by side, carry-forward status, and the themes and tensions worth naming out loud.</p></div>
+        <div class="step"><p><b>We discuss.</b> The synthesis drives the conversation, and whatever gets committed to becomes the carry-forward section on next cycle's form.</p></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>The rhythm</h3></div>
+      <div class="rhythm" id="rhythm"></div>
+    </div>
+
+      </div>
+    </details>
+  </section>
+
+  <!-- ==================== RESPONSES ==================== -->
+  <section class="panel" id="panel-responses" hidden>
+    <nav class="subnav" aria-label="Moving Future sections">
+      <a href="#/moving-future" data-sub="moving-future">This cycle</a>
+      <a href="#/responses" data-sub="responses">Responses</a>
+      <a href="#/archive" data-sub="archive">Archive</a>
+    </nav>
+    <div class="panel-head">
+      <p class="eyebrow">Moving Future &nbsp;&middot;&nbsp; Responses</p>
+      <h2>The reading room</h2>
+      <p class="prose">Every answer for the open cycle, side by side. It unlocks once your own response is in, which is the only rule. Read it before the discussion, not during.</p>
+    </div>
+    <div id="respGate"></div>
+    <div id="respBody"></div>
+  </section>
+
+  <!-- ==================== ARCHIVE ==================== -->
+  <section class="panel" id="panel-archive" hidden>
+    <nav class="subnav" aria-label="Moving Future sections">
+      <a href="#/moving-future" data-sub="moving-future">This cycle</a>
+      <a href="#/responses" data-sub="responses">Responses</a>
+      <a href="#/archive" data-sub="archive">Archive</a>
+    </nav>
+    <div class="panel-head">
+      <p class="eyebrow">Moving Future &nbsp;&middot;&nbsp; Archive</p>
+      <h2>Every cycle on record</h2>
+      <p class="prose">One entry per cycle, newest first. What was submitted, what came out of the discussion, and where the files sit. The point of keeping it is being able to read January against July, and this year against last.</p>
+    </div>
+
+    <div class="controls">
+      <div class="field">
+        <label for="fYear">Year</label>
+        <select id="fYear"></select>
+      </div>
+      <div class="field">
+        <label for="fPerson">Person</label>
+        <select id="fPerson"></select>
+      </div>
+      <p class="count-note" id="arcCount"></p>
+    </div>
+
+    <div id="ledgerList"></div>
+
+    <div class="block" style="margin-top:var(--s7)">
+      <div class="block-head"><span class="mark" aria-hidden="true">&mdash;</span><h3>Standing over time</h3></div>
+      <div class="empty">
+        <h4>Two cycles of scores are needed before a trend means anything</h4>
+        <p>The January 2026 submissions predate the scoring section, so the first numbers arrive with the current cycle. Once a second set lands, this becomes the firm-wide slope for Work, Health, Life, and Alignment, and each person's line sits underneath it.</p>
+        <div class="axis"><span>January 2026</span><span>July 2026</span><span>January 2027</span><span>July 2027</span></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <div class="block-head"><span class="mark" aria-hidden="true">&mdash;</span><h3>Where the files live</h3></div>
+      <div class="ledger" id="filesLedger"></div>
+      <p class="note" style="font-size:13.5px;color:var(--ink-soft);margin-top:var(--s4);max-width:70ch">Exports belong in the firm's records folder rather than a personal drive or an inbox thread. Anything that touches how the firm is run should be treated as internal record material, and Brad has the call on what does and does not qualify.</p>
+    </div>
+  </section>
+
+  <!-- ==================== RESOURCES ==================== -->
+  <section class="panel" id="panel-resources" hidden>
+    <div class="panel-head">
+      <p class="eyebrow">Resources</p>
+      <h2>Company resources</h2>
+      <p class="prose">Sign-ins first, then partners, then the rest. Items marked <b>link not set</b> are placeholders waiting on a URL.</p>
+    </div>
+
+    <div class="controls">
+      <div class="field">
+        <label for="fRes">Search</label>
+        <input id="fRes" type="search" placeholder="Compliance, onboarding, custodian&hellip;" autocomplete="off">
+      </div>
+      <p class="count-note" id="resCount"></p>
+    </div>
+
+    <div id="resList"></div>
+
+    <div class="block" style="margin-top:var(--s7)">
+      <div class="empty">
+        <h4>Adding or fixing a link</h4>
+        <p>Every item on this page comes from the <b>DATA</b> block at the top of the script in <b>index.html</b>. Set the <b>url</b> value, commit, and Netlify redeploys on push. Same for adding a cycle to the archive or a name to the roster.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot">
+    <div>
+      <b>Internal use only.</b> Nothing on this page is client-facing or approved for distribution.
+    </div>
+    <div class="offices">
+      <span>Mill Valley, CA</span><span>Chesterton, IN</span><span>St. Joseph, MI</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   DATA — the only block you need to edit.
+   Dates are YYYY-MM-DD. A null url renders as "link not set".
+   ============================================================ */
+const QUOTES = [["Marcus Aurelius","You have power over your mind, not outside events. Realize this, and you will find strength.","Meditations"],["Marcus Aurelius","The happiness of your life depends upon the quality of your thoughts.","Meditations"],["Marcus Aurelius","Waste no more time arguing about what a good man should be. Be one.","Meditations"],["Marcus Aurelius","Confine yourself to the present.","Meditations"],["Marcus Aurelius","Very little is needed to make a happy life; it is all within yourself, in your way of thinking.","Meditations"],["Marcus Aurelius","How much trouble he avoids who does not look to see what his neighbor says or does.","Meditations"],["Marcus Aurelius","Accept the things to which fate binds you, and love the people with whom fate brings you together.","Meditations"],["Marcus Aurelius","Everything we hear is an opinion, not a fact. Everything we see is a perspective, not the truth.","Meditations"],["Marcus Aurelius","The universe is change; our life is what our thoughts make it.","Meditations"],["Marcus Aurelius","Look well into thyself; there is a source of strength which will always spring up if thou wilt always look there.","Meditations"],["Marcus Aurelius","It is not death that a man should fear; he should fear never beginning to live.","Meditations"],["Marcus Aurelius","Dwell on the beauty of life. Watch the stars and see yourself running with them.","Meditations"],["Marcus Aurelius","Never let the future disturb you. You will meet it, if you have to, with the same weapons of reason.","Meditations"],["Marcus Aurelius","Be like the rock that the waves keep crashing over. It stands unmoved and the raging of the sea falls still around it.","Meditations"],["Marcus Aurelius","The soul becomes dyed with the color of its thoughts.","Meditations"],["Marcus Aurelius","When you arise in the morning, think of what a precious privilege it is to be alive.","Meditations"],["Marcus Aurelius","He who lives in harmony with himself lives in harmony with the universe.","Meditations"],["Marcus Aurelius","Think of the life you have lived until now as over, and, as a dead man, see what's left as a bonus and live it according to Nature.","Meditations"],["Marcus Aurelius","The art of living is more like wrestling than dancing.","Meditations"],["Seneca","If a man knows not to which port he sails, no wind is favorable.","Letters from a Stoic"],["Seneca","It is not that we have a short time to live, but that we waste a great deal of it.","Letters from a Stoic"],["Seneca","Luck is what happens when preparation meets opportunity.","Letters from a Stoic"],["Seneca","Difficulties strengthen the mind, as labor does the body.","Letters from a Stoic"],["Seneca","True happiness is to enjoy the present, without anxious dependence upon the future.","Letters from a Stoic"],["Seneca","As is a tale, so is life: not how long it is, but how good it is, is what matters.","Letters from a Stoic"],["Seneca","Sometimes even to live is an act of courage.","Letters from a Stoic"],["Seneca","No man was ever wise by chance.","Letters from a Stoic"],["Seneca","While we wait for life, life passes.","Letters from a Stoic"],["Seneca","Every new beginning comes from some other beginning's end.","Letters from a Stoic"],["Seneca","A gem cannot be polished without friction, nor a man perfected without trials.","Letters from a Stoic"],["Seneca","Wealth is the slave of a wise man and the master of a fool.","Letters from a Stoic"],["Seneca","It is the power of the mind to be unconquerable.","Letters from a Stoic"],["Seneca","The whole future lies in uncertainty: live immediately.","Letters from a Stoic"],["Seneca","People are frugal in guarding their personal property, but as soon as it comes to squandering time, they are wasteful of the one thing in which it is right to be stingy.","Letters from a Stoic"],["Seneca","Begin at once to live, and count each separate day as a separate life.","Letters from a Stoic"],["Seneca","If you shape your life according to nature, you will never be poor; if according to people's opinions, you will never be rich.","Letters from a Stoic"],["Epictetus","It's not what happens to you, but how you react to it that matters.","Enchiridion"],["Epictetus","Men are disturbed not by things but by the principles and notions which they form concerning things.","Enchiridion"],["Epictetus","No great thing is created suddenly.","Discourses"],["Epictetus","First say to yourself what you would be, and then do what you have to do.","Discourses"],["Epictetus","Don't explain your philosophy. Embody it.","Discourses"],["Epictetus","He is a wise man who does not grieve for the things which he has not, but rejoices for those which he has.","Discourses"],["Cicero","More is lost by indecision than wrong decision.","Attributed"],["Cicero","Let your desires be ruled by reason.","Attributed"],["Cicero","A room without books is like a body without a soul.","Attributed"],["Cicero","The life given us, by nature, is short, but the memory of a well-spent life is eternal.","Pro Milone"],["Cato the Younger","I begin to speak only when I'm certain what I'll say isn't better left unsaid.","Attributed"],["Musonius Rufus","If you accomplish something good with hard work, the labor passes quickly, but the good endures.","Lectures"],["Zeno of Citium","All the good are friends of one another.","Attributed"],["Zeno of Citium","Man conquers the world by conquering himself.","Attributed"],["Morgan Housel","Doing well with money has a little to do with how smart you are and a lot to do with how you behave.","The Psychology of Money"],["Morgan Housel","Luck and risk are siblings. They are both the reality that every outcome in life is guided by forces other than individual effort.","The Psychology of Money"],["Morgan Housel","You need short-term paranoia to keep you alive long enough to exploit long-term optimism.","The Psychology of Money"],["Morgan Housel","Money's greatest intrinsic value is its ability to give you control over your time.","The Psychology of Money"],["Morgan Housel","Not having control of your time is a powerful and universal drag on happiness.","The Psychology of Money"],["Morgan Housel","Plan on the plan not going according to plan.","The Psychology of Money"],["Morgan Housel","Your personal experiences with money make up maybe 0.00000001% of what's happened in the world, but maybe 80% of how you think the world works.","The Psychology of Money"],["Morgan Housel","Wealth is what you don't see.","The Psychology of Money"],["Morgan Housel","The ability to do what you want, when you want, with who you want, for as long as you want, is priceless.","The Psychology of Money"],["Morgan Housel","Less ego, more wealth.","The Psychology of Money"],["Morgan Housel","Progress happens too slowly to notice, but setbacks happen too quickly to ignore.","The Psychology of Money"],["Morgan Housel","Know what game you're playing, and don't let other people who are playing a different game influence you.","The Psychology of Money"],["John D. Rockefeller","The only thing which is of lasting benefit to a man is that which he does for himself.","Random Reminiscences of Men and Events"],["John D. Rockefeller","Money which comes to a man without effort on his part is seldom a benefit and often a curse.","Random Reminiscences of Men and Events"],["John D. Rockefeller","Don't be afraid to give up the good to go for the great.","Attributed"],["John D. Rockefeller","Every right implies a responsibility; every opportunity, an obligation.","Attributed Credo"],["John D. Rockefeller","Never lose interest in life and the world. Never allow yourself to become annoyed.","Attributed"],["John D. Rockefeller","I never placed my head upon the pillow at night without reminding myself that my success might only be temporary.","Attributed"],["John D. Rockefeller","It is one thing to stand on the comfortable ground of placid inaction and put forth words of cynical wisdom, and another to plunge into the work itself.","Random Reminiscences of Men and Events"],["John D. Rockefeller","It is very important to remember what other people tell you, not so much what you yourself already know.","Attributed"],["John D. Rockefeller","A man's wealth must be determined by the relation of his desires and expenditures to his income.","Attributed"],["John D. Rockefeller","It is only those efforts the man himself puts forth that can really help him.","Random Reminiscences of Men and Events"],["John D. Rockefeller","Do not be afraid to give your best to what seemingly are small jobs. Every time you conquer one it makes you that much stronger.","Attributed"],["John D. Rockefeller","Great necessities call out great virtues.","Attributed"],["John D. Rockefeller","Singleness of purpose is one of the chief essentials for success in life, no matter what may be one's aim.","Attributed"],["John D. Rockefeller","If you want to succeed you should strike out on new paths, rather than travel the worn paths of accepted success.","Attributed"],["Confucius","The man who moves a mountain begins by carrying away small stones.","The Analects"],["Confucius","Hold faithfulness and sincerity as first principles.","The Analects"],["Confucius","The noble-minded are calm and steady; the small-minded are forever fussing and fretting.","The Analects"],["Confucius","When the wind blows, the grass bends.","The Analects"],["Confucius","Learning without thought is labor lost; thought without learning is perilous.","The Analects"],["Confucius","To see what is right and not do it is want of courage.","The Analects"],["Confucius","What the superior man seeks is in himself; what the small man seeks is in others.","The Analects"],["Confucius","By nature, men are nearly alike; by practice, they get to be wide apart.","The Analects"],["Confucius","Real knowledge is to know the extent of one's ignorance.","The Analects"],["Confucius","Never impose on others what you would not choose for yourself.","The Analects"],["Confucius","Study the past if you would define the future.","The Analects"],["Lao Tzu","A journey of a thousand miles begins with a single step.","Tao Te Ching"],["Lao Tzu","Knowing others is intelligence; knowing yourself is true wisdom.","Tao Te Ching"],["Lao Tzu","Mastering others is strength; mastering yourself is true power.","Tao Te Ching"],["Lao Tzu","When you are content to be simply yourself and don't compare or compete, everyone will respect you.","Tao Te Ching"],["Lao Tzu","A man with outward courage dares to die; a man with inner courage dares to live.","Tao Te Ching"],["Lao Tzu","Do you have the patience to wait until your mud settles and the water is clear?","Tao Te Ching"],["Lao Tzu","A leader is best when people barely know he exists.","Tao Te Ching"],["Lao Tzu","If you try to change it, you will ruin it; try to hold it, and you will lose it.","Tao Te Ching"],["Lao Tzu","All streams flow to the sea because it is lower than they are; humility gives it its power.","Tao Te Ching"],["Lao Tzu","In living, choose your ground well; in thought, stay deep in the heart; in relationships, be generous.","Tao Te Ching"],["Lao Tzu","In the pursuit of learning, every day something is added. In the pursuit of Tao, every day something is dropped.","Tao Te Ching"],["Lao Tzu","The sage understands that everything is difficult and thus, in the end, has no difficulties.","Tao Te Ching"],["Albert Camus","In the midst of winter, I found there was, within me, an invincible summer.","Essays & Notebooks"],["Albert Camus","Live to the point of tears.","Essays & Notebooks"],["Albert Camus","Nobody realizes that some people expend tremendous energy merely to be normal.","Essays & Notebooks"],["Albert Camus","The only way to deal with an unfree world is to become so absolutely free that your very existence is an act of rebellion.","Essays & Notebooks"],["Albert Camus","Freedom is nothing but a chance to be better.","Essays & Notebooks"],["Albert Camus","Real generosity toward the future lies in giving all to the present.","Essays & Notebooks"],["Albert Camus","An intellectual is someone whose mind watches itself.","Essays & Notebooks"],["Albert Camus","Blessed are the hearts that can bend; they shall never be broken.","Essays & Notebooks"],["Albert Camus","Without work, all life goes rotten, but when work is soulless, life stifles and dies.","Essays & Notebooks"],["Aristotle","What we have to learn to do, we learn by doing.","Nicomachean Ethics"],["Aristotle","Our characters are the result of our conduct.","Nicomachean Ethics"],["Aristotle","The whole is greater than the sum of its parts.","Nicomachean Ethics"],["Aristotle","Change in all things is sweet.","Nicomachean Ethics"],["Friedrich Nietzsche","He who has a why to live can bear almost any how.","Twilight of the Idols & other works"],["Friedrich Nietzsche","Become who you are.","Twilight of the Idols & other works"],["Friedrich Nietzsche","The growth of wisdom may be gauged exactly by the diminution of ill temper.","Twilight of the Idols & other works"],["Friedrich Nietzsche","No price is too high to pay for the privilege of owning yourself.","Twilight of the Idols & other works"],["Friedrich Nietzsche","Without music, life would be a mistake.","Twilight of the Idols & other works"]];
+
+const DATA = {
+
+  formUrl: "moving-future-intake.html",
+  sendTo: "Chris",
+
+  /* Roster. Email is the key everything joins on, so this list has to match
+     ROSTER in netlify/functions/responses.mjs exactly. */
+  team: [
+    { name: "Chris Winkler",    email: "chris@aspirean.com" },
+    { name: "Brad Alvarez",     email: "brad@aspirean.com" },
+    { name: "Kevin Ostafinski", email: "kevin@aspirean.com" },
+    { name: "Caleb",            email: "caleb@aspirean.com" }
+  ],
+
+  /* Newest cycle first. status: "open" | "complete" */
+  cycles: [
+    {
+      id: "2026-07", year: 2026, label: "July 2026", theme: "Traction", status: "open",
+      opened: "2026-07-06", due: "2026-08-07", discussion: "2026-08-27",
+      submissions: [],
+      docs: [
+        { label: "Intake form", url: "moving-future-intake.html" },
+        { label: "Synthesis", url: null },
+        { label: "Discussion doc", url: null }
+      ],
+      note: "Standing scores are collected for the first time this round, so the first four numbers on the record start here."
+    },
+    {
+      id: "2026-01", year: 2026, label: "January 2026", theme: "Vision", status: "complete",
+      opened: "2026-01-05", due: "2026-01-23", discussion: "2026-01-29",
+      submissions: [
+        { name: "Brad Alvarez", email: "brad@aspirean.com", pct: 71, role: null },
+        { name: "Chris Winkler", email: "chris@aspirean.com", pct: 56, role: null },
+        { name: "Kevin Ostafinski", email: "kevin@aspirean.com", pct: 46, role: null }
+      ],
+      docs: [
+        { label: "Synthesis (PDF)", url: "records/2026-01-january-vision-synthesis.pdf" },
+        { label: "Discussion doc", url: null },
+        { label: "Commitments carried forward", url: null }
+      ],
+      note: "Three responses, no standing scores. The January submissions predate the scoring section, so the record for this cycle is narrative only."
+    }
+  ],
+
+  /* Home page quick links */
+  quickLinks: [
+    { t: "Moving Future form", d: "Opens the current cycle. Saves as you type, sends when you finish.", url: "moving-future-intake.html", right: "Current cycle" },
+    { t: "Everyone's responses", d: "The reading room for the open cycle. Unlocks once yours is in.", url: "#/responses", right: "Open" },
+    { t: "January 2026 synthesis", d: "Discussion prep for the last completed cycle.", url: "records/2026-01-january-vision-synthesis.pdf", right: "PDF" }
+  ],
+
+  /* Where cycle files are kept */
+  files: [
+    { t: "Responses folder", d: "Every .json and .md export, one subfolder per cycle.", url: null },
+    { t: "Synthesis documents", d: "The prep document Chris builds from the responses.", url: null },
+    { t: "Commitment log", d: "What each person committed to, carried into the next form.", url: null }
+  ],
+
+  /* Employee resources. Logos are optional: drop a .webp into assets/logos/
+     with the filename below and it replaces the monogram automatically. */
+  employee: {
+    tiles: [
+      { name: "Schwab", mono: "CS", logo: "assets/logos/schwab.webp", h: 34,
+        d: "Your own brokerage and checking, not the advisor platform.",
+        url: "https://client.schwab.com" },
+      { name: "JULY Services", mono: "JY", logo: "assets/logos/july.webp", h: 30,
+        d: "The firm 401(k). Balance, contribution rate, investments.",
+        url: "https://401k.julyservices.com" },
+      { name: "Flourish Cash", mono: "FC", logo: "assets/logos/flourish.webp", h: 36,
+        d: "Cash management, on the same platform clients use.",
+        url: "https://www.flourish.com/login" },
+      { name: "Pay-Net Online", mono: "PN", logo: "assets/logos/paynet.webp", h: 34,
+        d: "Payroll. Employees continue through to myPay Kiosk.",
+        url: "https://www.pay-netonline.com/PayNet/Login/Login.aspx" },
+      { name: "1Password", mono: "PW", logo: "assets/logos/passwords.webp", h: 30,
+        d: "The firm vault. Every other credential belongs here, not in this list.",
+        url: "https://my.1password.com" },
+      { name: "Vanguard CE", mono: "VG", logo: null, h: 30, tags: "ce education credits designations learning vanguard",
+        d: "Continuing education credits on Vanguard's advisor site.",
+        url: "https://advisors.vanguard.com" }
+    ],
+    items: [
+      { tags: "pto vacation sick leave hr", t: "Time off request", d: "Pick the dates on a calendar and send it to the team.", url: "time-off.html" },
+      { tags: "receipts reimburse money hr", t: "Expense reimbursement", d: "Multiple lines per claim, with the receipt folder alongside.", url: "expenses.html" },
+      { tags: "receipts expenses sharepoint upload", t: "Receipt folder", d: "Upload receipts here before submitting a claim.", url: "https://aspirean-my.sharepoint.com/:f:/p/caleb/IgCGh0_9u7pmTKOjpbT2YZMMASPtRVhTfPWFdiGj_1XZgvE" },
+      { tags: "onboarding hr hiring start", t: "New hire setup", d: "The first ninety days. Structure in place, content still to write.", url: "new-hire.html" },
+      { tags: "health dental 401k insurance hr", t: "Benefits summary", d: "Health and dental, and what renews when.", url: "benefits.html" }
+    ]
+  },
+
+  /* Firm system sign-ins. Each box goes straight to the login.
+     `d` is search bait only and never renders. */
+  signins: [
+    { name: "eMoney", blurb: "Planning, and the portal clients see.", logo: "assets/logos/emoney.webp", d: "financial planning client portal planning financial plan cashflow",
+      url: "https://wealth.emaplan.com/ema/SignIn?ema%2Fria%2Fbuckinghamsp%2Flegacyadvisorswealthmgmt" },
+    { name: "Wealthbox", blurb: "The CRM. Every household and note.", logo: "assets/logos/wealthbox.webp", d: "crm households activity crm clients households notes tasks",
+      url: "https://app.crmworkspace.com/login?uid=226a652c221480643ae8b817a5f049ce" },
+    { name: "Schwab Advisor", blurb: "Custody: accounts, trading, transfers.", logo: "assets/logos/schwab.webp", d: "custody trading transfers advisor center custody trading transfers accounts service",
+      url: "https://advisorservices.schwab.com/advisor/login" },
+    { name: "Envestnet Direct", blurb: "Platform trading and models.", logo: "assets/logos/envestnet.webp", d: "envestnet direct advisor platform platform trading sma models",
+      url: "https://advisor.envestnet.com/secure/app.jsp" },
+    { name: "Jump", blurb: "Meeting notes that write themselves.", logo: "assets/logos/jump.webp", d: "meeting notes follow-ups meetings notes ai transcription",
+      url: "https://my.jumpapp.com" },
+    { name: "Holistiplan", blurb: "Tax returns, read and planned.", logo: "assets/logos/holistiplan.webp", d: "tax return planning scenarios planning tax returns scenarios",
+      url: "https://app.holistiplan.com" },
+    { name: "EncorEstate Plans", blurb: "Estate documents and design.", logo: "assets/logos/encoreestate.webp", d: "estate planning documents trust planning estate trusts documents",
+      url: "https://app.encorestateplans.com" },
+    { name: "Flourish", blurb: "Cash management, on the same platform clients use.", logo: "assets/logos/flourish.webp", d: "cash management adviser cash banking yield planning",
+      url: "https://www.flourish.com/login" },
+    { name: "Constant Contact", blurb: "The newsletter and campaigns.", logo: "assets/logos/constantcontact.webp", d: "newsletter email campaigns marketing email newsletter campaigns",
+      url: "https://login.constantcontact.com" },
+    { name: "OnceHub", blurb: "Scheduling links and booking pages.", logo: "assets/logos/oncehub.webp", d: "scheduling booking pages scheduling calendar booking meetings",
+      url: "https://account.oncehub.com/signin" },
+    { name: "Focus Portal", blurb: "The partner firm platform.", logo: "assets/logos/focuspartners.webp", d: "partner firm platform platform partner",
+      url: "https://portal.advisor.focuspartners.com/s/" },
+    { name: "Claude", blurb: "The assistant the firm works in.", logo: "assets/logos/claude.webp", d: "ai assistant anthropic ai assistant writing research",
+      url: "https://claude.ai/login" },
+    { name: "SharePoint", blurb: "Files, folders, and the receipt library.", logo: "assets/logos/sharepoint.webp",
+      d: "files documents storage microsoft office 365 receipts folders",
+      url: "https://aspirean.sharepoint.com" },
+    { name: "1Password", blurb: "Where every credential lives.", logo: "assets/logos/passwords.webp", d: "password manager vault credentials security passwords credentials vault",
+      url: "https://my.1password.com" },
+    { name: "GitHub", blurb: "Source for both sites.", logo: "assets/logos/github.webp", d: "source repository site code dev code website repository",
+      url: "https://github.com/login" },
+    { name: "Netlify", blurb: "Hosting, forms, and deploys.", logo: "assets/logos/netlify.webp", d: "hosting forms functions deploys dev hosting website forms deploys",
+      url: "https://app.netlify.com/" },
+    { name: "Breach Secure Now", blurb: "Security training and phishing drills.", logo: "assets/logos/bsn.webp", d: "security training phishing dark web security training phishing dark web",
+      url: null }
+  ],
+
+  /* Strategic partner tiles. Anchors into partners.html. */
+  partnerTiles: [
+    { tags: "funds investments factor", name: "Dimensional", mono: "DF", logo: "assets/logos/dimensional.webp", h: 30,
+      d: "Fund manager. Avery Bonahoom is the regional director.", url: "partners.html#dimensional" },
+    { tags: "funds investments alternatives", name: "AQR", mono: "AQ", logo: "assets/logos/aqr.webp", h: 30,
+      d: "Asset manager. Works through team inboxes.", url: "partners.html#aqr" },
+    { tags: "partner trading trusts valuation", name: "Focus Partners", mono: "FP", logo: "assets/logos/focuspartners.webp", h: 30,
+      d: "Sean Brooks, the FAS desk, trusts, and valuation.", url: "partners.html#focus" },
+    { tags: "retirement annuity 401k plans", name: "Nationwide", mono: "NW", logo: "assets/logos/nationwide.webp", h: 32,
+      d: "Retirement solutions servicing. Luke Kilbert.", url: "partners.html#nationwide" },
+    { tags: "it support helpdesk technology msp", name: "Inhouse CIO", mono: "IC", logo: "assets/logos/inhousecio.webp", h: 28,
+      d: "The firm's IT provider. Helpdesk first.", url: "partners.html#inhousecio" },
+    { tags: "trust trustee delaware", name: "First State Trust", mono: "FS", logo: "assets/logos/firststate.webp", h: 30,
+      d: "Trust company. Jacqui Jenkins.", url: "partners.html#firststate" },
+    { tags: "bank trustee custody", name: "US Bank", mono: "UB", logo: null, h: 30,
+      d: "Bank and corporate trustee.", url: "partners.html#usbank" },
+    { tags: "trust administration funds", name: "JTC", mono: "JT", logo: "assets/logos/jtc.webp", h: 30,
+      d: "Trust and fund administration.", url: "partners.html#jtc" },
+    { tags: "vendor", name: "ChatChosen", mono: "CC", logo: "assets/logos/chatchosen.webp", h: 28,
+      d: "Kai Cromwell and Tryggvi Sigurbjarnarson.", url: "partners.html#chatchosen" },
+    { tags: "surveys feedback nps clients", name: "Nexa Insights", mono: "NX", logo: "assets/logos/nexa.webp", h: 30,
+      d: "Client surveys. Chris Manker.", url: "partners.html#nexa" },
+    { tags: "vendor concierge", name: "Emry Concierge", mono: "EM", logo: "assets/logos/emry.webp", h: 30,
+      d: "Set out what the relationship covers.", url: "partners.html#emry" }
+  ],
+
+  /* Company resources */
+  resources: [
+    { group: "Compliance", items: [
+      { tags: "compliance ethics attestation", t: "Compliance manual and Code of Ethics", d: "Current version, with the annual attestation.", url: null },
+      { tags: "compliance trading personal accounts", t: "Personal trading pre-clearance", d: "Submit before placing a trade in a covered account.", url: null },
+      { tags: "compliance marketing review brad", t: "Advertising and marketing review", d: "Client-facing material goes to Brad before it goes out.", url: null },
+      { tags: "compliance adv filings brochure crs", t: "Form ADV", d: "Current filings, what is due when, and the public record.", url: "advs.html" }
+    ]},
+    { group: "Client service", items: [
+      { tags: "clients onboarding new relationship transfers planning", t: "Onboarding checklist", d: "New relationship, first ninety days, step by step.", url: "onboarding-checklist.html" },
+      { tags: "meetings clients planning agenda review", t: "Meeting prep template", d: "What gets pulled before a review, and what happens after.", url: "meeting-prep.html" }
+    ]},
+    { group: "Investments", items: [
+      { tags: "investments models allocation ips funds", t: "Model portfolios and IPS", d: "Current allocations, holdings, and expense detail. Downloads the PDF.", url: "records/model-portfolios.pdf" },
+      { tags: "trading rebalance investments tax lots", t: "Trade and rebalance procedure", d: "Thresholds, sequencing, and the tax-lot rules.", url: null }
+    ]},
+    { group: "Operations and technology", items: [
+      { tags: "brand marketing templates letterhead", t: "Brand kit and templates", d: "Typography, palette, letterhead, and deck masters.", url: null }
+    ]},
+    { group: "People and firm", items: [
+      { tags: "policies hr compliance pto reimbursement", t: "Internal policies", d: "Time off, reimbursement, health care, and the compliance manual index.", url: "policies.html" },
+      { tags: "podcasts learning media reading listening", t: "Podcasts and media resources", d: "What the team listens to and reads, with links to each platform.", url: "podcasts.html" },
+      { tags: "reflection cycle team", t: "Moving Future", d: "The twice-yearly reflection and its archive.", url: "#/moving-future" }
+    ]}
+  ]
+};
+
+/* The instrument, mirrored from the form so nobody has to open it to know what is coming. */
+const SECTIONS = [
+  { n: "O",   t: "Carry-Forward", d: "Close the loop on what you named last cycle. Optional, and the fastest section to finish." },
+  { n: "I",   t: "The Look Back", d: "Evidence first. What actually happened, not what you meant to do." },
+  { n: "II",  t: "Where You Stand", d: "How you see your seat today, including what you have absorbed that nobody handed you." },
+  { n: "III", t: "Looking Forward", d: "Ambition, then the hard edit down to the five things that matter." },
+  { n: "IV",  t: "Role Evolution", d: "Scope, capability, development, and the personal priorities the firm plan should not quietly compete with." },
+  { n: "V",   t: "Standing", d: "Four numbers, tracked every cycle, plus what one point higher would look like." },
+  { n: "VI",  t: "Culture and Candor", d: "The section where directness is worth more than tact." },
+  { n: "VII", t: "Anything Else", d: "What should have been asked, and anything easier to say once in writing." }
+];
+
+const MEASURES = [
+  { t: "Work", d: "Craft, contribution, momentum, and whether the work still feels like yours." },
+  { t: "Health", d: "Physical and mental. Sleep, movement, capacity, resilience." },
+  { t: "Life", d: "Relationships, presence, margin, the parts that never show up on a calendar." },
+  { t: "Alignment", d: "How closely the way you spend your week matches what you say matters most." }
+];
+
+const OFFICES = [
+  { city: "Mill Valley", tz: "America/Los_Angeles" },
+  { city: "Chesterton",  tz: "America/Chicago" },
+  { city: "St. Joseph",  tz: "America/Detroit" }
+];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+function d(str) { if (!str) return null; const [y, m, day] = str.split("-").map(Number); return new Date(y, m - 1, day); }
+function fmt(str, opts) {
+  const dt = d(str); if (!dt) return "—";
+  return dt.toLocaleDateString("en-US", opts || { weekday: "long", month: "long", day: "numeric" });
+}
+function fmtShort(str) { return fmt(str, { month: "short", day: "numeric", year: "numeric" }); }
+function daysUntil(str) {
+  const dt = d(str); if (!dt) return null;
+  const t = new Date(); t.setHours(0, 0, 0, 0);
+  return Math.round((dt - t) / 86400000);
+}
+const current = () => DATA.cycles.find(c => c.status === "open") || DATA.cycles[0];
+
+/* ============================================================
+   CLOCKS
+   ============================================================ */
+/* A fresh quote each page open. Uniform random, with one rule: never the
+   same author twice in a row, remembered across loads in this browser. */
+function pickQuote() {
+  const KEY = "aspirean_last_quote";
+  let last = null;
+  try { last = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+  let q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  for (let tries = 0; tries < 12 && last && q[0] === last.a; tries++) {
+    q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+  }
+  try { localStorage.setItem(KEY, JSON.stringify({ a: q[0] })); } catch (e) {}
+  return q;
+}
+
+(function mountQuote() {
+  const box = $("#mastQuote");
+  if (!box || typeof QUOTES === "undefined" || !QUOTES.length) return;
+  const [author, text, source] = pickQuote();
+  $("#mqText").textContent = "\u201C" + text + "\u201D";
+  $("#mqWho").innerHTML = esc(author) + ' &nbsp;\u00B7&nbsp; <span class="src">' + esc(source) + "</span>";
+  box.hidden = false;
+})();
+
+function clocks() {
+  $("#clocks").innerHTML = OFFICES.map(o => {
+    let t = "—";
+    try { t = new Date().toLocaleTimeString("en-US", { timeZone: o.tz, hour: "numeric", minute: "2-digit" }); }
+    catch (e) { t = ""; }
+    return `<div class="clock"><span class="city">${esc(o.city)}</span><span class="time">${esc(t)}</span></div>`;
+  }).join("");
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+function renderHome() {
+  const c = current();
+  const left = daysUntil(c.due);
+  const submitted = c.submissions.length;
+  const total = DATA.team.length;
+
+  $("#bandCycle").innerHTML = `${esc(c.label)} <em>${esc(c.theme)}</em>`;
+  $("#bandMeta").innerHTML =
+    `Responses due <b>${fmt(c.due)}</b><br>Discussion <b>${fmt(c.discussion)}</b>`;
+
+  const n = $("#cdNum"), lab = $("#cdLab");
+  if (left === null)      { n.textContent = "—";            lab.textContent = "no date set"; }
+  else if (left > 1)      { n.textContent = left;           lab.textContent = "days to submit"; }
+  else if (left === 1)    { n.textContent = "1";            lab.textContent = "day to submit"; }
+  else if (left === 0)    { n.textContent = "0";            lab.textContent = "due today"; }
+  else                    { n.textContent = Math.abs(left); lab.textContent = "days past due"; }
+
+  const sub = $("#bandSub"), cta = $("#bandCta");
+  const mine = whoAmI();
+  const iAmIn = LIVE.ok && (LIVE.roster || []).some(r => r.email === mine && r.submitted);
+
+  if (!LIVE.tried) sub.textContent = "Checking who has responded\u2026";
+  else if (!LIVE.ok) sub.textContent = "Response count unavailable right now";
+  else if (submitted >= total) sub.textContent = `All ${total} responses in`;
+  else {
+    const waiting = (LIVE.roster || []).filter(r => !r.submitted).map(r => firstName(r.name));
+    sub.textContent = `${submitted} of ${total} in`
+      + (waiting.length ? ` \u00b7 waiting on ${waiting.join(", ")}` : "");
+  }
+
+  /* Once your own is in, the useful action stops being the form. */
+  if (iAmIn) { cta.textContent = "Read everyone's responses"; cta.href = "#/responses"; }
+  else { cta.textContent = "Open your Moving Future"; cta.href = DATA.formUrl; }
+
+  $("#quickLinks").innerHTML = DATA.quickLinks.map(rowHTML).join("");
+}
+
+function rowHTML(x) {
+  const right = x.url
+    ? `<span class="tag set">${esc(x.right || "Open")}</span>`
+    : `<span class="tag">Link not set</span>`;
+  const inner =
+    `<span class="mark" aria-hidden="true">&middot;</span>
+     <span><span class="lname">${esc(x.t)}</span>${x.d ? `<span class="ldesc">${esc(x.d)}</span>` : ""}</span>
+     <span class="lright">${right}</span>`;
+  return x.url
+    ? `<a class="lrow linkrow" href="${esc(x.url)}">${inner}</a>`
+    : `<div class="lrow">${inner}</div>`;
+}
+
+/* ============================================================
+   MOVING FUTURE
+   ============================================================ */
+function renderMF() {
+  const c = current();
+
+  $("#cycTitle").innerHTML = `${esc(c.label)} <em>${esc(c.theme)}</em>`;
+  $("#cycDates").innerHTML = [
+    ["Opened", c.opened], ["Responses due", c.due], ["Discussion", c.discussion]
+  ].map(([k, v]) => `<div class="date"><span class="k">${k}</span><span class="v">${fmtShort(v)}</span></div>`).join("");
+
+  $("#cycNote").innerHTML =
+    `Finish and send produces two files. The <b style="color:#fff;font-weight:500">.json</b> goes to ${esc(DATA.sendTo)} for the synthesis; the <b style="color:#fff;font-weight:500">.md</b> is your readable copy. ${esc(c.note || "")}`;
+
+  $("#cycCta").href = DATA.formUrl;
+
+  const rows = rosterRows(c);
+  const inCount = rows.filter(r => r.submitted).length;
+  $("#rosterAside").textContent = `${inCount} of ${rows.length} in`;
+  $("#rosterBody").innerHTML = rows.map(r => {
+    const on = !!r.submitted;
+    const pct = r.percent;
+    const when = (r.submitted && r.submitted !== true) ? ` ${stamp(r.submitted)}` : "";
+    return `<tr>
+      <td class="who">${esc(r.name)}<span class="sub-email">${esc(r.email)}</span></td>
+      <td class="status"><span class="dot ${on ? "complete" : "none"}"></span>${on ? "Submitted" + when : "Not started"}</td>
+      <td class="role">${r.role ? esc(r.role) : "—"}</td>
+      <td class="pct">${pct == null ? "—" : pct + "%"}${pct == null ? "" : `<span class="meter"><span style="width:${pct}%"></span></span>`}</td>
+    </tr>`;
+  }).join("");
+
+  const live = $("#rosterLive");
+  if (LIVE.ok && LIVE.formFound) {
+    live.className = "livenote";
+    live.textContent = "Live from Netlify Forms. Sending again replaces the earlier version."
+      + (LIVE.source === "api" ? " Reading through the API, since the automatic mirror is not answering." : "");
+  }
+  else if (LIVE.ok) live.className = "livenote warn", live.textContent = LIVE.message || "No submissions recorded for this form yet.";
+  else if (LIVE.tried) live.className = "livenote warn", live.textContent = LIVE.message;
+  else live.className = "livenote", live.textContent = "Checking for submissions\u2026";
+
+  $("#sections").innerHTML = SECTIONS.map(s =>
+    `<div class="sec"><span class="n">${esc(s.n)}</span><div><h4>${esc(s.t)}</h4><p>${esc(s.d)}</p></div></div>`
+  ).join("");
+
+  $("#measures").innerHTML = MEASURES.map(m =>
+    `<div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+      <span><span class="lname">${esc(m.t)}</span><span class="ldesc">${esc(m.d)}</span></span>
+      <span class="lright">0 &ndash; 10</span></div>`
+  ).join("");
+
+  const jan = DATA.cycles.find(x => x.theme === "Vision" && x.year === c.year);
+  $("#rhythm").innerHTML = `
+    <div class="beat ${jan && jan.status === "complete" ? "past" : ""}">
+      <p class="k">January &mdash; <em>Vision</em></p>
+      <p>Where the year is going. Five priorities, three horizons, and the honest read on what the role should become.</p>
+    </div>
+    <div class="beat">
+      <p class="k">July &mdash; <em>Traction</em></p>
+      <p>Whether it happened. Same instrument, carry-forward at the top, and the standing numbers compared against January.</p>
+    </div>`;
+}
+
+/* ============================================================
+   ARCHIVE
+   ============================================================ */
+function buildFilters() {
+  const years = Array.from(new Set(DATA.cycles.map(c => c.year))).sort((a, b) => b - a);
+  $("#fYear").innerHTML = `<option value="all">All years</option>` +
+    years.map(y => `<option value="${y}">${y}</option>`).join("");
+
+  const people = Array.from(new Set([].concat(...DATA.cycles.map(c => c.submissions.map(s => s.name))))).sort();
+  $("#fPerson").innerHTML = `<option value="all">Everyone</option>` +
+    people.map(p => `<option value="${esc(p)}">${esc(p)}</option>`).join("");
+}
+
+function renderArchive() {
+  const y = $("#fYear").value, p = $("#fPerson").value;
+  const rows = DATA.cycles.filter(c =>
+    (y === "all" || String(c.year) === y) &&
+    (p === "all" || c.submissions.some(s => s.name === p))
+  );
+
+  $("#arcCount").textContent = rows.length === 1 ? "1 cycle" : `${rows.length} cycles`;
+
+  if (!rows.length) {
+    $("#ledgerList").innerHTML =
+      `<div class="empty"><h4>Nothing recorded under that filter</h4>
+       <p>The instrument starts with January 2026. Anything earlier than that lives in email and meeting notes rather than here.</p></div>`;
+    return;
+  }
+
+  const openIdx = Math.max(0, rows.findIndex(c => c.status === "complete"));
+  $("#ledgerList").innerHTML = rows.map((c, i) => {
+    const open = c.status === "open";
+    const subs = c.submissions.length
+      ? c.submissions.map(s => `<div class="lrow">
+          <span class="mark" aria-hidden="true">&middot;</span>
+          <span><span class="lname">${esc(s.name)}</span><span class="ldesc">${s.role ? esc(s.role) : "Role not recorded"}</span></span>
+          <span class="lright">${s.pct != null ? s.pct + "% complete" : "—"}</span></div>`).join("")
+      : `<div class="nores">No responses recorded yet.</div>`;
+
+    const docs = (c.docs || []).map(x => rowHTML({ t: x.label, d: "", url: x.url, right: "Open" })).join("");
+
+    return `<details class="entry" ${i === openIdx ? "open" : ""}>
+      <summary>
+        <span class="cy">${esc(c.label)} <em>${esc(c.theme)}</em></span>
+        <span class="st"><span class="dot ${open ? "open" : "complete"}"></span>${open ? "Open" : "Complete"}</span>
+        <span class="ct">${c.submissions.length} of ${DATA.team.length} submitted</span>
+        <span class="chev" aria-hidden="true">&#9656;</span>
+      </summary>
+      <div class="body">
+        <h4>Dates</h4>
+        <div class="ledger">
+          <div class="lrow"><span class="mark" aria-hidden="true">&middot;</span>
+            <span><span class="lname">Responses due ${fmtShort(c.due)}</span>
+            <span class="ldesc">Discussion ${fmtShort(c.discussion)}</span></span>
+            <span class="lright">${esc(c.id)}</span></div>
+        </div>
+        <h4>Responses</h4>
+        <div class="ledger">${subs}</div>
+        <h4>Documents</h4>
+        <div class="ledger">${docs}</div>
+        ${c.note ? `<p class="note">${esc(c.note)}</p>` : ""}
+      </div>
+    </details>`;
+  }).join("");
+}
+
+/* ============================================================
+   RESOURCES
+   ============================================================ */
+/* A sign-in destination. The monogram shows until a logo file loads, so the
+   grid looks deliberate whether or not the images have been added yet. */
+function tileHTML(t) {
+  const inner = `<span class="tile-mark">
+      <span class="tile-mono">${esc(t.mono)}</span>
+      ${t.logo ? `<img src="${esc(t.logo)}" alt="" style="height:${Number(t.h) || 34}px" loading="lazy" hidden>` : ""}
+    </span>
+    <h4>${esc(t.name)}</h4>
+    <p>${esc(t.d)}</p>
+    <span class="out">${t.url ? (t.out || "Sign in &nearr;") : "Link not set"}</span>`;
+  const external = t.url && /^https?:/i.test(t.url);
+  return t.url
+    ? `<a class="tile" href="${esc(t.url)}"${external ? ` target="_blank" rel="noopener noreferrer"` : ""}>${inner}</a>`
+    : `<div class="tile off">${inner}</div>`;
+}
+
+function swapLogos() {
+  $$("#resList .tile-mark img, #resList .launch .lg img").forEach(img => {
+    const show = () => {
+      img.hidden = false;
+      const mono = img.parentElement.querySelector(".tile-mono");
+      if (mono) mono.hidden = true;
+    };
+    if (img.complete && img.naturalWidth > 0) show();
+    else img.addEventListener("load", show, { once: true });
+  });
+}
+
+function boxHTML(t) {
+  const inner = `<span class="lg">
+      <span class="tile-mono">${esc((t.name || "").slice(0, 2).toUpperCase())}</span>
+      ${t.logo ? `<img src="${esc(t.logo)}" alt="" loading="lazy" hidden>` : ""}
+    </span>
+    <h4>${esc(t.name)}</h4>
+    ${t.blurb ? `<span class="blurb">${esc(t.blurb)}</span>` : ""}`;
+  return t.url
+    ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">${inner}
+        <span class="go">Sign in &nearr;</span></a>`
+    : `<div class="off">${inner}<span class="go">Link not set</span></div>`;
+}
+
+function renderResources() {
+  const q = ($("#fRes").value || "").trim().toLowerCase();
+  const hit = (...parts) => !q || parts.filter(Boolean).join(" ").toLowerCase().includes(q);
+  let shown = 0;
+
+  const si = (DATA.signins || []).filter(t => hit(t.name, t.d, t.tags, "sign in login software systems"));
+  let signinHTML = "";
+  if (si.length) {
+    shown += si.length;
+    signinHTML = `<div class="resgroup">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Sign-ins</h3></div>
+      <div class="launch">${si.map(boxHTML).join("")}</div>
+    </div>`;
+  }
+
+  const emp = DATA.employee || { tiles: [], items: [] };
+  const tiles = emp.tiles.filter(t => hit(t.name, t.d, t.tags, "employee resources sign in login"));
+  const items = emp.items.filter(it => hit(it.t, it.d, it.tags, "employee resources"));
+  let employeeHTML = "";
+  if (tiles.length || items.length) {
+    const n = tiles.length + items.length;
+    shown += n;
+    employeeHTML = `<div class="resgroup">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Employee resources</h3>
+      <span class="aside">${n} ${n === 1 ? "item" : "items"}</span></div>
+      ${tiles.length ? `<div class="tiles">${tiles.map(tileHTML).join("")}</div>` : ""}
+      ${items.length ? `<div class="ledger" style="margin-top:var(--s5)">${items.map(rowHTML).join("")}</div>` : ""}
+    </div>`;
+  }
+
+  const pt = (DATA.partnerTiles || []).filter(t => hit(t.name, t.d, t.tags, "strategic partners"));
+  let partnerHTML = "";
+  if (pt.length) {
+    shown += pt.length;
+    partnerHTML = `<div class="resgroup">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Strategic partners</h3>
+      <span class="aside"><a href="partners.html" style="color:var(--bronze-ink)">All partners &rarr;</a></span></div>
+      <div class="tiles">${pt.map(t => tileHTML(Object.assign({}, t, { out: "Contacts &rarr;" }))).join("")}</div>
+    </div>`;
+  }
+
+  const html = signinHTML + partnerHTML + employeeHTML + DATA.resources.map(g => {
+    const items = g.items.filter(it =>
+      !q || (it.t + " " + it.d + " " + (it.tags || "") + " " + g.group).toLowerCase().includes(q)
+    );
+    if (!items.length) return "";
+    shown += items.length;
+    return `<div class="resgroup">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>${esc(g.group)}</h3></div>
+      <div class="ledger">${items.map(it => rowHTML({ t: it.t, d: it.d, url: it.url, right: "Open" })).join("")}</div>
+    </div>`;
+  }).join("");
+
+  $("#resList").innerHTML = html ||
+    `<div class="empty"><h4>No match</h4><p>Nothing here uses that word. Try the group name, or clear the search to see everything.</p></div>`;
+  $("#resCount").textContent = q ? `${shown} matching` : "";
+  swapLogos();
+}
+
+/* ============================================================
+   LIVE DATA
+   Reads submissions back through netlify/functions/responses.mjs.
+   ============================================================ */
+const API_BASES = ["/api/responses", "/.netlify/functions/responses"];
+const IDENTITY_KEY = "aspirean_mf_identity";
+let LIVE = { tried: false, ok: false, formFound: true, roster: null, message: "" };
+
+async function callApi(params) {
+  const qs = new URLSearchParams(params).toString();
+  let fallback = null;
+  for (const base of API_BASES) {
+    try {
+      const res = await fetch(base + "?" + qs, { headers: { accept: "application/json" } });
+      const body = await res.json().catch(() => null);
+      if (res.ok) return body || {};
+      if (res.status === 404) {
+        fallback = { error: "missing", status: 404, message: "The responses function is not reachable. Check that netlify/functions/responses.mjs deployed." };
+        continue;
+      }
+      return Object.assign({ error: "http", status: res.status }, body || {});
+    } catch (err) {
+      fallback = { error: "network", status: 0, message: "Could not reach the responses function. It only answers on the deployed site." };
+    }
+  }
+  return fallback || { error: "network", status: 0, message: "Could not reach the responses function." };
+}
+
+function stamp(iso) {
+  const d = new Date(iso);
+  if (isNaN(d)) return "";
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+}
+
+function rosterRows(c) {
+  if (LIVE.ok && LIVE.roster) return LIVE.roster;
+  const byEmail = {};
+  (c.submissions || []).forEach(x => { if (x.email) byEmail[x.email] = x; });
+  return DATA.team.map(p => {
+    const s = byEmail[p.email];
+    return { name: p.name, email: p.email, submitted: s ? (s.submittedAt || true) : null, percent: s ? s.pct : null, role: s ? s.role : null };
+  });
+}
+
+async function loadStatus() {
+  const c = current();
+  const data = await callApi({ view: "status", cycle: c.id });
+  LIVE.tried = true;
+  if (data.error) {
+    LIVE.ok = false;
+    LIVE.message = data.message || "Live status unavailable.";
+  } else {
+    LIVE.ok = true;
+    LIVE.formFound = data.formFound !== false;
+    LIVE.source = data.source || "";
+    LIVE.message = data.message || "";
+    LIVE.roster = data.roster || [];
+    c.submissions = LIVE.roster.filter(r => r.submitted).map(r => ({
+      name: r.name, email: r.email, pct: r.percent, role: r.role, submittedAt: r.submitted
+    }));
+  }
+  renderHome(); renderMF(); renderArchive();
+}
+
+/* ============================================================
+   READING ROOM
+   ============================================================ */
+let RESP = { state: "idle", me: "", mode: "question", data: null, error: null };
+
+function whoAmI() {
+  try {
+    const id = JSON.parse(localStorage.getItem(IDENTITY_KEY) || "null");
+    if (id && id.email) return String(id.email).toLowerCase();
+  } catch (e) {}
+  return "";
+}
+
+function slugify(v) {
+  return String(v || "unmarked").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
+function mountResponses() {
+  renderGate();
+  if (RESP.state === "idle" && whoAmI()) loadResponses(whoAmI());
+  else renderRoom();
+}
+
+function renderGate() {
+  const c = current();
+  const me = RESP.me || whoAmI();
+  const opts = DATA.team.map(p =>
+    `<option value="${esc(p.email)}"${p.email === me ? " selected" : ""}>${esc(p.name)}</option>`).join("");
+  $("#respGate").innerHTML = `
+    <div class="gate">
+      <div class="gate-row">
+        <div class="field">
+          <label for="respWho">Who are you</label>
+          <select id="respWho"><option value="">Choose your name</option>${opts}</select>
+        </div>
+        <button class="btn primary" id="respGo">Open ${esc(c.label)} ${esc(c.theme)}</button>
+      </div>
+      <p class="gate-note">Names are matched on the Aspirean address your response was filed under. Since the site itself is already closed to everyone outside the firm, this asks who you are rather than proving it.</p>
+    </div>`;
+  $("#respGo").addEventListener("click", () => {
+    const v = $("#respWho").value;
+    if (!v) { $("#respWho").focus(); return; }
+    loadResponses(v);
+  });
+}
+
+/* True if this browser sent a response in the last ten minutes. */
+function sentRecently() {
+  try {
+    const id = JSON.parse(localStorage.getItem(IDENTITY_KEY) || "null");
+    if (!id || !id.at) return false;
+    return (Date.now() - new Date(id.at).getTime()) < 600000;
+  } catch (e) { return false; }
+}
+
+async function loadResponses(email, isRetry) {
+  RESP.me = String(email).toLowerCase();
+  RESP.state = "loading"; RESP.error = null;
+  renderRoom();
+  const c = current();
+  const data = await callApi({ view: "full", cycle: c.id, email: RESP.me });
+
+  /* Netlify verifies a submission before the mirror sees it, so someone who
+     sends and clicks straight through can arrive a few seconds early. */
+  if (data.error === "not_submitted" && !isRetry && sentRecently()) {
+    RESP.state = "filing"; renderRoom();
+    await new Promise(r => setTimeout(r, 3500));
+    return loadResponses(email, true);
+  }
+
+  if (data.error) { RESP.state = "error"; RESP.error = data; }
+  else { RESP.state = "ready"; RESP.data = data; }
+  renderRoom();
+}
+
+function renderRoom() {
+  const box = $("#respBody");
+  const c = current();
+
+  if (RESP.state === "idle") { box.innerHTML = ""; return; }
+
+  if (RESP.state === "filing") {
+    box.innerHTML = `<div class="empty" style="margin-top:var(--s5)"><h4>Filing your response\u2026</h4>
+      <p>Netlify verifies a submission before it reaches the mirror, which usually takes a few seconds.
+      Trying again in a moment.</p></div>`;
+    return;
+  }
+
+  if (RESP.state === "loading") {
+    box.innerHTML = `<div class="empty" style="margin-top:var(--s5)"><h4>Reading the cycle\u2026</h4>
+      <p>Pulling every submission for ${esc(c.label)} from Netlify Forms.</p></div>`;
+    return;
+  }
+
+  if (RESP.state === "error") {
+    const e = RESP.error || {};
+    let h4 = "That did not open";
+    let body = esc(e.message || "Unknown error.");
+    if (e.error === "not_submitted") {
+      h4 = "Yours first";
+      body = `Everyone else's answers open up the moment your own response is in. It is the whole reason people write honestly in this thing.`;
+    } else if (e.error === "unknown_person") {
+      h4 = "Not on the roster";
+    } else if (e.error === "config") {
+      h4 = "The endpoint is not configured yet";
+    }
+    box.innerHTML = `<div class="gate locked warn" style="margin-top:var(--s5)">
+      <h4>${esc(h4)}</h4>
+      <p class="gate-note">${body}</p>
+      ${e.error === "not_submitted"
+        ? `<div class="gate-row" style="margin-top:var(--s5)"><a class="btn primary" href="${esc(DATA.formUrl)}">Open your Moving Future</a></div>`
+        : ""}
+    </div>`;
+    return;
+  }
+
+  const d = RESP.data || {};
+  const rs = d.responses || [];
+  const schema = d.schema || [];
+  const waiting = d.waiting || [];
+
+  const head = `
+    <div class="rr-head">
+      <div>
+        <p class="eyebrow">${esc(c.label)} &nbsp;\u00b7&nbsp; ${esc(c.theme)}</p>
+        <p class="rr-meta"><b>${rs.length} of ${DATA.team.length}</b> submitted${waiting.length ? ` &nbsp;\u00b7&nbsp; still to come: ${esc(waiting.join(", "))}` : ""}</p>
+      </div>
+      <div class="seg" role="group" aria-label="Reading order">
+        <button type="button" id="modeQ" aria-pressed="${RESP.mode === "question"}">By question</button>
+        <button type="button" id="modeP" aria-pressed="${RESP.mode === "person"}">By person</button>
+      </div>
+      <button class="btn quiet rr-print" type="button" id="respPrint">Print</button>
+    </div>`;
+
+  box.innerHTML = head + (RESP.mode === "question" ? byQuestion(d, rs, schema) : byPerson(d, rs, schema));
+
+  $("#modeQ").addEventListener("click", () => { RESP.mode = "question"; renderRoom(); });
+  $("#modeP").addEventListener("click", () => { RESP.mode = "person"; renderRoom(); });
+  $("#respPrint").addEventListener("click", () => window.print());
+}
+
+function answerHTML(kind, v, d) {
+  const none = `<p class="ans-none">No answer</p>`;
+  if (kind === "bullets") {
+    const a = (v || []).filter(x => typeof x === "string" && x.trim());
+    return a.length ? `<ul class="ans">${a.map(x => `<li>${esc(x.trim())}</li>`).join("")}</ul>` : none;
+  }
+  if (kind === "horizon") {
+    const hz = d.horizonMeta || [{ id: "y1", label: "One year" }, { id: "y3", label: "Three years" }, { id: "y10", label: "Ten years" }];
+    const rows = hz.filter(h => v && v[h.id] && String(v[h.id]).trim())
+      .map(h => `<li><span class="ans-k">${esc(h.label)}</span>${esc(String(v[h.id]).trim())}</li>`);
+    return rows.length ? `<ul class="ans keyed">${rows.join("")}</ul>` : none;
+  }
+  if (kind === "kss") {
+    const rows = [["keep", "Keep"], ["start", "Start"], ["stop", "Stop"]]
+      .filter(([k]) => v && v[k] && String(v[k]).trim())
+      .map(([k, l]) => `<li><span class="ans-k ${k}">${l}</span>${esc(String(v[k]).trim())}</li>`);
+    return rows.length ? `<ul class="ans keyed">${rows.join("")}</ul>` : none;
+  }
+  if (kind === "longform") {
+    return v && String(v).trim()
+      ? `<p class="ans-p">${esc(String(v).trim()).replace(/\n+/g, "<br>")}</p>` : none;
+  }
+  if (kind === "carry") {
+    const rows = (v || []).filter(r => r && r.t && String(r.t).trim())
+      .map(r => `<li><span class="cstat ${slugify(r.s)}">${esc(r.s || "unmarked")}</span>${esc(String(r.t).trim())}</li>`);
+    return rows.length ? `<ul class="ans keyed">${rows.join("")}</ul>` : none;
+  }
+  return none;
+}
+
+function scoresHTML(d, rs) {
+  const ms = d.scoreMeta || DEFAULT_MEASURES;
+  const cols = rs.map(r => `<th class="n" scope="col">${esc(firstName(r.person))}</th>`).join("");
+  const rows = ms.map(m => {
+    const cells = rs.map(r => {
+      const v = r.scores ? r.scores[m.id] : null;
+      if (v == null) return `<td class="n none">&mdash;</td>`;
+      return `<td class="n${v <= 5 ? " flag" : ""}">${v}</td>`;
+    }).join("");
+    return `<tr><td class="m">${esc(m.label)}${m.sub ? `<span>${esc(m.sub)}</span>` : ""}</td>${cells}</tr>`;
+  }).join("");
+
+  const plus = ms.map(m => {
+    const items = rs.map(r => {
+      const a = r.answers && r.answers.scores && r.answers.scores[m.id];
+      if (!a || !a.plus || !String(a.plus).trim()) return "";
+      return `<div class="ansbox${r.email === RESP.me ? " mine" : ""}">
+        <p class="who">${esc(r.person)}${r.email === RESP.me ? ` <span>you</span>` : ""}</p>
+        <p class="ans-p">${esc(String(a.plus).trim())}</p></div>`;
+    }).filter(Boolean).join("");
+    if (!items) return "";
+    return `<div class="qblock"><div class="qblock-h"><span class="qn" aria-hidden="true">+1</span>
+      <h3><span class="sec">One point higher</span>${esc(m.label)}</h3></div>${items}</div>`;
+  }).join("");
+
+  return `<div class="qblock">
+      <div class="qblock-h"><span class="qn" aria-hidden="true">V</span>
+      <h3><span class="sec">Standing</span>Where everyone put themselves</h3></div>
+      <table class="sgrid"><thead><tr><th scope="col">Measure</th>${cols}</tr></thead><tbody>${rows}</tbody></table>
+      <p class="livenote">A bronze dot marks five or below, which is the threshold we agreed to talk about rather than note.</p>
+    </div>${plus}`;
+}
+
+const firstName = n => String(n || "").trim().split(/\s+/)[0] || "\u2014";
+
+/* Older submissions may not carry a label for the blocks that had no question text. */
+const KIND_FALLBACK = { carry: "What did you commit to last cycle?", scores: "Standing" };
+const qLabel = q => q.text || KIND_FALLBACK[q.kind] || q.id;
+const DEFAULT_MEASURES = [
+  { id: "work", label: "Work" }, { id: "health", label: "Health" },
+  { id: "life", label: "Life" }, { id: "align", label: "Alignment" }
+];
+const noSchema = `<div class="empty"><h4>These responses arrived without their question list</h4>
+  <p>The submissions are here, but the payload could not be read, so there is nothing to group them under.
+  The full text of each one is still in the Netlify Forms tab under the readable field.</p></div>`;
+
+function byQuestion(d, rs, schema) {
+  if (!rs.length) return `<div class="empty"><h4>Nothing to read yet</h4><p>No responses have been filed for this cycle.</p></div>`;
+  if (!schema.length) return noSchema;
+  return schema.map(q => {
+    if (q.kind === "scores") return scoresHTML(d, rs);
+    const answers = rs.map(r => {
+      const v = r.answers ? r.answers[q.id] : null;
+      return `<div class="ansbox${r.email === RESP.me ? " mine" : ""}">
+        <p class="who">${esc(r.person)}${r.email === RESP.me ? ` <span>you</span>` : ""}</p>
+        ${answerHTML(q.kind, v, d)}</div>`;
+    }).join("");
+    return `<div class="qblock">
+      <div class="qblock-h">
+        <span class="qn" aria-hidden="true">${esc(q.n != null ? q.n : q.numeral || "")}</span>
+        <h3><span class="sec">${esc(q.section || "")}</span>${esc(qLabel(q))}</h3>
+      </div>${answers}</div>`;
+  }).join("");
+}
+
+function byPerson(d, rs, schema) {
+  if (!rs.length) return `<div class="empty"><h4>Nothing to read yet</h4><p>No responses have been filed for this cycle.</p></div>`;
+  if (!schema.length) return noSchema;
+  return rs.map(r => {
+    const body = schema.map(q => {
+      if (q.kind === "scores") {
+        const cells = (d.scoreMeta || DEFAULT_MEASURES).map(m => {
+          const v = r.scores ? r.scores[m.id] : null;
+          const a = r.answers && r.answers.scores && r.answers.scores[m.id];
+          return `<div class="pq"><h4><span>${v == null ? "\u2014" : v}</span>${esc(m.label)}</h4>
+            ${a && a.plus && String(a.plus).trim() ? `<p class="ans-p">${esc(String(a.plus).trim())}</p>` : `<p class="ans-none">No answer</p>`}</div>`;
+        }).join("");
+        return cells || "";
+      }
+      const v = r.answers ? r.answers[q.id] : null;
+      return `<div class="pq"><h4><span>${esc(q.n != null ? q.n + "." : "\u00b7")}</span>${esc(qLabel(q))}</h4>
+        ${answerHTML(q.kind, v, d)}</div>`;
+    }).join("");
+    return `<div class="pblock">
+      <div class="pblock-h">
+        <h3>${esc(r.person)}</h3>
+        ${r.role ? `<span class="role">${esc(r.role)}</span>` : ""}
+        <span class="stamp">${r.percent != null ? r.percent + "% complete &nbsp;\u00b7&nbsp; " : ""}sent ${esc(stamp(r.submitted))}</span>
+      </div>${body}</div>`;
+  }).join("");
+}
+
+/* ============================================================
+   ROUTING
+   ============================================================ */
+const ROUTES = ["home", "moving-future", "responses", "archive", "resources"];
+const TITLES = {
+  "home": "Aspirean Intranet",
+  "moving-future": "Moving Future — Aspirean Intranet",
+  "responses": "Responses — Aspirean Intranet",
+  "archive": "Archive — Aspirean Intranet",
+  "resources": "Resources — Aspirean Intranet"
+};
+let booted = false;
+
+const TOP_TAB = { "responses": "moving-future", "archive": "moving-future" };
+
+function route() {
+  const raw = (location.hash || "").replace(/^#\/?/, "");
+  const id = ROUTES.includes(raw) ? raw : "home";
+  const top = TOP_TAB[id] || id;
+
+  $$(".panel").forEach(p => { p.hidden = (p.id !== "panel-" + id); });
+  $$(".tab").forEach(a => {
+    const on = a.dataset.route === top;
+    a.classList.toggle("on", on);
+    if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  });
+  $$(".subnav a").forEach(a => {
+    const on = a.dataset.sub === id;
+    a.classList.toggle("on", on);
+    if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  });
+  document.title = TITLES[id];
+  if (id === "responses") mountResponses();
+
+  if (booted) {
+    const h = $("#panel-" + id + " h2");
+    if (h) { h.setAttribute("tabindex", "-1"); h.focus({ preventScroll: true }); }
+    window.scrollTo({ top: 0, behavior: "auto" });
+  }
+}
+
+/* ============================================================
+   BOOT
+   ============================================================ */
+/* A 30 second interval leaves the display up to half a minute behind, and a
+   backgrounded tab has its timers throttled, so it can sit a full minute stale.
+   Repaint exactly on the minute boundary instead, and again whenever the tab
+   comes back to the foreground. */
+function scheduleClocks() {
+  clocks();
+  const now = new Date();
+  const ms = (60 - now.getSeconds()) * 1000 - now.getMilliseconds() + 60;
+  setTimeout(scheduleClocks, ms);
+}
+scheduleClocks();
+document.addEventListener("visibilitychange", () => { if (!document.hidden) clocks(); });
+window.addEventListener("focus", clocks);
+
+renderHome();
+renderMF();
+buildFilters();
+renderArchive();
+renderResources();
+
+$("#fYear").addEventListener("change", renderArchive);
+$("#fPerson").addEventListener("change", renderArchive);
+$("#fRes").addEventListener("input", renderResources);
+
+window.addEventListener("hashchange", route);
+route();
+booted = true;
+
+loadStatus();
+</script>
+</body>
+</html>
