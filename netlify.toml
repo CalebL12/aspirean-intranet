@@ -29,6 +29,13 @@
     Referrer-Policy = "no-referrer"
     Permissions-Policy = "geolocation=(), camera=(), microphone=()"
 
+# Logos and covers change rarely and always under the same names, so a day
+# of cache is safe and saves a burst of image requests on every visit.
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
 # Cycle records should not be cached stale.
 [[headers]]
   for = "/records/*"

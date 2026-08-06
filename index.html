@@ -286,6 +286,9 @@ main{max-width:var(--wrap);margin:0 auto;padding:var(--s7) var(--pad) var(--s9)}
 .launch .lg{height:48px;display:flex;align-items:center;justify-content:center}
 .launch .lg img{max-height:48px;max-width:118px;width:auto;object-fit:contain;display:block}
 .launch h4{font-size:13px;color:var(--navy);font-weight:500;text-align:center;line-height:1.35}
+.launch .off{display:flex;flex-direction:column;align-items:center;gap:var(--s3);
+  padding:var(--s5) var(--s3) var(--s4);background:var(--paper-2);border:1px dashed var(--line);
+  border-radius:4px}
 
 /* ---------- sign-in tiles ---------- */
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:var(--s4)}
@@ -834,6 +837,8 @@ const DATA = {
       url: "https://app.crmworkspace.com/login?uid=226a652c221480643ae8b817a5f049ce" },
     { name: "Schwab Advisor", logo: "assets/logos/schwab.webp", d: "custody trading transfers advisor center",
       url: "https://advisorservices.schwab.com/advisor/login" },
+    { name: "Envestnet Direct", logo: "assets/logos/envestnet.webp", d: "envestnet direct advisor platform",
+      url: "https://advisor.envestnet.com/secure/app.jsp" },
     { name: "Jump", logo: "assets/logos/jump.webp", d: "meeting notes follow-ups",
       url: "https://my.jumpapp.com" },
     { name: "Holistiplan", logo: "assets/logos/holistiplan.webp", d: "tax return planning scenarios",
@@ -855,7 +860,9 @@ const DATA = {
     { name: "GitHub", logo: "assets/logos/github.webp", d: "source repository site code",
       url: "https://github.com/login" },
     { name: "Netlify", logo: "assets/logos/netlify.webp", d: "hosting forms functions deploys",
-      url: "https://app.netlify.com/" }
+      url: "https://app.netlify.com/" },
+    { name: "Breach Secure Now", logo: "assets/logos/bsn.webp", d: "security training phishing dark web",
+      url: null }
   ],
 
   /* Strategic partner tiles. Anchors into partners.html. */
@@ -863,17 +870,25 @@ const DATA = {
     { name: "Dimensional", mono: "DF", logo: "assets/logos/dimensional.webp", h: 30,
       d: "Fund manager. Avery Bonahoom is the regional director.", url: "partners.html#dimensional" },
     { name: "AQR", mono: "AQ", logo: "assets/logos/aqr.webp", h: 30,
-      d: "Asset manager. Works through team inboxes rather than one rep.", url: "partners.html#aqr" },
+      d: "Asset manager. Works through team inboxes.", url: "partners.html#aqr" },
     { name: "Focus Partners", mono: "FP", logo: "assets/logos/focuspartners.webp", h: 30,
-      d: "Partner firm. Sean Brooks, plus the FAS trading desk.", url: "partners.html#focus" },
+      d: "Sean Brooks, the FAS desk, trusts, and valuation.", url: "partners.html#focus" },
     { name: "Nationwide", mono: "NW", logo: "assets/logos/nationwide.webp", h: 32,
       d: "Retirement solutions servicing. Luke Kilbert.", url: "partners.html#nationwide" },
     { name: "Inhouse CIO", mono: "IC", logo: "assets/logos/inhousecio.webp", h: 28,
       d: "The firm's IT provider. Helpdesk first.", url: "partners.html#inhousecio" },
-    { name: "Claude", mono: "CL", logo: "assets/logos/claude.webp", h: 30,
-      d: "Anthropic. The assistant the firm works in.", url: "partners.html#claude" },
-    { name: "Breach Secure Now", mono: "BS", logo: "assets/logos/bsn.webp", h: 30,
-      d: "Security training and phishing, through Inhouse CIO.", url: "partners.html#breachsecurenow" }
+    { name: "First State Trust", mono: "FS", logo: "assets/logos/firststate.webp", h: 30,
+      d: "Trust company. Jacqui Jenkins.", url: "partners.html#firststate" },
+    { name: "US Bank", mono: "UB", logo: null, h: 30,
+      d: "Bank and corporate trustee.", url: "partners.html#usbank" },
+    { name: "JTC", mono: "JT", logo: "assets/logos/jtc.webp", h: 30,
+      d: "Trust and fund administration.", url: "partners.html#jtc" },
+    { name: "ChatChosen", mono: "CC", logo: "assets/logos/chatchosen.webp", h: 28,
+      d: "Kai Cromwell and Tryggvi Sigurbjarnarson.", url: "partners.html#chatchosen" },
+    { name: "Nexa Insights", mono: "NX", logo: "assets/logos/nexa.webp", h: 30,
+      d: "Client surveys. Chris Manker.", url: "partners.html#nexa" },
+    { name: "Emry Concierge", mono: "EM", logo: "assets/logos/emry.webp", h: 30,
+      d: "Set out what the relationship covers.", url: "partners.html#emry" }
   ],
 
   /* Company resources */
@@ -1173,7 +1188,7 @@ function renderArchive() {
 function tileHTML(t) {
   const inner = `<span class="tile-mark">
       <span class="tile-mono">${esc(t.mono)}</span>
-      ${t.logo ? `<img src="${esc(t.logo)}" alt="${esc(t.name)}" style="height:${Number(t.h) || 34}px" hidden>` : ""}
+      ${t.logo ? `<img src="${esc(t.logo)}" alt="" style="height:${Number(t.h) || 34}px" loading="lazy" hidden>` : ""}
     </span>
     <h4>${esc(t.name)}</h4>
     <p>${esc(t.d)}</p>
@@ -1197,13 +1212,14 @@ function swapLogos() {
 }
 
 function boxHTML(t) {
-  return `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">
-    <span class="lg">
+  const inner = `<span class="lg">
       <span class="tile-mono">${esc((t.name || "").slice(0, 2).toUpperCase())}</span>
-      ${t.logo ? `<img src="${esc(t.logo)}" alt="" hidden>` : ""}
+      ${t.logo ? `<img src="${esc(t.logo)}" alt="" loading="lazy" hidden>` : ""}
     </span>
-    <h4>${esc(t.name)}</h4>
-  </a>`;
+    <h4>${esc(t.name)}</h4>`;
+  return t.url
+    ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">${inner}</a>`
+    : `<div class="off">${inner}<span class="tag" style="margin-top:6px">Link not set</span></div>`;
 }
 
 function renderResources() {
@@ -1217,7 +1233,7 @@ function renderResources() {
     shown += si.length;
     signinHTML = `<div class="resgroup">
       <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Sign-ins</h3>
-      <span class="aside">${si.length} systems</span></div>
+      <span class="aside">${si.filter(t => t.url).length} of ${si.length} live</span></div>
       <div class="launch">${si.map(boxHTML).join("")}</div>
     </div>`;
   }

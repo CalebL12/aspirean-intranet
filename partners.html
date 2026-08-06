@@ -81,11 +81,10 @@ const PARTNERS = [
     id: "aqr",
     name: "AQR",
     logo: "assets/logos/aqr.webp", logoH: 30,
-    what: "Asset manager. Systematic and alternative strategies.",
+    what: "Asset manager. Systematic and alternative strategies. AQR works through team inboxes rather than a single named representative.",
     links: [
-      { label: "Adviser site", url: null },
-      { label: "Fund documents and prospectuses", url: null },
-      { label: "Research library", url: null }
+      { label: "MyAQR login", url: "https://flex.aqr.com/MyAQR/Login" },
+      { label: "MyAQR registration", url: "https://flex.aqr.com/MyAQR/Register" }
     ],
     contacts: [
       { name: "Strategy questions", role: "Team inbox",
@@ -93,11 +92,9 @@ const PARTNERS = [
         notes: "Strategy guidance and questions." },
       { name: "Operational questions", role: "Team inbox",
         email: "flexsmaops@aqr.com", phone: null,
-        notes: "Flex SMA operations." },
-      { name: null, role: "Named representative", email: null, phone: null,
-        notes: "AQR works through these inboxes rather than one rep. Add a name here when one attaches to the relationship." }
+        notes: "Flex SMA operations." }
     ],
-    notes: "Which strategies we actually use, and where they sit in the models. Not written yet."
+    notes: null
   },
   {
     id: "focus",
@@ -105,9 +102,7 @@ const PARTNERS = [
     logo: "assets/logos/focuspartners.webp", logoH: 30,
     what: "Partner firm. Set out here what the relationship actually covers.",
     links: [
-      { label: "Adviser portal", url: null },
-      { label: "Service agreement", url: null },
-      { label: "Escalation path", url: null }
+      { label: "Adviser portal", url: "https://portal.advisor.focuspartners.com/s/" }
     ],
     contacts: [
       { name: "Sean Brooks", role: "Relationship contact",
@@ -116,9 +111,14 @@ const PARTNERS = [
       { name: "FAS Trading", role: "Trading desk",
         email: "fasenvestnettrading@focuspartners.com", phone: "800-366-7266 x2, #3",
         notes: "Also fpastrading@focuspartners.com. 190 Carondelet Plaza, Suite 600, Clayton, MO 63105." },
-      { name: null, role: "Escalation", email: null, phone: null, notes: null }
+      { name: "WestOne", role: "Contact", email: null, phone: null, notes: null },
+      { name: "Emily Macintosh", role: "Focus Trusts",
+        email: "emily.macintosh@focuspartners.com", phone: null,
+        notes: "Team inbox: Trusts@focuspartners.com." },
+      { name: "Chuck Laverty", role: "Business valuation",
+        email: null, phone: null, notes: null }
     ],
-    notes: "What the relationship covers, and who decides when to use it. Not written yet."
+    notes: null
   },
   {
     id: "nationwide",
@@ -133,9 +133,7 @@ const PARTNERS = [
     contacts: [
       { name: "Luke Kilbert", role: "Senior analyst",
         email: "kilbel@nationwide.com", phone: "614-435-3358",
-        notes: "Financial Professional Servicing Team, Retirement Solutions." },
-      { name: null, role: "Backup contact", email: null, phone: null, notes: null },
-      { name: null, role: "Escalation", email: null, phone: null, notes: null }
+        notes: "Financial Professional Servicing Team, Retirement Solutions." }
     ],
     notes: "Which plans this relationship actually covers. Not written yet."
   },
@@ -162,42 +160,76 @@ const PARTNERS = [
     notes: "Surnames and direct lines for Mark and Gus are in the CRM record; add them here when confirmed."
   },
   {
-    id: "claude",
-    name: "Claude",
-    logo: "assets/logos/claude.webp", logoH: 30,
-    what: "Anthropic. The AI assistant the firm works in, and the account behind it.",
+    id: "firststate",
+    name: "First State Trust",
+    logo: "assets/logos/firststate.webp", logoH: 30,
+    what: "Trust company. Set out here what we use them for.",
     links: [
-      { label: "Claude", url: "https://claude.ai" },
-      { label: "Support centre", url: "https://support.claude.com" },
-      { label: "Enterprise sales", url: "https://www.anthropic.com/contact-sales" },
-      { label: "Our internal Claude guide", url: null }
+      { label: "Website", url: "https://www.fs-trust.com" }
     ],
     contacts: [
-      { name: null, role: "Anthropic account contact", email: null, phone: null, notes: null },
-      { name: "Caleb", role: "Internal owner", email: "caleb@aspirean.com", phone: null,
-        notes: "Seats, skill files, and what the team is using it for." },
-      { name: null, role: "Billing", email: null, phone: null, notes: null }
+      { name: "Jacqui Jenkins", role: "Contact",
+        email: "jjenkins@fs-trust.com", phone: null, notes: null }
     ],
-    notes: "The rules on what may be put into an assistant, and on reviewing output before it reaches a client, sit in the AI row on the policies page rather than here."
+    notes: null
   },
   {
-    id: "breachsecurenow",
-    name: "Breach Secure Now",
-    logo: "assets/logos/bsn.webp", logoH: 30,
-    what: "Security awareness training, simulated phishing, dark web monitoring, and the written security policies that come with it.",
+    id: "usbank",
+    name: "US Bank",
+    logo: null, logoH: 30,
+    what: "Bank and corporate trustee. Set out here what the relationship covers.",
+    links: [],
+    contacts: [
+      { name: null, role: "Relationship contact", email: null, phone: null, notes: null }
+    ],
+    notes: null
+  },
+  {
+    id: "jtc",
+    name: "JTC",
+    logo: "assets/logos/jtc.webp", logoH: 30,
+    what: "Trust and fund administration group. Set out here what the relationship covers.",
     links: [
-      { label: "Training platform", url: null },
-      { label: "Our MSP, who resells it", url: null },
-      { label: "Training completion records", url: null }
+      { label: "Website", url: "https://www.jtcgroup.com" }
     ],
     contacts: [
-      { name: "RIA Workspace (Inhouse CIO)", role: "Our MSP, first call",
-        email: "helpdesk@inhousecio.com", phone: "877-361-3499, option 2",
-        notes: "Breach Secure Now sells through IT providers rather than direct, and Inhouse CIO is ours." },
-      { name: null, role: "Breach Secure Now contact", email: null, phone: null, notes: null },
-      { name: null, role: "Support and escalation", email: null, phone: null, notes: null }
+      { name: null, role: "Relationship contact", email: null, phone: null, notes: null }
     ],
-    notes: "This is where the evidence of annual cybersecurity training comes from, which is the part an examiner asks to see. Keep the completion records somewhere Brad can produce them."
+    notes: null
+  },
+  {
+    id: "chatchosen",
+    name: "ChatChosen",
+    logo: "assets/logos/chatchosen.webp", logoH: 28,
+    what: "Set out here what the relationship covers.",
+    links: [],
+    contacts: [
+      { name: "Kai Cromwell", role: "Contact", email: null, phone: null, notes: null },
+      { name: "Tryggvi Rafn Sigurbjarnarson", role: "Contact", email: null, phone: null, notes: null }
+    ],
+    notes: null
+  },
+  {
+    id: "nexa",
+    name: "Nexa Insights",
+    logo: "assets/logos/nexa.webp", logoH: 30,
+    what: "Client survey and feedback platform for advisory firms.",
+    links: [],
+    contacts: [
+      { name: "Chris Manker", role: "Contact", email: null, phone: null, notes: null }
+    ],
+    notes: null
+  },
+  {
+    id: "emry",
+    name: "Emry Concierge",
+    logo: "assets/logos/emry.webp", logoH: 30,
+    what: "Set out here what the relationship covers.",
+    links: [],
+    contacts: [
+      { name: null, role: "Relationship contact", email: null, phone: null, notes: null }
+    ],
+    notes: null
   }
 ];
 
@@ -244,7 +276,7 @@ $("#jump").innerHTML = PARTNERS.map(p => `<a href="#${esc(p.id)}">${esc(p.name)}
 $("#partners").innerHTML = PARTNERS.map((p, n) => `
   <div class="block" id="${esc(p.id)}">
     <div class="block-head">
-      <span class="mark" aria-hidden="true">${["I","II","III","IV","V","VI","VII","VIII"][n] || "&middot;"}</span>
+      <span class="mark" aria-hidden="true">${["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII"][n] || "&middot;"}</span>
       ${p.logo ? `<img src="${esc(p.logo)}" alt="" style="height:${Number(p.logoH) || 28}px;width:auto;align-self:center" onerror="this.remove()">` : ""}
       <h2>${esc(p.name)}</h2>
       <span class="aside">${p.contacts.filter(c => c.name).length} of ${p.contacts.length} contacts set</span>
@@ -254,10 +286,9 @@ $("#partners").innerHTML = PARTNERS.map((p, n) => `
     <p class="lbl">Our contacts there</p>
     <div class="contacts">${p.contacts.map(contactHTML).join("")}</div>
 
-    <p class="lbl" style="margin-top:var(--s6)">Links</p>
-    <div class="ledger">${p.links.map(linkRow).join("")}</div>
-
-    <p class="hint" style="margin-top:var(--s4);max-width:70ch">${esc(p.notes)}</p>
+    ${p.links.length ? `<p class="lbl" style="margin-top:var(--s6)">Links</p>
+    <div class="ledger">${p.links.map(linkRow).join("")}</div>` : ""}
+    ${p.notes ? `<p class="hint" style="margin-top:var(--s4);max-width:70ch">${esc(p.notes)}</p>` : ""}
   </div>`).join("");
 </script>
 </body>
