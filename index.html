@@ -1196,10 +1196,19 @@ function renderArchive() {
    ============================================================ */
 /* A sign-in destination. The monogram shows until a logo file loads, so the
    grid looks deliberate whether or not the images have been added yet. */
+/* Logo with a monogram fallback. The image is never born hidden: a hidden
+   image never lazy-loads, which is exactly the bug this replaces. */
+function markHTML(logo, mono, imgStyle) {
+  const monoSpan = h => `<span class="tile-mono"${h ? " hidden" : ""}>${esc(mono)}</span>`;
+  return logo
+    ? `<img src="${esc(logo)}" alt=""${imgStyle ? ` style="${imgStyle}"` : ""} loading="lazy"
+        onerror="this.hidden=true;this.nextElementSibling.hidden=false">${monoSpan(true)}`
+    : monoSpan(false);
+}
+
 function tileHTML(t) {
   const inner = `<span class="tile-mark">
-      <span class="tile-mono">${esc(t.mono)}</span>
-      ${t.logo ? `<img src="${esc(t.logo)}" alt="" style="height:${Number(t.h) || 34}px" loading="lazy" hidden>` : ""}
+      ${markHTML(t.logo, t.mono, `height:${Number(t.h) || 34}px`)}
     </span>
     <h4>${esc(t.name)}</h4>
     <p>${esc(t.d)}</p>
@@ -1210,22 +1219,9 @@ function tileHTML(t) {
     : `<div class="tile off">${inner}</div>`;
 }
 
-function swapLogos() {
-  $$("#resList .tile-mark img, #resList .launch .lg img").forEach(img => {
-    const show = () => {
-      img.hidden = false;
-      const mono = img.parentElement.querySelector(".tile-mono");
-      if (mono) mono.hidden = true;
-    };
-    if (img.complete && img.naturalWidth > 0) show();
-    else img.addEventListener("load", show, { once: true });
-  });
-}
-
 function boxHTML(t) {
   const inner = `<span class="lg">
-      <span class="tile-mono">${esc((t.name || "").slice(0, 2).toUpperCase())}</span>
-      ${t.logo ? `<img src="${esc(t.logo)}" alt="" loading="lazy" hidden>` : ""}
+      ${markHTML(t.logo, (t.name || "").slice(0, 2).toUpperCase())}
     </span>
     <h4>${esc(t.name)}</h4>
     ${t.blurb ? `<span class="blurb">${esc(t.blurb)}</span>` : ""}`;
@@ -1291,7 +1287,6 @@ function renderResources() {
   $("#resList").innerHTML = html ||
     `<div class="empty"><h4>No match</h4><p>Nothing here uses that word. Try the group name, or clear the search to see everything.</p></div>`;
   $("#resCount").textContent = q ? `${shown} matching` : "";
-  swapLogos();
 }
 
 /* ============================================================
