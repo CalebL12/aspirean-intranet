@@ -274,21 +274,24 @@ main{max-width:var(--wrap);margin:0 auto;padding:var(--s7) var(--pad) var(--s9)}
 .axis{display:flex;justify-content:space-between;border-top:1px solid var(--line);margin-top:var(--s5);padding-top:var(--s2);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint)}
 
 /* ---------- sign-in launcher ---------- */
-.launch{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s3)}
-.launch a{display:flex;flex-direction:column;align-items:center;gap:var(--s3);
-  padding:var(--s5) var(--s3) var(--s4);background:var(--paper);border:1px solid var(--line);
-  border-radius:4px;text-decoration:none;
-  transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.launch{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:var(--s3)}
+.launch a,.launch .off{display:flex;flex-direction:column;align-items:flex-start;
+  background:var(--paper);border:1px solid var(--line);border-radius:6px;
+  padding:var(--s5) var(--s5) var(--s4);min-height:196px;text-decoration:none}
+.launch a{transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
 .launch a:hover{border-color:var(--bronze);transform:translateY(-2px);
-  box-shadow:0 6px 20px rgba(20,36,59,.07)}
+  box-shadow:0 8px 24px rgba(20,36,59,.08)}
 .launch a:focus-visible{outline:2px solid var(--bronze);outline-offset:2px}
 .launch a:active{transform:none}
-.launch .lg{height:48px;display:flex;align-items:center;justify-content:center}
-.launch .lg img{max-height:48px;max-width:118px;width:auto;object-fit:contain;display:block}
-.launch h4{font-size:13px;color:var(--navy);font-weight:500;text-align:center;line-height:1.35}
-.launch .off{display:flex;flex-direction:column;align-items:center;gap:var(--s3);
-  padding:var(--s5) var(--s3) var(--s4);background:var(--paper-2);border:1px dashed var(--line);
-  border-radius:4px}
+.launch .off{background:var(--paper-2);border-style:dashed}
+.launch .lg{height:64px;display:flex;align-items:center;margin-bottom:var(--s4)}
+.launch .lg img{max-height:64px;max-width:150px;width:auto;object-fit:contain;display:block}
+.launch .lg .tile-mono{height:64px;min-width:64px;font-size:22px}
+.launch h4{font-size:15px;color:var(--navy);font-weight:700;letter-spacing:-.005em;line-height:1.3}
+.launch .blurb{font-size:12.5px;color:var(--ink-soft);line-height:1.5;margin-top:5px}
+.launch .go{margin-top:auto;padding-top:var(--s4);font-size:9.5px;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--ink-faint);transition:color .15s ease}
+.launch a:hover .go{color:var(--bronze-ink)}
 
 /* ---------- sign-in tiles ---------- */
 .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(208px,1fr));gap:var(--s4)}
@@ -834,40 +837,40 @@ const DATA = {
   /* Firm system sign-ins. Each box goes straight to the login.
      `d` is search bait only and never renders. */
   signins: [
-    { name: "eMoney", logo: "assets/logos/emoney.webp", d: "financial planning client portal planning financial plan cashflow",
+    { name: "eMoney", blurb: "Planning, and the portal clients see.", logo: "assets/logos/emoney.webp", d: "financial planning client portal planning financial plan cashflow",
       url: "https://wealth.emaplan.com/ema/SignIn?ema%2Fria%2Fbuckinghamsp%2Flegacyadvisorswealthmgmt" },
-    { name: "Wealthbox", logo: "assets/logos/wealthbox.webp", d: "crm households activity crm clients households notes tasks",
+    { name: "Wealthbox", blurb: "The CRM. Every household and note.", logo: "assets/logos/wealthbox.webp", d: "crm households activity crm clients households notes tasks",
       url: "https://app.crmworkspace.com/login?uid=226a652c221480643ae8b817a5f049ce" },
-    { name: "Schwab Advisor", logo: "assets/logos/schwab.webp", d: "custody trading transfers advisor center custody trading transfers accounts service",
+    { name: "Schwab Advisor", blurb: "Custody: accounts, trading, transfers.", logo: "assets/logos/schwab.webp", d: "custody trading transfers advisor center custody trading transfers accounts service",
       url: "https://advisorservices.schwab.com/advisor/login" },
-    { name: "Envestnet Direct", logo: "assets/logos/envestnet.webp", d: "envestnet direct advisor platform platform trading sma models",
+    { name: "Envestnet Direct", blurb: "Platform trading and models.", logo: "assets/logos/envestnet.webp", d: "envestnet direct advisor platform platform trading sma models",
       url: "https://advisor.envestnet.com/secure/app.jsp" },
-    { name: "Jump", logo: "assets/logos/jump.webp", d: "meeting notes follow-ups meetings notes ai transcription",
+    { name: "Jump", blurb: "Meeting notes that write themselves.", logo: "assets/logos/jump.webp", d: "meeting notes follow-ups meetings notes ai transcription",
       url: "https://my.jumpapp.com" },
-    { name: "Holistiplan", logo: "assets/logos/holistiplan.webp", d: "tax return planning scenarios planning tax returns scenarios",
+    { name: "Holistiplan", blurb: "Tax returns, read and planned.", logo: "assets/logos/holistiplan.webp", d: "tax return planning scenarios planning tax returns scenarios",
       url: "https://app.holistiplan.com" },
-    { name: "EncorEstate Plans", logo: "assets/logos/encoreestate.webp", d: "estate planning documents trust planning estate trusts documents",
+    { name: "EncorEstate Plans", blurb: "Estate documents and design.", logo: "assets/logos/encoreestate.webp", d: "estate planning documents trust planning estate trusts documents",
       url: "https://app.encorestateplans.com" },
-    { name: "Flourish", logo: "assets/logos/flourish.webp", d: "cash management adviser cash banking yield planning",
+    { name: "Flourish", blurb: "Cash management, on the same platform clients use.", logo: "assets/logos/flourish.webp", d: "cash management adviser cash banking yield planning",
       url: "https://www.flourish.com/login" },
-    { name: "Constant Contact", logo: "assets/logos/constantcontact.webp", d: "newsletter email campaigns marketing email newsletter campaigns",
+    { name: "Constant Contact", blurb: "The newsletter and campaigns.", logo: "assets/logos/constantcontact.webp", d: "newsletter email campaigns marketing email newsletter campaigns",
       url: "https://login.constantcontact.com" },
-    { name: "OnceHub", logo: "assets/logos/oncehub.webp", d: "scheduling booking pages scheduling calendar booking meetings",
+    { name: "OnceHub", blurb: "Scheduling links and booking pages.", logo: "assets/logos/oncehub.webp", d: "scheduling booking pages scheduling calendar booking meetings",
       url: "https://account.oncehub.com/signin" },
-    { name: "Focus Portal", logo: "assets/logos/focuspartners.webp", d: "partner firm platform platform partner",
+    { name: "Focus Portal", blurb: "The partner firm platform.", logo: "assets/logos/focuspartners.webp", d: "partner firm platform platform partner",
       url: "https://portal.advisor.focuspartners.com/s/" },
-    { name: "Claude", logo: "assets/logos/claude.webp", d: "ai assistant anthropic ai assistant writing research",
+    { name: "Claude", blurb: "The assistant the firm works in.", logo: "assets/logos/claude.webp", d: "ai assistant anthropic ai assistant writing research",
       url: "https://claude.ai/login" },
-    { name: "SharePoint", logo: "assets/logos/sharepoint.webp",
+    { name: "SharePoint", blurb: "Files, folders, and the receipt library.", logo: "assets/logos/sharepoint.webp",
       d: "files documents storage microsoft office 365 receipts folders",
       url: "https://aspirean.sharepoint.com" },
-    { name: "1Password", logo: "assets/logos/passwords.webp", d: "password manager vault credentials security passwords credentials vault",
+    { name: "1Password", blurb: "Where every credential lives.", logo: "assets/logos/passwords.webp", d: "password manager vault credentials security passwords credentials vault",
       url: "https://my.1password.com" },
-    { name: "GitHub", logo: "assets/logos/github.webp", d: "source repository site code dev code website repository",
+    { name: "GitHub", blurb: "Source for both sites.", logo: "assets/logos/github.webp", d: "source repository site code dev code website repository",
       url: "https://github.com/login" },
-    { name: "Netlify", logo: "assets/logos/netlify.webp", d: "hosting forms functions deploys dev hosting website forms deploys",
+    { name: "Netlify", blurb: "Hosting, forms, and deploys.", logo: "assets/logos/netlify.webp", d: "hosting forms functions deploys dev hosting website forms deploys",
       url: "https://app.netlify.com/" },
-    { name: "Breach Secure Now", logo: "assets/logos/bsn.webp", d: "security training phishing dark web security training phishing dark web",
+    { name: "Breach Secure Now", blurb: "Security training and phishing drills.", logo: "assets/logos/bsn.webp", d: "security training phishing dark web security training phishing dark web",
       url: null }
   ],
 
@@ -1222,10 +1225,12 @@ function boxHTML(t) {
       <span class="tile-mono">${esc((t.name || "").slice(0, 2).toUpperCase())}</span>
       ${t.logo ? `<img src="${esc(t.logo)}" alt="" loading="lazy" hidden>` : ""}
     </span>
-    <h4>${esc(t.name)}</h4>`;
+    <h4>${esc(t.name)}</h4>
+    ${t.blurb ? `<span class="blurb">${esc(t.blurb)}</span>` : ""}`;
   return t.url
-    ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">${inner}</a>`
-    : `<div class="off">${inner}<span class="tag" style="margin-top:6px">Link not set</span></div>`;
+    ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">${inner}
+        <span class="go">Sign in &nearr;</span></a>`
+    : `<div class="off">${inner}<span class="go">Link not set</span></div>`;
 }
 
 function renderResources() {

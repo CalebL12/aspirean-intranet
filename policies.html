@@ -70,8 +70,8 @@ const GROUPS = [
     id: "people", numeral: "I", title: "People",
     note: "Employment terms and the things you need in an ordinary week.",
     items: [
-      { t: "Time off", d: "How much, how far ahead, what carries over, and how it is approved.",
-        owner: "Firm", url: null, also: { label: "Request form", url: "time-off.html" } },
+      { t: "Time off", d: "Accrual tiers from ten days, the two-day carryover, eight paid holidays, and twelve flex-work days a year.",
+        owner: "Firm", url: "records/pto-policy.pdf", also: { label: "Request form", url: "time-off.html" } },
       { t: "Expense reimbursement", d: "What the firm covers, what it does not, and the documentation each claim needs.",
         owner: "Firm", url: null, also: { label: "Claim form", url: "expenses.html" } },
       { t: "Health care and benefits", d: "Plans, cost sharing, enrolment windows, and who to call about a claim.",
@@ -84,8 +84,9 @@ const GROUPS = [
         owner: "Firm", url: null },
       { t: "Where and when we work", d: "Office expectations across three locations, core hours, and travel.",
         owner: "Firm", url: null },
-      { t: "Professional development", d: "What the firm pays for: designations, continuing education, conferences.",
-        owner: "Firm", url: null },
+      { t: "Professional development", d: "The Section 127 educational assistance plan: a one-time designation reimbursement up to $2,500, plus an annual education amount.",
+        owner: "Firm", url: "records/educational-assistance-plan.docx",
+        also: { label: "Reimbursement form", url: "records/educational-assistance-reimbursement-form.docx" } },
       { t: "Conduct and anti-harassment", d: "Expected conduct, and how to raise something without going through the person it concerns.",
         owner: "Firm", url: null }
     ]
@@ -130,19 +131,22 @@ const total = GROUPS.reduce((a, g) => a + g.items.length, 0);
 const live = GROUPS.reduce((a, g) => a + g.items.filter(i => i.url).length, 0);
 
 function row(it) {
-  const right = it.url
-    ? `<span class="tag set">Open</span>`
-    : `<span class="tag">Not set</span>`;
+  /* Rows stay divs: a row can carry two links (the document and a form),
+     and anchors cannot nest inside anchors. */
   const extra = it.also
     ? ` <a href="${esc(it.also.url)}" style="color:var(--bronze-ink);text-decoration:underline;text-underline-offset:3px">${esc(it.also.label)}</a>`
     : "";
-  const inner = `<span class="mark" aria-hidden="true">&middot;</span>
-    <span><span class="lname">${esc(it.t)}</span>
+  const title = it.url
+    ? `<a class="lname" href="${esc(it.url)}" style="color:inherit;text-decoration:underline;text-decoration-color:var(--bronze);text-underline-offset:3px">${esc(it.t)}</a>`
+    : `<span class="lname">${esc(it.t)}</span>`;
+  const right = it.url
+    ? `<a class="tag set" href="${esc(it.url)}" style="text-decoration:none">Open</a>`
+    : `<span class="tag">Not set</span>`;
+  return `<div class="lrow">
+    <span class="mark" aria-hidden="true">&middot;</span>
+    <span>${title}
       <span class="ldesc">${esc(it.d)} <span style="color:var(--ink-faint)">Ask ${esc(it.owner)}.</span>${extra}</span></span>
-    ${right}`;
-  return it.url
-    ? `<a class="lrow" href="${esc(it.url)}">${inner}</a>`
-    : `<div class="lrow">${inner}</div>`;
+    ${right}</div>`;
 }
 
 $("#groups").innerHTML = GROUPS.map(g => `
