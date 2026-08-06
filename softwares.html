@@ -35,9 +35,9 @@
 
   <div class="callout">
     <h3>Passwords are not here</h3>
-    <p>This page holds links and owners. Credentials live in the password manager, which is the
-      only place they should ever live. If a system below has a shared login rather than
-      individual accounts, that is worth fixing before it becomes an offboarding problem.</p>
+    <p>This page holds links and owners. Credentials live in 1Password, which is the only place
+      they should ever live. If a system below has a shared login rather than an entry in the
+      firm vault, that is worth fixing before it becomes an offboarding problem.</p>
   </div>
 
   <div id="groups"></div>
@@ -63,9 +63,9 @@ const GROUPS = [
   {
     id: "planning", numeral: "I", title: "Planning and advice",
     tools: [
-      { id: "emoney", name: "eMoney", what: "Financial planning and the client portal.",
+      { id: "emoney", logo: "assets/logos/emoney.webp", logoH: 28, name: "eMoney", what: "Financial planning and the client portal.",
         url: null, owner: null, support: null, notes: null },
-      { id: "holistiplan", name: "Holistiplan", what: "Tax return reading and planning scenarios.",
+      { id: "holistiplan", logo: "assets/logos/holistiplan.webp", logoH: 26, name: "Holistiplan", what: "Tax return reading and planning scenarios.",
         url: null, owner: null, support: null, notes: null },
       { id: "encore", name: "Encore Estate", what: "Estate planning documents and design.",
         url: null, owner: null, support: null, notes: null }
@@ -76,12 +76,12 @@ const GROUPS = [
     tools: [
       { id: "wealthbox", name: "Wealthbox", what: "The CRM. Households, activity, tasks, and the record of what was said.",
         url: null, owner: null, support: null, notes: null },
-      { id: "jump", name: "Jump", what: "Meeting notes and follow-ups.",
+      { id: "jump", logo: "assets/logos/jump.webp", logoH: 26, name: "Jump", what: "Meeting notes and follow-ups.",
         url: null, owner: null, support: null,
         notes: "Anything that records a client meeting is a records question. Confirm the retention setup with Brad." },
-      { id: "oncehub", name: "OnceHub", what: "Scheduling links and booking pages.",
+      { id: "oncehub", logo: "assets/logos/oncehub.webp", logoH: 26, name: "OnceHub", what: "Scheduling links and booking pages.",
         url: null, owner: null, support: null, notes: null },
-      { id: "constantcontact", name: "Constant Contact", what: "The newsletter and client email campaigns.",
+      { id: "constantcontact", logo: "assets/logos/constantcontact.webp", logoH: 28, name: "Constant Contact", what: "The newsletter and client email campaigns.",
         url: null, owner: null, support: null,
         notes: "Everything sent from here is an advertisement under the marketing rule. Review before send, archive after." }
     ]
@@ -89,12 +89,12 @@ const GROUPS = [
   {
     id: "platforms", numeral: "III", title: "Custody and platforms",
     tools: [
-      { id: "schwab", name: "Schwab Advisor Center", what: "Custody. Accounts, trading, transfers, service requests.",
+      { id: "schwab", logo: "assets/logos/schwab.webp", logoH: 26, name: "Schwab Advisor Center", what: "Custody. Accounts, trading, transfers, service requests.",
         url: null, owner: null, support: null,
         notes: "Not the same login as your personal Schwab account, which is under Employee resources." },
-      { id: "focusportal", name: "Focus Partners adviser portal", what: "Partner firm platform.",
+      { id: "focusportal", logo: "assets/logos/focuspartners.webp", logoH: 28, name: "Focus Partners adviser portal", what: "Partner firm platform.",
         url: null, owner: null, support: null, notes: null },
-      { id: "flourishadv", name: "Flourish Cash adviser portal", what: "Cash management for client households.",
+      { id: "flourishadv", logo: "assets/logos/flourish.webp", logoH: 28, name: "Flourish Cash adviser portal", what: "Cash management for client households.",
         url: null, owner: null, support: null,
         notes: "The adviser side. Your own Flourish account is under Employee resources." }
     ]
@@ -108,12 +108,21 @@ const GROUPS = [
     ]
   },
   {
-    id: "engineering", numeral: "V", title: "Website and deployment",
+    id: "security", numeral: "V", title: "Security and access",
     tools: [
-      { id: "github", name: "GitHub", what: "Source for the public site and this intranet.",
+      { id: "onepassword", logo: "assets/logos/passwords.webp", logoH: 26,
+        name: "1Password", what: "The password manager. The only place credentials live.",
+        url: "https://my.1password.com", owner: null, support: null,
+        notes: "Individual accounts in the firm vault, not one shared login. Offboarding is revoking a person, not rotating everything they ever touched." }
+    ]
+  },
+  {
+    id: "engineering", numeral: "VI", title: "Website and deployment",
+    tools: [
+      { id: "github", logo: "assets/logos/github.webp", logoH: 26, name: "GitHub", what: "Source for the public site and this intranet.",
         url: "https://github.com/CalebL12/aspirean-intranet", owner: "Caleb", support: null,
         notes: "Uploads go through the web interface rather than the command line." },
-      { id: "netlify", name: "Netlify", what: "Hosting, forms, and functions for both sites.",
+      { id: "netlify", logo: "assets/logos/netlify.webp", logoH: 26, name: "Netlify", what: "Hosting, forms, and functions for both sites.",
         url: "https://app.netlify.com", owner: "Caleb", support: null,
         notes: "Form submissions, deploy logs, and environment variables all live here." }
     ]
@@ -131,6 +140,7 @@ const cell = (label, v, href) => `<div><dt>${label}</dt>${
 function toolHTML(t) {
   return `<section class="tool" id="${esc(t.id)}">
     <div class="tool-head">
+      ${t.logo ? `<img src="${esc(t.logo)}" alt="" style="height:${Number(t.logoH) || 24}px;width:auto;align-self:center" onerror="this.remove()">` : ""}
       <h3>${esc(t.name)}</h3>
       <span class="tool-what">${esc(t.what)}</span>
       ${t.url ? `<span class="tag set">Live</span>` : `<span class="tag">Link not set</span>`}

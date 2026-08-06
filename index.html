@@ -289,6 +289,20 @@ a.tile:hover .out{color:var(--bronze-ink)}
 .resgroup:last-child{margin-bottom:0}
 .nores{padding:var(--s5) 0;font-size:14px;color:var(--ink-soft)}
 
+/* ---------- collapsed reference fold ---------- */
+details.fold{border:1px solid var(--line);border-radius:4px;background:var(--paper);margin-bottom:var(--s7)}
+details.fold > summary{list-style:none;cursor:pointer;display:flex;align-items:baseline;gap:var(--s3);
+  padding:var(--s5) var(--s5)}
+details.fold > summary::-webkit-details-marker{display:none}
+details.fold > summary:focus-visible{outline:2px solid var(--bronze);outline-offset:-2px;border-radius:4px}
+details.fold > summary h3{font-family:var(--serif);font-weight:400;font-size:var(--t2);color:var(--navy)}
+details.fold > summary .sub{font-size:12.5px;color:var(--ink-faint);margin-left:auto;text-align:right}
+details.fold > summary .chev{font-size:11px;color:var(--ink-faint);transition:transform .2s ease}
+details.fold[open] > summary .chev{transform:rotate(90deg)}
+details.fold > .fold-body{padding:0 var(--s5) var(--s5);border-top:1px solid var(--line-soft)}
+details.fold > .fold-body > .block:first-child{margin-top:var(--s5)}
+details.fold > .fold-body > .block:last-child{margin-bottom:0}
+
 /* ---------- gate + reading room ---------- */
 .gate{background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:var(--s6)}
 .gate-row{display:flex;gap:var(--s4);align-items:flex-end;flex-wrap:wrap}
@@ -539,19 +553,28 @@ footer{border-top:1px solid var(--line);background:var(--paper-2)}
       <p class="livenote" id="rosterLive"></p>
     </div>
 
+    <details class="fold">
+      <summary>
+        <span class="mark" aria-hidden="true">II</span>
+        <h3>About the instrument</h3>
+        <span class="sub">What it asks, the four measures, and how a cycle runs</span>
+        <span class="chev" aria-hidden="true">&#9656;</span>
+      </summary>
+      <div class="fold-body">
+
     <div class="block">
-      <div class="block-head"><span class="mark" aria-hidden="true">II</span><h3>What the form asks</h3><span class="aside">Seven numbered sections, plus carry-forward</span></div>
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>What the form asks</h3><span class="aside">Seven numbered sections, plus carry-forward</span></div>
       <div class="two" id="sections"></div>
     </div>
 
     <div class="block">
-      <div class="block-head"><span class="mark" aria-hidden="true">III</span><h3>The four standing measures</h3></div>
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>The four standing measures</h3></div>
       <div class="ledger" id="measures"></div>
       <p class="note" style="font-size:13.5px;color:var(--ink-soft);margin-top:var(--s4);max-width:70ch">Zero to ten, rated where you honestly are rather than where you would like to be seen. Anything at five or below gets flagged in the synthesis, and the answer to what one point higher looks like is what we actually discuss. The slope across cycles matters more than the level in any one.</p>
     </div>
 
     <div class="block">
-      <div class="block-head"><span class="mark" aria-hidden="true">IV</span><h3>How a cycle runs</h3></div>
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>How a cycle runs</h3></div>
       <div class="steps">
         <div class="step"><p><b>You write.</b> Answer the form in one sitting if you can. Aim for five points where it asks for five, since the fifth is usually the one worth discussing.</p></div>
         <div class="step"><p><b>You send.</b> Finish and send produces two files. The <b>.json</b> goes to Chris for the synthesis. The <b>.md</b> is your readable copy to keep.</p></div>
@@ -561,9 +584,12 @@ footer{border-top:1px solid var(--line);background:var(--paper-2)}
     </div>
 
     <div class="block">
-      <div class="block-head"><span class="mark" aria-hidden="true">V</span><h3>The rhythm</h3></div>
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>The rhythm</h3></div>
       <div class="rhythm" id="rhythm"></div>
     </div>
+
+      </div>
+    </details>
   </section>
 
   <!-- ==================== RESPONSES ==================== -->
@@ -735,8 +761,9 @@ const DATA = {
       { name: "Pay-Net Online", mono: "PN", logo: "assets/logos/paynet.webp", h: 34,
         d: "Payroll. Employees continue through to myPay Kiosk.",
         url: "https://www.pay-netonline.com/PayNet/Login/Login.aspx" },
-      { name: "Password manager", mono: "PW", logo: "assets/logos/passwords.webp",
-        d: "Every other credential belongs here, not in this list.", url: null },
+      { name: "1Password", mono: "PW", logo: "assets/logos/passwords.webp", h: 30,
+        d: "The firm vault. Every other credential belongs here, not in this list.",
+        url: "https://my.1password.com" },
       { name: "Email and calendar", mono: "EC", logo: "assets/logos/email.webp",
         d: "Webmail, for when you are not on your own machine.", url: null }
     ],
@@ -749,6 +776,24 @@ const DATA = {
       { t: "Payroll calendar", d: "Pay dates and submission cutoffs for the year.", url: null }
     ]
   },
+
+  /* Strategic partner tiles. Anchors into partners.html. */
+  partnerTiles: [
+    { name: "Dimensional", mono: "DF", logo: "assets/logos/dimensional.webp", h: 30,
+      d: "Fund manager. Avery Bonahoom is the regional director.", url: "partners.html#dimensional" },
+    { name: "AQR", mono: "AQ", logo: "assets/logos/aqr.webp", h: 30,
+      d: "Asset manager. Works through team inboxes rather than one rep.", url: "partners.html#aqr" },
+    { name: "Focus Partners", mono: "FP", logo: "assets/logos/focuspartners.webp", h: 30,
+      d: "Partner firm. Sean Brooks, plus the FAS trading desk.", url: "partners.html#focus" },
+    { name: "Nationwide", mono: "NW", logo: null, h: 30,
+      d: "Retirement solutions servicing. Luke Kilbert.", url: "partners.html#nationwide" },
+    { name: "Inhouse CIO", mono: "IC", logo: null, h: 30,
+      d: "The firm's IT provider. Helpdesk first.", url: "partners.html#inhousecio" },
+    { name: "Claude", mono: "CL", logo: null, h: 30,
+      d: "Anthropic. The assistant the firm works in.", url: "partners.html#claude" },
+    { name: "Breach Secure Now", mono: "BS", logo: null, h: 30,
+      d: "Security training and phishing, through Inhouse CIO.", url: "partners.html#breachsecurenow" }
+  ],
 
   /* Company resources */
   resources: [
@@ -765,7 +810,6 @@ const DATA = {
       { t: "Review cadence by household", d: "Who is due, and what the last meeting covered.", url: null }
     ]},
     { group: "Investments", items: [
-      { t: "Strategic partners", d: "Dimensional, AQR, Focus Partners, Claude and Breach Secure Now, with the person to call at each.", url: "partners.html" },
       { t: "Model portfolios and IPS", d: "Current allocations, holdings, and expense detail.", url: null },
       { t: "Private fund due diligence workflow", d: "The four-lens vetting process and its three deliverables.", url: null },
       { t: "Trade and rebalance procedure", d: "Thresholds, sequencing, and the tax-lot rules.", url: null }
@@ -1035,9 +1079,10 @@ function tileHTML(t) {
     </span>
     <h4>${esc(t.name)}</h4>
     <p>${esc(t.d)}</p>
-    <span class="out">${t.url ? "Sign in &nearr;" : "Link not set"}</span>`;
+    <span class="out">${t.url ? (t.out || "Sign in &nearr;") : "Link not set"}</span>`;
+  const external = t.url && /^https?:/i.test(t.url);
   return t.url
-    ? `<a class="tile" href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">${inner}</a>`
+    ? `<a class="tile" href="${esc(t.url)}"${external ? ` target="_blank" rel="noopener noreferrer"` : ""}>${inner}</a>`
     : `<div class="tile off">${inner}</div>`;
 }
 
@@ -1073,7 +1118,18 @@ function renderResources() {
     </div>`;
   }
 
-  const html = employeeHTML + DATA.resources.map(g => {
+  const pt = (DATA.partnerTiles || []).filter(t => hit(t.name, t.d, "strategic partners"));
+  let partnerHTML = "";
+  if (pt.length) {
+    shown += pt.length;
+    partnerHTML = `<div class="resgroup">
+      <div class="block-head"><span class="mark" aria-hidden="true">&middot;</span><h3>Strategic partners</h3>
+      <span class="aside"><a href="partners.html" style="color:var(--bronze-ink)">All partners &rarr;</a></span></div>
+      <div class="tiles">${pt.map(t => tileHTML(Object.assign({}, t, { out: "Contacts &rarr;" }))).join("")}</div>
+    </div>`;
+  }
+
+  const html = employeeHTML + partnerHTML + DATA.resources.map(g => {
     const items = g.items.filter(it =>
       !q || (it.t + " " + it.d + " " + g.group).toLowerCase().includes(q)
     );

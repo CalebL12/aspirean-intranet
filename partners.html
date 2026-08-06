@@ -73,6 +73,7 @@ const PARTNERS = [
   {
     id: "dimensional",
     name: "Dimensional Fund Advisors",
+    logo: "assets/logos/dimensional.webp", logoH: 30,
     what: "Fund manager. Approved-adviser access to the Dimensional funds we use.",
     links: [
       { label: "Adviser portal", url: null },
@@ -80,15 +81,20 @@ const PARTNERS = [
       { label: "Research and practice management library", url: null }
     ],
     contacts: [
-      { name: null, role: "Regional director", email: null, phone: null, notes: null },
-      { name: null, role: "Service and operations", email: null, phone: null, notes: null },
-      { name: null, role: "Investment specialist", email: null, phone: null, notes: null }
+      { name: "Avery Bonahoom", role: "Regional director",
+        email: "avery.bonahoom@dimensional.com", phone: "512.306.4562", notes: "Austin." },
+      { name: "Harry Pershing", role: "Senior associate",
+        email: "harry.pershing@dimensional.com", phone: "310.576.1135", notes: "Santa Monica." },
+      { name: "Alex Cheriyan", role: "Vice president",
+        email: "alex.cheriyan@dimensional.com", phone: "512.306.4786",
+        notes: "Austin. Exact role unclear; has answered emails to the SMA group, so may sit on the SMA side." }
     ],
-    notes: "What we go to them for, and what we handle ourselves. Not written yet."
+    notes: "Emails are first.last@dimensional.com. UMA Solutions desk: uma@dimensional.com, 310.576.1150."
   },
   {
     id: "aqr",
     name: "AQR",
+    logo: "assets/logos/aqr.webp", logoH: 30,
     what: "Asset manager. Systematic and alternative strategies.",
     links: [
       { label: "Adviser site", url: null },
@@ -96,15 +102,21 @@ const PARTNERS = [
       { label: "Research library", url: null }
     ],
     contacts: [
-      { name: null, role: "Regional director", email: null, phone: null, notes: null },
-      { name: null, role: "Internal sales and service", email: null, phone: null, notes: null },
-      { name: null, role: "Investment specialist", email: null, phone: null, notes: null }
+      { name: "Strategy questions", role: "Team inbox",
+        email: "focuspartners@aqr.com", phone: null,
+        notes: "Strategy guidance and questions." },
+      { name: "Operational questions", role: "Team inbox",
+        email: "flexsmaops@aqr.com", phone: null,
+        notes: "Flex SMA operations." },
+      { name: null, role: "Named representative", email: null, phone: null,
+        notes: "AQR works through these inboxes rather than one rep. Add a name here when one attaches to the relationship." }
     ],
     notes: "Which strategies we actually use, and where they sit in the models. Not written yet."
   },
   {
     id: "focus",
     name: "Focus Partners",
+    logo: "assets/logos/focuspartners.webp", logoH: 30,
     what: "Partner firm. Set out here what the relationship actually covers.",
     links: [
       { label: "Adviser portal", url: null },
@@ -112,11 +124,54 @@ const PARTNERS = [
       { label: "Escalation path", url: null }
     ],
     contacts: [
-      { name: null, role: "Relationship lead", email: null, phone: null, notes: null },
-      { name: null, role: "Operations contact", email: null, phone: null, notes: null },
+      { name: "Sean Brooks", role: "Relationship contact",
+        email: null, phone: "312-219-1136",
+        notes: "Focus Partners Advisor Solutions. Relationship dates to 2019." },
+      { name: "FAS Trading", role: "Trading desk",
+        email: "fasenvestnettrading@focuspartners.com", phone: "800-366-7266 x2, #3",
+        notes: "Also fpastrading@focuspartners.com. 190 Carondelet Plaza, Suite 600, Clayton, MO 63105." },
       { name: null, role: "Escalation", email: null, phone: null, notes: null }
     ],
     notes: "What the relationship covers, and who decides when to use it. Not written yet."
+  },
+  {
+    id: "nationwide",
+    name: "Nationwide (Retirement Solutions)",
+    what: "Retirement plan provider on the servicing side.",
+    links: [
+      { label: "Financial professional site", url: null },
+      { label: "Plan documents", url: null },
+      { label: "Service forms", url: null }
+    ],
+    contacts: [
+      { name: "Luke Kilbert", role: "Senior analyst",
+        email: "kilbel@nationwide.com", phone: "614-435-3358",
+        notes: "Financial Professional Servicing Team, Retirement Solutions." },
+      { name: null, role: "Backup contact", email: null, phone: null, notes: null },
+      { name: null, role: "Escalation", email: null, phone: null, notes: null }
+    ],
+    notes: "Which plans this relationship actually covers. Not written yet."
+  },
+  {
+    id: "inhousecio",
+    name: "RIA Workspace (Inhouse CIO)",
+    what: "The firm's IT provider. Helpdesk, onboarding, and the technical account.",
+    links: [
+      { label: "Helpdesk", url: null },
+      { label: "Service agreement", url: null },
+      { label: "Ticket portal", url: null }
+    ],
+    contacts: [
+      { name: "Helpdesk", role: "First call",
+        email: "helpdesk@inhousecio.com", phone: "877-361-3499, option 2",
+        notes: "Day-to-day issues start here." },
+      { name: "Mark", role: "Onboarding engineer",
+        email: null, phone: null,
+        notes: "Main contact point. Kal Heet is the other onboarding engineer." },
+      { name: "Gus", role: "Technical account manager",
+        email: null, phone: null, notes: null }
+    ],
+    notes: "Surnames and direct lines for Mark and Gus are in the CRM record; add them here when confirmed."
   },
   {
     id: "claude",
@@ -146,8 +201,9 @@ const PARTNERS = [
       { label: "Training completion records", url: null }
     ],
     contacts: [
-      { name: null, role: "Our MSP account manager", email: null, phone: null,
-        notes: "Usually the first call: Breach Secure Now sells through IT providers rather than direct." },
+      { name: "RIA Workspace (Inhouse CIO)", role: "Our MSP, first call",
+        email: "helpdesk@inhousecio.com", phone: "877-361-3499, option 2",
+        notes: "Breach Secure Now sells through IT providers rather than direct, and Inhouse CIO is ours." },
       { name: null, role: "Breach Secure Now contact", email: null, phone: null, notes: null },
       { name: null, role: "Support and escalation", email: null, phone: null, notes: null }
     ],
@@ -156,9 +212,18 @@ const PARTNERS = [
 ];
 
 /* ---------- render ---------- */
-const val = (v, href) => v
-  ? `<dd>${href ? `<a href="${esc(href)}${esc(v)}">${esc(v)}</a>` : esc(v)}</dd>`
-  : `<dd class="unset">Not set</dd>`;
+const val = (v, scheme) => {
+  if (!v) return `<dd class="unset">Not set</dd>`;
+  if (!scheme) return `<dd>${esc(v)}</dd>`;
+  /* tel targets are digits only, and stop at any extension marker: dialing
+     "800-366-7266 x2" as 800366726622 would ring a different number entirely. */
+  let target = v;
+  if (scheme === "tel:") {
+    target = v.split(/x|#|,|opt|ext/i)[0].replace(/[^0-9+]/g, "");
+    if (target.length < 10) return `<dd>${esc(v)}</dd>`;
+  }
+  return `<dd><a href="${esc(scheme)}${esc(target)}">${esc(v)}</a></dd>`;
+};
 
 function contactHTML(c, i) {
   const filled = !!c.name;
@@ -189,7 +254,8 @@ $("#jump").innerHTML = PARTNERS.map(p => `<a href="#${esc(p.id)}">${esc(p.name)}
 $("#partners").innerHTML = PARTNERS.map((p, n) => `
   <div class="block" id="${esc(p.id)}">
     <div class="block-head">
-      <span class="mark" aria-hidden="true">${["I","II","III","IV","V"][n] || "&middot;"}</span>
+      <span class="mark" aria-hidden="true">${["I","II","III","IV","V","VI","VII","VIII"][n] || "&middot;"}</span>
+      ${p.logo ? `<img src="${esc(p.logo)}" alt="" style="height:${Number(p.logoH) || 28}px;width:auto;align-self:center" onerror="this.remove()">` : ""}
       <h2>${esc(p.name)}</h2>
       <span class="aside">${p.contacts.filter(c => c.name).length} of ${p.contacts.length} contacts set</span>
     </div>
